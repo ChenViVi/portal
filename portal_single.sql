@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 2018-04-08 08:20:30
+-- Generation Time: 2018-04-08 10:03:06
 -- 服务器版本： 5.7.14
 -- PHP Version: 5.6.25
 
@@ -42,6 +42,7 @@ CREATE TABLE `fab` (
   `icon_img` varchar(20) NOT NULL DEFAULT 'far fa-file',
   `icon_color` varchar(20) NOT NULL DEFAULT '#ffffff',
   `fab_color` varchar(15) NOT NULL DEFAULT 'black',
+  `tip` varchar(20) NOT NULL,
   `url` text NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -81,21 +82,15 @@ CREATE TABLE `site_type` (
   `name` varchar(20) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- 表的结构 `user`
---
-
-CREATE TABLE `user` (
-  `id` int(11) NOT NULL,
-  `email` varchar(20) NOT NULL,
-  `password` varchar(20) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `background`
+--
+ALTER TABLE `background`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `fab`
@@ -122,20 +117,19 @@ ALTER TABLE `site_type`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`);
-
---
 -- 在导出的表使用AUTO_INCREMENT
 --
 
 --
+-- 使用表AUTO_INCREMENT `background`
+--
+ALTER TABLE `background`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
 -- 使用表AUTO_INCREMENT `fab`
 --
 ALTER TABLE `fab`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- 使用表AUTO_INCREMENT `search`
 --
@@ -151,11 +145,6 @@ ALTER TABLE `site`
 --
 ALTER TABLE `site_type`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- 使用表AUTO_INCREMENT `user`
---
-ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

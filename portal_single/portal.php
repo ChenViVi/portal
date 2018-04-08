@@ -1,6 +1,8 @@
 <?php
 require_once("config.php");
-header('content-type:text/html;charset=utf-8'); ?>
+header('content-type:text/html;charset=utf-8');
+$mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$DB_PORT);
+$mysqli->set_charset("utf8");?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,10 +32,12 @@ header('content-type:text/html;charset=utf-8'); ?>
             padding: 5px;
             border-radius:5px;
         }
+        .fab{
+            transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;
+        }
     </style>
     <script type="text/javascript">
         $(document).ready(function() {
-            $("body").css("background-image","url(" + Math.round(Math.random()*26) + ".jpg)");
             $('.searchbar').on('keydown',function(event){
                 if(event.keyCode == 13){
                     window.open ($('input[name=group1]:checked').val() + $("input[name='search_param']").val());
@@ -47,7 +51,14 @@ header('content-type:text/html;charset=utf-8'); ?>
         });
     </script>
 </head>
-<body style="background-size:cover;">
+<?php
+    $stmt=$mysqli->prepare("SELECT * FROM background WHERE id >= ((SELECT MAX(id) FROM background)-(SELECT MIN(id) FROM background)) * RAND() + (SELECT MIN(id) FROM background)  LIMIT 1");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $background = $row['url'];
+?>
+<body style="background-size:cover;background-image: url(<?php if ($background !=null) echo $row['url']; else echo "http://p6uy59lci.bkt.clouddn.com/5.jpg";?>);">
 <div class= "searchbar">
     <div class="row">
         <div class="row col s12" style="position:relative;">
@@ -58,8 +69,6 @@ header('content-type:text/html;charset=utf-8'); ?>
         </div>
         <div class="row col s12">
             <?php
-                $mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$DB_PORT);
-                $mysqli->set_charset("utf8");
                 $stmt=$mysqli->prepare("select * from search");
                 $stmt->execute();
                 $result = $stmt->get_result();
@@ -85,7 +94,11 @@ header('content-type:text/html;charset=utf-8'); ?>
                 $result = $stmt->get_result();
             ?>
             <?php while ($row = $result->fetch_assoc()) {?>
-                <li><a class="btn-floating <?php echo $row['fab_color'] ?>" style="transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;" target="_blank" href="<?php echo $row['url'] ?>"><i class="<?php echo $row['icon_img'] ?>" style="color:<?php echo $row['icon_color'] ?>;"></i></a></li>
+                <li>
+                    <a class="btn-floating tooltipped fab <?php echo $row['fab_color'] ?>" data-tooltip="<?php echo $row['tip'] ?>" data-position="left" data-delay="20" target="_blank" href="<?php echo $row['url'] ?>">
+                        <i class="<?php echo $row['icon_img'] ?>" style="color:<?php echo $row['icon_color'] ?>;"></i>
+                    </a>
+                </li>
             <?php } ?>
         </ul>
     </div>
