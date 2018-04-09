@@ -32,30 +32,21 @@
                     '<a href="#" class="teal-text close" style="position:absolute;right:1px;top:1px;z-index:999;"><i class="material-icons">close</i></a>' +
                     '</div>'
                 );
+                $("input[name='count']").val(rowCount);
                 $('select').material_select();
                 $(".close").click(function(){
                     $(this).parent().remove();
-                    rowCount--;
                 });
                 $(document).scrollTop($(document).height()-$(window).height());
             });
-            $("#submit").click(function(){
-                var empty = false;
-                $("input").each(function(){
-                    if($(this).val().length == 0)
-                        empty=true;
+            $("a.add").click(function(){
+                $.ajax({
+                    url:"search_modify.php",
+                    type:"get",
+                    data:$("form.add").serialize(),
+                    async:false
                 });
-                if (empty) {
-                    Materialize.toast('参数不合法', 2000);
-                    return false;
-                }
-                else{
-                    $("#form").submit();
-                }
-            });
-            $(".close").click(function(){
-                $(this).parent().remove();
-                rowCount--;
+                window.location.href='search.php';
             });
         });
     </script>
@@ -67,7 +58,8 @@
         </div>
     </nav>
     <div class="container" style="padding-bottom: 20px">
-        <form name="form" method="get" action="search_modify.php">
+        <form name="form" class="add">
+            <input type="hidden" name="count" value="1"/>
             <div class="forms row">
                 <div class="card col s4">
                     <div class="card-content">
@@ -85,8 +77,8 @@
                     <a href="#" class="teal-text close" style="position:absolute;right:1px;top:1px;z-index:999;"><i class="material-icons">close</i></a>
                 </div>
             </div>
-            <button type="button" class="btn waves-light blue add_row ">添加一项</button>
-            <button id="submit"  type="submit" class="btn waves-light teal">提交</button>
+            <a type="button" class="btn waves-light blue add_row ">添加一项</a>
+            <a class="add btn waves-light teal">提交</a>
         </form>
     </div>
 </body>

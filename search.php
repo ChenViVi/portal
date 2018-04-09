@@ -29,6 +29,7 @@ $mysqli->set_charset("utf8");
             async:false
           });
           window.location.href='search.php';
+          Materialize.toast("添加成功", 2000);
         });
         $("a.update").click(function(){
           var id = $("a.update").attr("name");
@@ -39,6 +40,7 @@ $mysqli->set_charset("utf8");
             async:false
           });
           window.location.href='search.php';
+          Materialize.toast("修改成功", 2000);
         });
         $("a.delete").click(function(){
           $.ajax({
@@ -48,6 +50,7 @@ $mysqli->set_charset("utf8");
             async:false
           });
           window.location.href='search.php';
+          Materialize.toast("删除成功", 2000);
         });
       });
     </script>
@@ -79,6 +82,7 @@ $mysqli->set_charset("utf8");
       <div class="container">
         <button  data-target="modal_add" type="button" class="btn blue" style="margin-top: 20px">添加</button>
         <form class="add">
+          <input type="hidden" name="count" value="1"/>
           <div id="modal_add" class="modal">
             <div class="modal-content">
               <h4>添加搜索引擎</h4>
@@ -121,7 +125,7 @@ $mysqli->set_charset("utf8");
                 <td>
                   <a class="waves-effect waves-light btn btn-sm btn-success" data-target="modal_update_<?php echo $row['id']; ?>">修改</a>
                   <a type="submit" class="waves-effect waves-light btn red lighten-1" data-target="modal_delete_<?php echo $row['id']; ?>">删除</a>
-                  <form name="<?php echo $row['id']; ?>" class="update" method="get" action="search_modify.php">
+                  <form name="<?php echo $row['id']; ?>" class="update">
                     <div id="modal_update_<?php echo $row['id']; ?>" class="modal">
                       <div class="modal-content">
                         <h4>修改搜索引擎</h4>

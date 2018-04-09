@@ -7,15 +7,17 @@ $mysqli->set_charset("utf8");
 $id = $_GET["id"];
 $name = $_GET["name_1"];
 $url = $_GET["url_1"];
+$count = $_GET["count"];
 if (!is_empty($name) && !is_empty($url)){
-    if (is_empty($id)){
-        $i = 1;
-        while (!is_empty($name)){
-            $stmt=$mysqli->prepare("INSERT INTO search (name, url) VALUES (?,?)");
-            $stmt->bind_param('ss', $name, $url);
-            $stmt->execute();
-            $name = $_GET["name_" . $i++];
+    if (is_empty($id) && !is_empty($count)){
+        for ($i = 1; $i <=$count; $i++){
+            $name = $_GET["name_" . $i];
             $url = $_GET["url_" . $i];
+            if (!is_empty($name) && !is_empty($url)){
+                $stmt=$mysqli->prepare("INSERT INTO search (name, url) VALUES (?,?)");
+                $stmt->bind_param('ss', $name, $url);
+                $stmt->execute();
+            }
         }
     }
     else {
@@ -31,5 +33,4 @@ else{
         $stmt->execute();
     }
 }
-//redirect("search.php");
 ?>﻿
