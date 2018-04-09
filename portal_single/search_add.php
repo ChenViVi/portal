@@ -5,7 +5,7 @@
     <title>添加搜索引擎</title>
     <link href="css/ghpages-materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
     <link href="css/materializecss-font.css" rel="stylesheet" type="text/css">
-    <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/materialize.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript">

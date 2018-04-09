@@ -12,12 +12,43 @@ $mysqli->set_charset("utf8");
     <title>搜索引擎</title>
     <link href="css/ghpages-materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
     <link href="css/materializecss-font.css" rel="stylesheet" type="text/css">
-    <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/jquery-ui.js"></script>
     <script src="js/materialize.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript">
       $(document).ready(function() {
         $('.modal').modal();
+        $('tbody').sortable();
+        $('tbody').disableSelection();
+        $("a.add").click(function(){
+          $.ajax({
+            url:"search_modify.php",
+            type:"get",
+            data:$("form.add").serialize(),
+            async:false
+          });
+          window.location.href='search.php';
+        });
+        $("a.update").click(function(){
+          var id = $("a.update").attr("name");
+          $.ajax({
+            url:"search_modify.php",
+            type:"get",
+            data:$("form.update[name='"+id+"']").serialize(),
+            async:false
+          });
+          window.location.href='search.php';
+        });
+        $("a.delete").click(function(){
+          $.ajax({
+            url:"search_modify.php",
+            type:"get",
+            data:$("form.delete").serialize(),
+            async:false
+          });
+          window.location.href='search.php';
+        });
       });
     </script>
   </head>
@@ -47,7 +78,7 @@ $mysqli->set_charset("utf8");
       </nav>
       <div class="container">
         <button  data-target="modal_add" type="button" class="btn blue" style="margin-top: 20px">添加</button>
-        <form name="form" method="get" action="search_modify.php">
+        <form class="add">
           <div id="modal_add" class="modal">
             <div class="modal-content">
               <h4>添加搜索引擎</h4>
@@ -62,12 +93,12 @@ $mysqli->set_charset("utf8");
             </div>
             <div class="modal-footer">
               <a href="search_add.php" class="modal-action modal-close waves-effect waves-red btn-flat ">批量添加</a>
-              <button class="modal-action modal-close waves-effect waves-red btn-flat ">取消</button>
-              <button type="submit" class="modal-action modal-close waves-effect waves-green btn-flat ">确定</button>
+              <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
+              <a class="add modal-action modal-close waves-effect waves-green btn-flat ">确定</a>
             </div>
           </div>
         </form>
-        <table class="responsive-table highlight">
+        <table class="responsive-table highlight sortable">
           <thead>
             <tr>
                 <th>编号</th>
@@ -90,7 +121,7 @@ $mysqli->set_charset("utf8");
                 <td>
                   <a class="waves-effect waves-light btn btn-sm btn-success" data-target="modal_update_<?php echo $row['id']; ?>">修改</a>
                   <a type="submit" class="waves-effect waves-light btn red lighten-1" data-target="modal_delete_<?php echo $row['id']; ?>">删除</a>
-                  <form name="form" method="get" action="search_modify.php">
+                  <form name="<?php echo $row['id']; ?>" class="update" method="get" action="search_modify.php">
                     <div id="modal_update_<?php echo $row['id']; ?>" class="modal">
                       <div class="modal-content">
                         <h4>修改搜索引擎</h4>
@@ -105,20 +136,20 @@ $mysqli->set_charset("utf8");
                           </div>
                       </div>
                       <div class="modal-footer">
-                        <button class="modal-action modal-close waves-effect waves-red btn-flat ">取消</button>
-                        <button type="submit" class="modal-action modal-close waves-effect waves-green btn-flat ">提交</button>
+                        <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
+                        <a name="<?php echo $row['id']; ?>" class="update modal-action modal-close waves-effect waves-green btn-flat">提交</a>
                       </div>
                     </form>
                   </div>
-                  <form name="form" method="get" action="search_modify.php">
+                  <form class="delete">
                     <div id="modal_delete_<?php echo $row['id']; ?>" class="modal">
                       <div class="modal-content">
                         <h4>确定要删除<?php echo $row['name']; ?>吗？</h4>
                           <input type="hidden" id="id" name="id" value="<?php echo $row['id']; ?>"/>
                       </div>
                       <div class="modal-footer">
-                        <button class="modal-action modal-close waves-effect waves-red btn-flat ">取消</button>
-                        <button type="submit" class="modal-action modal-close waves-effect waves-green btn-flat ">确定</button>
+                        <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
+                        <a class="delete modal-action modal-close waves-effect waves-green btn-flat ">确定</a>
                       </div>
                     </form>
                   </div>

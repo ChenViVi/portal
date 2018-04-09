@@ -31,5 +31,5 @@ else{
         $stmt->execute();
     }
 }
-redirect("search.php");
+//redirect("search.php");
 ?>﻿
