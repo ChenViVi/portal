@@ -70,7 +70,7 @@ $mysqli->set_charset("utf8");
         <li><a class="waves-effect" href="#!"><i class="material-icons">group_work</i>悬浮按钮</a></li>
         <li><a class="waves-effect" href="#!"><i class="material-icons">perm_media</i>背景</a></li>
         <li><div class="divider"></div></li>
-        <li><a href="portal.php" class="btn waves-effect waves-teal">预览</a></li>
+        <li><a href="index.php" class="btn waves-effect waves-teal">预览</a></li>
       </ul>
     </header>
     <main>
