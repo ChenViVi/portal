@@ -47,20 +47,21 @@ $mysqli->set_charset("utf8");
       </nav>
       <div class="container">
         <button  data-target="modal_add" type="button" class="btn blue" style="margin-top: 20px">添加</button>
-        <form name="form" method="get" action="modify_search.php">
+        <form name="form" method="get" action="search_modify.php">
           <div id="modal_add" class="modal">
             <div class="modal-content">
               <h4>添加搜索引擎</h4>
                 <div class="input-field">
-                  <input name="name" id="name" type="text" class="validate">
-                  <label for="name">名称</label>
+                  <input name="name_1" id="name_1" type="text" class="validate">
+                  <label for="name_1">名称&nbsp;例如：百度</label>
                 </div>
                 <div class="input-field">
-                  <input name="url" id="url" type="text" class="validate">
-                  <label for="url">搜索链接</label>
+                  <input name="url_1" id="url_1" type="text" class="validate">
+                  <label for="url_1">链接地址&nbsp;例如：baidu.com/s?wd=</label>
                 </div>
             </div>
             <div class="modal-footer">
+              <a href="search_add.php" class="modal-action modal-close waves-effect waves-red btn-flat ">批量添加</a>
               <button class="modal-action modal-close waves-effect waves-red btn-flat ">取消</button>
               <button type="submit" class="modal-action modal-close waves-effect waves-green btn-flat ">确定</button>
             </div>
@@ -89,19 +90,18 @@ $mysqli->set_charset("utf8");
                 <td>
                   <a class="waves-effect waves-light btn btn-sm btn-success" data-target="modal_update_<?php echo $row['id']; ?>">修改</a>
                   <a type="submit" class="waves-effect waves-light btn red lighten-1" data-target="modal_delete_<?php echo $row['id']; ?>">删除</a>
-                  <form name="form" method="get" action="modify_search.php">
+                  <form name="form" method="get" action="search_modify.php">
                     <div id="modal_update_<?php echo $row['id']; ?>" class="modal">
                       <div class="modal-content">
                         <h4>修改搜索引擎</h4>
-
                           <input type="hidden" id="id" name="id" value="<?php echo $row['id']; ?>"/>
                           <div class="input-field">
-                            <input name="name" id="name" type="text" class="validate" value="<?php echo $row['name']; ?>">
-                            <label for="name">名称</label>
+                            <input name="name_1" id="name_1" type="text" class="validate" value="<?php echo $row['name']; ?>">
+                            <label for="name_1">名称</label>
                           </div>
                           <div class="input-field">
-                            <input name="url" id="url" type="text" class="validate" value="<?php echo $row['url']; ?>">
-                            <label for="url">搜索链接</label>
+                            <input name="url_1" id=url_1" type="text" class="validate" value="<?php echo $row['url']; ?>">
+                            <label for="url_1">链接地址</label>
                           </div>
                       </div>
                       <div class="modal-footer">
@@ -110,11 +110,10 @@ $mysqli->set_charset("utf8");
                       </div>
                     </form>
                   </div>
-                  <form name="form" method="get" action="modify_search.php">
+                  <form name="form" method="get" action="search_modify.php">
                     <div id="modal_delete_<?php echo $row['id']; ?>" class="modal">
                       <div class="modal-content">
                         <h4>确定要删除<?php echo $row['name']; ?>吗？</h4>
-
                           <input type="hidden" id="id" name="id" value="<?php echo $row['id']; ?>"/>
                       </div>
                       <div class="modal-footer">
