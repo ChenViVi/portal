@@ -25,10 +25,28 @@ $mysqli->set_charset("utf8");
             ui.item.data('start_pos', start_pos);
           },
           update: function (event, ui) {
+            ui.item.data('end_pos', ui.item.index());
             var start_pos = ui.item.data('start_pos');
             var end_pos = ui.item.index();
-            alert($("tbody").children("tr").eq(end_pos).children("td").eq(0).text());
-            alert("start=" + start_pos + " end=" + end_pos);
+            var start,end,tbody = $("tbody");
+            if (start_pos < end_pos){
+              start = tbody.children("tr").eq(end_pos).children("td").eq(0).text();
+              end = tbody.children("tr").eq(end_pos-1).children("td").eq(0).text();
+            }
+            else {
+              start = tbody.children("tr").eq(end_pos).children("td").eq(0).text();
+              end = tbody.children("tr").eq(end_pos+1).children("td").eq(0).text();
+            }
+            if (start != end){
+              $.ajax({
+                url:"search_sort.php",
+                type:"get",
+                data:("start=" + start + "&end=" + end),
+                async:false
+              });
+              window.location.href='search.php';
+              Materialize.toast("排序成功", 2000);
+            }
           }
         });
         $("a.add").click(function(){
@@ -116,7 +134,7 @@ $mysqli->set_charset("utf8");
         <table class="responsive-table highlight sortable">
           <thead>
             <tr>
-                <th type="hidden">编号</th>
+                <th hidden>编号</th>
                 <th>名称</th>
                 <th>搜索链接</th>
                 <th>操作</th>
@@ -130,7 +148,7 @@ $mysqli->set_charset("utf8");
             ?>
             <?php while ($row = $result->fetch_assoc()) {?>
               <tr>
-                <td type="hidden"><?php echo $row['id']; ?></td>
+                <td hidden><?php echo $row['id']; ?></td>
                 <td><?php echo $row['name']; ?></td>
                 <td><?php echo $row['url']; ?></td>
                 <td>
