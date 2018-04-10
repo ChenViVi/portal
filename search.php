@@ -19,8 +19,18 @@ $mysqli->set_charset("utf8");
     <script type="text/javascript">
       $(document).ready(function() {
         $('.modal').modal();
-        $('tbody').sortable();
-        $('tbody').disableSelection();
+        $('tbody').sortable({
+          start: function(event, ui) {
+            var start_pos = ui.item.index();
+            ui.item.data('start_pos', start_pos);
+          },
+          update: function (event, ui) {
+            var start_pos = ui.item.data('start_pos');
+            var end_pos = ui.item.index();
+            alert($("tbody").children("tr").eq(end_pos).children("td").eq(0).text());
+            alert("start=" + start_pos + " end=" + end_pos);
+          }
+        });
         $("a.add").click(function(){
           $.ajax({
             url:"search_modify.php",
@@ -43,10 +53,11 @@ $mysqli->set_charset("utf8");
           Materialize.toast("修改成功", 2000);
         });
         $("a.delete").click(function(){
+          var id = $("a.delete").attr("name");
           $.ajax({
             url:"search_modify.php",
             type:"get",
-            data:$("form.delete").serialize(),
+            data:$("form.delete[name='"+id+"']").serialize(),
             async:false
           });
           window.location.href='search.php';
@@ -105,7 +116,7 @@ $mysqli->set_charset("utf8");
         <table class="responsive-table highlight sortable">
           <thead>
             <tr>
-                <th>编号</th>
+                <th type="hidden">编号</th>
                 <th>名称</th>
                 <th>搜索链接</th>
                 <th>操作</th>
@@ -113,13 +124,13 @@ $mysqli->set_charset("utf8");
           </thead>
           <tbody>
             <?php
-              $stmt=$mysqli->prepare("select * from search");
+              $stmt=$mysqli->prepare("select * from search ORDER BY id");
               $stmt->execute();
               $result = $stmt->get_result();
             ?>
             <?php while ($row = $result->fetch_assoc()) {?>
               <tr>
-                <td><?php echo $row['id']; ?></td>
+                <td type="hidden"><?php echo $row['id']; ?></td>
                 <td><?php echo $row['name']; ?></td>
                 <td><?php echo $row['url']; ?></td>
                 <td>
@@ -145,7 +156,7 @@ $mysqli->set_charset("utf8");
                       </div>
                     </form>
                   </div>
-                  <form class="delete">
+                  <form name="<?php echo $row['id']; ?>" class="delete">
                     <div id="modal_delete_<?php echo $row['id']; ?>" class="modal">
                       <div class="modal-content">
                         <h4>确定要删除<?php echo $row['name']; ?>吗？</h4>
@@ -153,7 +164,7 @@ $mysqli->set_charset("utf8");
                       </div>
                       <div class="modal-footer">
                         <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
-                        <a class="delete modal-action modal-close waves-effect waves-green btn-flat ">确定</a>
+                        <a name="<?php echo $row['id']; ?>" class="delete modal-action modal-close waves-effect waves-green btn-flat ">确定</a>
                       </div>
                     </form>
                   </div>

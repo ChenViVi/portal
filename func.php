@@ -7,9 +7,9 @@ function is_empty($C_char){
 }
 
 function check_ip($ip_list){
-    $userIp = $_SERVER['REMOTE_ADDR'];
-    if (! in_array($userIp, $ip_list)) {
+    $ip = $_SERVER['REMOTE_ADDR'];
+    if (! in_array($ip, $ip_list)) {
         header('HTTP/1.0 403 Forbidden');
-        die('Your IP address (' . $userIp . ') is not authorized to access this file.');
+        die('Your IP address (' . $ip . ') is not authorized to access this file.');
     }
 }
