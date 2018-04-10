@@ -81,6 +81,16 @@ $mysqli->set_charset("utf8");
           window.location.href='search.php';
           Materialize.toast("删除成功", 2000);
         });
+        $("a.add_type").click(function(){
+          $.ajax({
+            url:"site_type_modify.php",
+            type:"get",
+            data:$("form.add_type").serialize(),
+            async:false
+          });
+          window.location.href='search.php';
+          Materialize.toast("添加成功", 2000);
+        });
       });
     </script>
   </head>
@@ -94,25 +104,55 @@ $mysqli->set_charset("utf8");
             </div>
           </div>
         </li>
-        <li><a class="waves-effect active teal" href="#"><i class="material-icons">search</i>搜索引擎</a></li>
-        <li><a class="waves-effect" href="#!"><i class="material-icons">language</i>站点</a></li>
-        <li><a class="waves-effect" href="#!"><i class="material-icons">group_work</i>悬浮按钮</a></li>
-        <li><a class="waves-effect" href="#!"><i class="material-icons">perm_media</i>背景</a></li>
-        <li><div class="divider"></div></li>
-        <li><a href="index.php" class="btn waves-effect waves-teal">预览</a></li>
+        <li class="bold"><a class="waves-effect active teal" href="#"><i class="material-icons">search</i>搜索引擎</a></li>
+        <ul class="collapsible collapsible-accordion">
+          <li class="bold"><a class="collapsible-header waves-effect waves-teal"><i class="material-icons">language</i>站点分类<i class="material-icons right">arrow_drop_down</i></a>
+            <div class="collapsible-body">
+              <ul>
+                <?php
+                $stmt=$mysqli->prepare("select * from site_type ORDER BY id");
+                $stmt->execute();
+                $result = $stmt->get_result();
+                ?>
+                <?php while ($row = $result->fetch_assoc()) {?>
+                  <li><a class="waves-effect" href="#" name="<?php echo $row['id']; ?>"><?php echo $row['name']; ?></a></li>
+                <?php } ?>
+                <li><div class="divider"></div></li>
+                <li class="center"><button data-target="modal_add_type" class="btn blue btn waves-effect waves-blue">添加分类</button></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+        <li class="bold"><a class="waves-effect" href="#!"><i class="material-icons">group_work</i>悬浮按钮</a></li>
+        <li class="bold"><a class="waves-effect" href="#!"><i class="material-icons">perm_media</i>背景</a></li>
       </ul>
     </header>
     <main>
+      <form class="add_type">
+        <div id="modal_add_type" class="modal">
+          <div class="modal-content">
+            <h4>添加网站分类</h4>
+            <div class="input-field">
+              <input name="name" id="name" type="text" class="validate">
+              <label for="name">名称</label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
+            <a class="add_type modal-action modal-close waves-effect waves-green btn-flat ">确定</a>
+          </div>
+        </div>
+      </form>
       <nav class="top-nav teal">
         <div class="container">
           <div class="nav-wrapper"><a class="page-title">搜索引擎</a></div>
         </div>
       </nav>
       <div class="container">
-        <button  data-target="modal_add" type="button" class="btn blue" style="margin-top: 20px">添加</button>
+        <button data-target="modal_add" type="button" class="btn blue btn waves-effect waves-blue" style="margin-top: 20px">添加</button>
         <form class="add">
-          <input type="hidden" name="count" value="1"/>
           <div id="modal_add" class="modal">
+            <input type="hidden" name="count" value="1"/>
             <div class="modal-content">
               <h4>添加搜索引擎</h4>
                 <div class="input-field">
