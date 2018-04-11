@@ -4,12 +4,22 @@ require_once("func.php");
 check_ip($ip_white_list);
 $mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$DB_PORT);
 $mysqli->set_charset("utf8");
+$mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$DB_PORT);
+$mysqli->set_charset("utf8");
+$type_id = $_GET["id"];
+if (is_empty($type_id)) exit();
+$stmt=$mysqli->prepare("select name from site_type WHERE id = ?");
+$stmt->bind_param('i', $type_id);
+$stmt->execute();
+$result = $stmt->get_result();
+if ($row = $result->fetch_assoc()) $type_name = $row["name"];
+else exit();
 ?>﻿
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>搜索引擎</title>
+    <title>网站分类：<?php echo $name?></title>
     <link href="css/ghpages-materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
     <link href="css/materializecss-font.css" rel="stylesheet" type="text/css">
     <script src="js/jquery-3.3.1.min.js"></script>
@@ -132,9 +142,9 @@ $mysqli->set_charset("utf8");
             </div>
           </div>
         </li>
-        <li class="bold"><a class="waves-effect active teal" href="#"><i class="material-icons">search</i>搜索引擎</a></li>
+        <li class="bold"><a class="waves-effect" href="#"><i class="material-icons">search</i>搜索引擎</a></li>
         <ul class="collapsible collapsible-accordion">
-          <li class="bold"><a class="collapsible-header waves-effect waves-teal"><i class="material-icons">language</i>站点分类<i class="material-icons right">arrow_drop_down</i></a>
+          <li class="bold"><a class="collapsible-header waves-effect waves-teal active"><i class="material-icons">language</i>站点分类<i class="material-icons right">arrow_drop_down</i></a>
             <div class="collapsible-body">
               <ul>
                 <?php
@@ -143,9 +153,12 @@ $mysqli->set_charset("utf8");
                 $result = $stmt->get_result();
                 ?>
                 <div class="site_type">
-                  <?php while ($row = $result->fetch_assoc()) {?>
-                    <li><a class="waves-effect" href="<?php echo "site_type.php?id=" . $row['id']; ?>" name="<?php echo $row['id']; ?>"><?php echo $row['name']; ?></a></li>
-                  <?php } ?>
+                  <?php while ($row = $result->fetch_assoc()){
+                     if ($row['id'] == $type_id)
+                       echo "<a class=\"waves-effect active teal\" href=\"site_type.php?id=".$row['id'] ."\" name=\"".$row['id']."\">".$row['name']."</a>";
+                    else
+                      echo "<a class=\"waves-effect\" href=\"site_type.php?id=".$row['id'] ."\" name=\"".$row['id']."\">".$row['name']."</a>";
+                  } ?>
                 </div>
                 <li><div class="divider"></div></li>
                 <li class="center"><button data-target="modal_add_type" class="btn blue btn waves-effect waves-blue">添加分类</button></li>
@@ -175,7 +188,7 @@ $mysqli->set_charset("utf8");
       </form>
       <nav class="top-nav teal">
         <div class="container">
-          <div class="nav-wrapper"><a class="page-title">搜索引擎</a></div>
+          <div class="nav-wrapper"><a class="page-title">网站分类：<?php echo $type_name?></a></div>
         </div>
       </nav>
       <div class="container">
