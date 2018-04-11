@@ -65,8 +65,29 @@ else exit();
             data:$("form.add_site_type").serialize(),
             async:false
           });
-          window.location.href='search.php';
+          window.location.href='site_type.php?id='+ <?php echo $type_id?>;
           Materialize.toast("添加成功", 2000);
+        });
+        $("a.update_site_type").click(function(){
+          $.ajax({
+            url:"site_type_modify.php",
+            type:"get",
+            data:$("form.update_site_type").serialize(),
+            async:false
+          });
+          window.location.href='site_type.php?id='+ <?php echo $type_id?>;
+          Materialize.toast("修改成功", 2000);
+        });
+        $("a.delete_site_type").click(function(){
+          var id = $("a.delete").attr("name");
+          $.ajax({
+            url:"site_type_modify.php",
+            type:"get",
+            data:$("form.delete_site_type").serialize(),
+            async:false
+          });
+          window.location.href='search.php';
+          Materialize.toast("删除成功", 2000);
         });
         $('tbody').sortable({
           start: function(event, ui) {
@@ -96,38 +117,6 @@ else exit();
               Materialize.toast("排序成功", 2000);
             }
           }
-        });
-        $("a.add").click(function(){
-          $.ajax({
-            url:"search_modify.php",
-            type:"get",
-            data:$("form.add").serialize(),
-            async:false
-          });
-          window.location.href='search.php';
-          Materialize.toast("添加成功", 2000);
-        });
-        $("a.update").click(function(){
-          var id = $("a.update").attr("name");
-          $.ajax({
-            url:"search_modify.php",
-            type:"get",
-            data:$("form.update[name='"+id+"']").serialize(),
-            async:false
-          });
-          window.location.href='search.php';
-          Materialize.toast("修改成功", 2000);
-        });
-        $("a.delete").click(function(){
-          var id = $("a.delete").attr("name");
-          $.ajax({
-            url:"search_modify.php",
-            type:"get",
-            data:$("form.delete[name='"+id+"']").serialize(),
-            async:false
-          });
-          window.location.href='search.php';
-          Materialize.toast("删除成功", 2000);
         });
       });
     </script>
@@ -192,9 +181,39 @@ else exit();
         </div>
       </nav>
       <div class="container">
-        <button data-target="modal_add" type="button" class="btn waves-effect btn btn-sm btn-success" style="margin-top: 20px">修改分类名称</button>
-        <button data-target="modal_add" type="button" class="btn waves-effect waves-light btn red lighten-1" style="margin-top: 20px">删除分类</button>
+        <button data-target="modal_update_site_type" type="button" class="btn waves-effect btn btn-sm btn-success" style="margin-top: 20px">修改分类名称</button>
+        <button data-target="modal_delete_site_type" type="button" class="btn waves-effect waves-light btn red lighten-1" style="margin-top: 20px">删除分类</button>
         <button data-target="modal_add" type="button" class="btn blue btn waves-effect waves-blue" style="margin-top: 20px">添加网站</button>
+        <form class="update_site_type">
+          <div id="modal_update_site_type" class="modal">
+            <div class="modal-content">
+              <h4>修改网站分类</h4>
+              <div class="input-field">
+                <input  hidden name="id" type="text" class="validate" value="<?php echo $type_id?>">
+                <input name="name" id="name" type="text" class="validate" value="<?php echo $type_name?>">
+                <label for="name">名称</label>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
+              <a class="update_site_type modal-action modal-close waves-effect waves-green btn-flat ">确定</a>
+            </div>
+          </div>
+        </form>
+        <form class="delete_site_type">
+          <div id="modal_delete_site_type" class="modal">
+            <div class="modal-content">
+              <h4>确认要删除此网站分类以及分类下的所有网站吗？</h4>
+              <div class="input-field">
+                <input  hidden name="id" type="text" class="validate" value="<?php echo $type_id?>">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
+              <a class="delete_site_type modal-action modal-close waves-effect waves-green btn-flat ">确定</a>
+            </div>
+          </div>
+        </form>
         <form class="add">
           <div id="modal_add" class="modal">
             <input type="hidden" name="count" value="1"/>

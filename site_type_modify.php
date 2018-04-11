@@ -13,9 +13,10 @@ if (!is_empty($name)){
         $stmt->execute();
     }
     else{
-        $stmt=$mysqli->prepare("UPDATE site_type SET name = ?WHERE id = ?");
+        $stmt=$mysqli->prepare("UPDATE site_type SET name = ? WHERE id = ?");
         $stmt->bind_param('si', $name, $id);
         $stmt->execute();
+        echo "fic";
     }
 }
 else{
