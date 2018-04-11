@@ -19,6 +19,36 @@ $mysqli->set_charset("utf8");
     <script type="text/javascript">
       $(document).ready(function() {
         $('.modal').modal();
+        $('.site_type').sortable({
+          start: function(event, ui) {
+            var start_pos = ui.item.index();
+            ui.item.data('start_pos', start_pos);
+          },
+          update: function (event, ui) {
+            ui.item.data('end_pos', ui.item.index());
+            var start_pos = ui.item.data('start_pos');
+            var end_pos = ui.item.index();
+            var start,end,tbody = $(".site_type");
+            if (start_pos < end_pos){
+              start = tbody.children("li").eq(end_pos).children("a").eq(0).attr("name");
+              end = tbody.children("li").eq(end_pos-1).children("a").eq(0).attr("name");
+            }
+            else {
+              start = tbody.children("li").eq(end_pos).children("a").eq(0).attr("name");
+              end = tbody.children("li").eq(end_pos+1).children("a").eq(0).attr("name");
+            }
+            ///alert("start=" + start + " end=" + end);
+            if (start != end){
+              $.ajax({
+                url:"site_type_sort.php",
+                type:"get",
+                data:("start=" + start + "&end=" + end),
+                async:false
+              });
+              Materialize.toast("排序成功", 2000);
+            }
+          }
+        });
         $('tbody').sortable({
           start: function(event, ui) {
             var start_pos = ui.item.index();
@@ -44,7 +74,6 @@ $mysqli->set_charset("utf8");
                 data:("start=" + start + "&end=" + end),
                 async:false
               });
-              window.location.href='search.php';
               Materialize.toast("排序成功", 2000);
             }
           }
@@ -114,9 +143,11 @@ $mysqli->set_charset("utf8");
                 $stmt->execute();
                 $result = $stmt->get_result();
                 ?>
-                <?php while ($row = $result->fetch_assoc()) {?>
-                  <li><a class="waves-effect" href="#" name="<?php echo $row['id']; ?>"><?php echo $row['name']; ?></a></li>
-                <?php } ?>
+                <div class="site_type">
+                  <?php while ($row = $result->fetch_assoc()) {?>
+                    <li><a class="waves-effect" href="#" name="<?php echo $row['id']; ?>"><?php echo $row['name']; ?></a></li>
+                  <?php } ?>
+                </div>
                 <li><div class="divider"></div></li>
                 <li class="center"><button data-target="modal_add_type" class="btn blue btn waves-effect waves-blue">添加分类</button></li>
               </ul>
