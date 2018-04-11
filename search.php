@@ -48,6 +48,16 @@ $mysqli->set_charset("utf8");
             }
           }
         });
+        $("a.add_site_type").click(function(){
+          $.ajax({
+            url:"site_type_modify.php",
+            type:"get",
+            data:$("form.add_site_type").serialize(),
+            async:false
+          });
+          window.location.href='search.php';
+          Materialize.toast("添加成功", 2000);
+        });
         $('tbody').sortable({
           start: function(event, ui) {
             var start_pos = ui.item.index();
@@ -109,16 +119,6 @@ $mysqli->set_charset("utf8");
           window.location.href='search.php';
           Materialize.toast("删除成功", 2000);
         });
-        $("a.add_type").click(function(){
-          $.ajax({
-            url:"site_type_modify.php",
-            type:"get",
-            data:$("form.add_type").serialize(),
-            async:false
-          });
-          window.location.href='search.php';
-          Materialize.toast("添加成功", 2000);
-        });
       });
     </script>
   </head>
@@ -134,7 +134,7 @@ $mysqli->set_charset("utf8");
         </li>
         <li class="bold"><a class="waves-effect active teal" href="#"><i class="material-icons">search</i>搜索引擎</a></li>
         <ul class="collapsible collapsible-accordion">
-          <li class="bold"><a class="collapsible-header waves-effect waves-teal"><i class="material-icons">language</i>站点分类<i class="material-icons right">arrow_drop_down</i></a>
+          <li class="bold"><a class="site_type collapsible-header waves-effect waves-teal"><i class="material-icons">language</i>站点分类<i class="material-icons right">arrow_drop_down</i></a>
             <div class="collapsible-body">
               <ul>
                 <?php
@@ -158,7 +158,7 @@ $mysqli->set_charset("utf8");
       </ul>
     </header>
     <main>
-      <form class="add_type">
+      <form class="add_site_type">
         <div id="modal_add_type" class="modal">
           <div class="modal-content">
             <h4>添加网站分类</h4>
@@ -169,7 +169,7 @@ $mysqli->set_charset("utf8");
           </div>
           <div class="modal-footer">
             <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
-            <a class="add_type modal-action modal-close waves-effect waves-green btn-flat ">确定</a>
+            <a class="add_site_type modal-action modal-close waves-effect waves-green btn-flat ">确定</a>
           </div>
         </div>
       </form>

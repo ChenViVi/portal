@@ -58,6 +58,16 @@ else exit();
             }
           }
         });
+        $("a.add_site_type").click(function(){
+          $.ajax({
+            url:"site_type_modify.php",
+            type:"get",
+            data:$("form.add_site_type").serialize(),
+            async:false
+          });
+          window.location.href='search.php';
+          Materialize.toast("添加成功", 2000);
+        });
         $('tbody').sortable({
           start: function(event, ui) {
             var start_pos = ui.item.index();
@@ -119,16 +129,6 @@ else exit();
           window.location.href='search.php';
           Materialize.toast("删除成功", 2000);
         });
-        $("a.add_type").click(function(){
-          $.ajax({
-            url:"site_type_modify.php",
-            type:"get",
-            data:$("form.add_type").serialize(),
-            async:false
-          });
-          window.location.href='search.php';
-          Materialize.toast("添加成功", 2000);
-        });
       });
     </script>
   </head>
@@ -142,7 +142,7 @@ else exit();
             </div>
           </div>
         </li>
-        <li class="bold"><a class="waves-effect" href="#"><i class="material-icons">search</i>搜索引擎</a></li>
+        <li class="bold"><a class="waves-effect" href="search.php"><i class="material-icons">search</i>搜索引擎</a></li>
         <ul class="collapsible collapsible-accordion">
           <li class="bold"><a class="collapsible-header waves-effect waves-teal active"><i class="material-icons">language</i>站点分类<i class="material-icons right">arrow_drop_down</i></a>
             <div class="collapsible-body">
@@ -171,7 +171,7 @@ else exit();
       </ul>
     </header>
     <main>
-      <form class="add_type">
+      <form class="add_site_type">
         <div id="modal_add_type" class="modal">
           <div class="modal-content">
             <h4>添加网站分类</h4>
@@ -182,7 +182,7 @@ else exit();
           </div>
           <div class="modal-footer">
             <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
-            <a class="add_type modal-action modal-close waves-effect waves-green btn-flat ">确定</a>
+            <a class="add_site_type modal-action modal-close waves-effect waves-green btn-flat ">确定</a>
           </div>
         </div>
       </form>
@@ -192,7 +192,9 @@ else exit();
         </div>
       </nav>
       <div class="container">
-        <button data-target="modal_add" type="button" class="btn blue btn waves-effect waves-blue" style="margin-top: 20px">添加</button>
+        <button data-target="modal_add" type="button" class="btn waves-effect btn btn-sm btn-success" style="margin-top: 20px">修改分类名称</button>
+        <button data-target="modal_add" type="button" class="btn waves-effect waves-light btn red lighten-1" style="margin-top: 20px">删除分类</button>
+        <button data-target="modal_add" type="button" class="btn blue btn waves-effect waves-blue" style="margin-top: 20px">添加网站</button>
         <form class="add">
           <div id="modal_add" class="modal">
             <input type="hidden" name="count" value="1"/>
@@ -252,7 +254,7 @@ else exit();
                           </div>
                       </div>
                       <div class="modal-footer">
-                        <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
+                        <a class="modal-action modal-close waves-effect waves-red btn-flat">取消</a>
                         <a name="<?php echo $row['id']; ?>" class="update modal-action modal-close waves-effect waves-green btn-flat">提交</a>
                       </div>
                     </form>
