@@ -1,5 +1,5 @@
 <?php
-require_once("func.php");
+require_once("../func.php");
 $mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$DB_PORT);
 $mysqli->set_charset("utf8");
 $id = $_GET["id"];

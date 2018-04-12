@@ -1,5 +1,5 @@
 <?php
-require_once("func.php");
+require_once("../func.php");
 $mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$DB_PORT);
 $mysqli->set_charset("utf8");
 $mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$DB_PORT);
@@ -18,11 +18,11 @@ else exit();
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>网站分类：<?php echo $name?></title>
-    <link href="css/ghpages-materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
-    <link href="css/materializecss-font.css" rel="stylesheet" type="text/css">
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/jquery-ui.js"></script>
-    <script src="js/materialize.js"></script>
+    <link href="../css/ghpages-materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link href="../css/materializecss-font.css" rel="stylesheet" type="text/css">
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <script src="../js/jquery-ui.js"></script>
+    <script src="../js/materialize.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript">
       $(document).ready(function() {
@@ -84,7 +84,7 @@ else exit();
             data:$("form.delete_site_type").serialize(),
             async:false
           });
-          window.location.href='search.php';
+          window.location.href='index.php';
           Materialize.toast("删除成功", 2000);
         });
         $('tbody').sortable({
@@ -125,11 +125,11 @@ else exit();
         <li>
           <div class="userView" style="height: 140px">
             <div class="background">
-              <img src="images/header.jpg" >
+              <img src="../images/header.jpg" >
             </div>
           </div>
         </li>
-        <li class="bold"><a class="waves-effect" href="search.php"><i class="material-icons">search</i>搜索引擎</a></li>
+        <li class="bold"><a class="waves-effect" href="index.php"><i class="material-icons">search</i>搜索引擎</a></li>
         <ul class="collapsible collapsible-accordion">
           <li class="bold"><a class="collapsible-header waves-effect waves-teal active"><i class="material-icons">language</i>站点分类<i class="material-icons right">arrow_drop_down</i></a>
             <div class="collapsible-body">

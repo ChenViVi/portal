@@ -1,5 +1,5 @@
 <?php
-require_once("func.php");
+require_once("../func.php");
 $mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$DB_PORT);
 $mysqli->set_charset("utf8");
 ?>﻿
@@ -8,11 +8,11 @@ $mysqli->set_charset("utf8");
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>搜索引擎</title>
-    <link href="css/ghpages-materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
-    <link href="css/materializecss-font.css" rel="stylesheet" type="text/css">
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/jquery-ui.js"></script>
-    <script src="js/materialize.js"></script>
+    <link href="../css/ghpages-materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link href="../css/materializecss-font.css" rel="stylesheet" type="text/css">
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <script src="../js/jquery-ui.js"></script>
+    <script src="../js/materialize.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript">
       $(document).ready(function() {
@@ -53,7 +53,7 @@ $mysqli->set_charset("utf8");
             data:$("form.add_site_type").serialize(),
             async:false
           });
-          window.location.href='search.php';
+          window.location.href='index.php';
           Materialize.toast("添加成功", 2000);
         });
         $('tbody').sortable({
@@ -92,7 +92,7 @@ $mysqli->set_charset("utf8");
             data:$("form.add").serialize(),
             async:false
           });
-          window.location.href='search.php';
+          window.location.href='index.php';
           Materialize.toast("添加成功", 2000);
         });
         $("a.update").click(function(){
@@ -103,7 +103,7 @@ $mysqli->set_charset("utf8");
             data:$("form.update[name='"+id+"']").serialize(),
             async:false
           });
-          window.location.href='search.php';
+          window.location.href='index.php';
           Materialize.toast("修改成功", 2000);
         });
         $("a.delete").click(function(){
@@ -114,7 +114,7 @@ $mysqli->set_charset("utf8");
             data:$("form.delete[name='"+id+"']").serialize(),
             async:false
           });
-          window.location.href='search.php';
+          window.location.href='index.php';
           Materialize.toast("删除成功", 2000);
         });
       });
@@ -126,7 +126,7 @@ $mysqli->set_charset("utf8");
         <li>
           <div class="userView" style="height: 140px">
             <div class="background">
-              <img src="images/header.jpg" >
+              <img src="../images/header.jpg" >
             </div>
           </div>
         </li>

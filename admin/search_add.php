@@ -1,13 +1,13 @@
-<?php require_once("func.php");?>
+<?php require_once("../func.php");?>
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>添加搜索引擎</title>
-    <link href="css/ghpages-materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
-    <link href="css/materializecss-font.css" rel="stylesheet" type="text/css">
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/materialize.js"></script>
+    <link href="../css/ghpages-materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link href="../css/materializecss-font.css" rel="stylesheet" type="text/css">
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <script src="../js/materialize.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript">
         $(document).ready(function() {
@@ -47,7 +47,7 @@
                     data:$("form.add").serialize(),
                     async:false
                 });
-                window.location.href='search.php';
+                window.location.href='index.php';
             });
         });
     </script>
