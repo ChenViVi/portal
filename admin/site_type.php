@@ -27,6 +27,7 @@ else exit();
     <script type="text/javascript">
       $(document).ready(function() {
         $('.modal').modal();
+        $('select').material_select();
         $('.site_type').sortable({
           start: function(event, ui) {
             var start_pos = ui.item.index();
@@ -215,16 +216,29 @@ else exit();
         <form class="add">
           <div id="modal_add" class="modal">
             <input type="hidden" name="count" value="1"/>
-            <div class="modal-content">
-              <h4>添加搜索引擎</h4>
-                <div class="input-field">
-                  <input name="name_1" id="name_1" type="text" class="validate">
-                  <label for="name_1">名称&nbsp;例如：百度</label>
-                </div>
-                <div class="input-field">
-                  <input name="url_1" id="url_1" type="text" class="validate">
-                  <label for="url_1">链接地址&nbsp;例如：baidu.com/s?wd=</label>
-                </div>
+            <div class="modal-content row">
+              <h4>添加网站</h4>
+              <div class="input-field col s6">
+                <input name="name_1" id="name_1" type="text" class="validate">
+                <label for="name_1">名称&nbsp;例如：百度</label>
+              </div>
+              <div class="input-field col s6">
+                <select id="site_type_1" name="site_type_1">
+                  <?php
+                    $stmt=$mysqli->prepare("select * from site_type ORDER BY id");
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    while ($row = $result->fetch_assoc()) {
+                      if ($row['id'] == $type_id) echo "<option selected value=\"" . $row['id'] . "\">" . $row['name'] . "</option>";
+                      else echo "<option value=\"" . $row['id'] . "\">" . $row['name'] . "</option>";
+                    } ?>
+                </select>
+                <label for="site_type_1">网站类别</label>
+              </div>
+              <div class="input-field col s12">
+                <input name="url_1" id="url_1" type="text" class="validate">
+                <label for="url_1">链接地址&nbsp;例如：baidu.com/s?wd=</label>
+              </div>
             </div>
             <div class="modal-footer">
               <a href="search_add.php" class="modal-action modal-close waves-effect waves-red btn-flat ">批量添加</a>
@@ -238,13 +252,14 @@ else exit();
             <tr>
                 <th hidden>编号</th>
                 <th>名称</th>
-                <th>搜索链接</th>
+                <th>链接</th>
                 <th>操作</th>
             </tr>
           </thead>
           <tbody>
             <?php
-              $stmt=$mysqli->prepare("select * from search ORDER BY id");
+              $stmt=$mysqli->prepare("select * from site WHERE type_id = ? ORDER BY id");
+              $stmt->bind_param('i', $type_id);
               $stmt->execute();
               $result = $stmt->get_result();
             ?>
