@@ -1,10 +1,9 @@
 <?php
-require_once("config.php");
-header('content-type:text/html;charset=utf-8');
+require_once("func.php");
 $mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$DB_PORT);
 $mysqli->set_charset("utf8");?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cmn-Hans">
 <head>
     <meta charset="UTF-8">
     <title>ViVi的传送门</title>
@@ -73,13 +72,21 @@ $mysqli->set_charset("utf8");?>
                 $stmt=$mysqli->prepare("select * from search");
                 $stmt->execute();
                 $result = $stmt->get_result();
+                $checked = true;
             ?>
-            <?php while ($row = $result->fetch_assoc()) {?>
-                <div class="col s2">
-                    <input class="with-gap" name="group1" type="radio" id="radio<?php echo $row['id']; ?>"  value="<?php echo $row['url']; ?>"/>
-                    <label for="radio<?php echo $row['id']; ?>"><?php echo $row['name']; ?></label>
-                </div>
-            <?php }?>
+            <?php while ($row = $result->fetch_assoc()) {
+                if($checked){
+                    echo "<div class=\"col s2\">"
+                        . "<input checked class=\"with-gap\" name=\"group1\" type=\"radio\" id=\"radio" . $row['id'] . "\" value=\"" . $row['url'] . "\"/>"
+                        . "<label for=\"radio" . $row['id'] . "\">" . $row['name'] . "</label>"
+                        . "</div>";
+                    $checked = false;
+                }
+                else echo "<div class=\"col s2\">"
+                            . "<input class=\"with-gap\" name=\"group1\" type=\"radio\" id=\"radio" . $row['id'] . "\" value=\"" . $row['url'] . "\"/>"
+                            . "<label for=\"radio" . $row['id'] . "\">" . $row['name'] . "</label>"
+                            . "</div>";
+           }?>
         </div>
     </div>
 </div>
@@ -116,7 +123,7 @@ $mysqli->set_charset("utf8");?>
                 <?php while ($row = $result->fetch_assoc()) {?>
                     <li class="tab"><a href="#<?php echo $row['id']; ?>"  class="teal-text"><?php echo $row['name']; ?></a></li>
                 <?php } ?>
-                <li class="indicator teal" style="right: 186px; left: 68px;"></li>
+                <li class="indicator black" style="right: 186px; left: 68px;"></li>
             </ul>
         </div>
     </nav>

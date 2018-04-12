@@ -1,12 +1,10 @@
 <?php
-require_once("config.php");
 require_once("func.php");
-check_ip($ip_white_list);
 $mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$DB_PORT);
 $mysqli->set_charset("utf8");
 ?>﻿
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cmn-Hans">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>搜索引擎</title>

@@ -1,5 +1,6 @@
+<?php require_once("func.php");?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cmn-Hans">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>添加搜索引擎</title>

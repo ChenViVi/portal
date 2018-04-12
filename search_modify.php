@@ -1,7 +1,5 @@
 <?php
-require_once("config.php");
 require_once("func.php");
-check_ip($ip_white_list);
 $mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$DB_PORT);
 $mysqli->set_charset("utf8");
 $id = $_GET["id"];
