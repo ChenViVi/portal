@@ -136,7 +136,7 @@ $mysqli->set_charset("utf8");
             <div class="collapsible-body">
               <ul>
                 <?php
-                $stmt=$mysqli->prepare("select * from site_type ORDER BY id");
+                $stmt=$mysqli->prepare("SELECT * FROM site_type ORDER BY id");
                 $stmt->execute();
                 $result = $stmt->get_result();
                 ?>
@@ -210,9 +210,9 @@ $mysqli->set_charset("utf8");
           </thead>
           <tbody>
             <?php
-              $stmt=$mysqli->prepare("select * from search ORDER BY id");
-              $stmt->execute();
-              $result = $stmt->get_result();
+            $stmt=$mysqli->prepare("select * from search ORDER BY id");
+            $stmt->execute();
+            $result = $stmt->get_result();
             ?>
             <?php while ($row = $result->fetch_assoc()) {?>
               <tr>

@@ -4,7 +4,7 @@ $mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$DB_PORT);
 $mysqli->set_charset("utf8");
 $type_id = $_GET["id"];
 if (is_empty($type_id)) exit();
-$stmt=$mysqli->prepare("select name from site_type WHERE id = ?");
+$stmt=$mysqli->prepare("SELECT name FROM site_type WHERE id = ?");
 $stmt->bind_param('i', $type_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -165,16 +165,15 @@ else exit();
             <div class="collapsible-body">
               <ul>
                 <?php
-                $stmt=$mysqli->prepare("select * from site_type ORDER BY id");
+                $stmt=$mysqli->prepare("SELECT * FROM site_type ORDER BY id");
                 $stmt->execute();
                 $result = $stmt->get_result();
                 ?>
                 <div class="site_type">
-                  <?php while ($row = $result->fetch_assoc()){
-                     if ($row['id'] == $type_id)
-                       echo "<a class=\"waves-effect active teal\" href=\"site_type.php?id=".$row['id'] ."\" name=\"".$row['id']."\">".$row['name']."</a>";
-                    else
-                      echo "<a class=\"waves-effect\" href=\"site_type.php?id=".$row['id'] ."\" name=\"".$row['id']."\">".$row['name']."</a>";
+                  <?php
+                  while ($row = $result->fetch_assoc()){
+                    if ($row['id'] == $type_id) echo "<a class=\"waves-effect active teal\" href=\"site_type.php?id=".$row['id'] ."\" name=\"".$row['id']."\">".$row['name']."</a>";
+                    else echo "<a class=\"waves-effect\" href=\"site_type.php?id=".$row['id'] ."\" name=\"".$row['id']."\">".$row['name']."</a>";
                   } ?>
                 </div>
                 <li><div class="divider"></div></li>
@@ -254,13 +253,13 @@ else exit();
               <div class="input-field col s6">
                 <select id="type_id_1" name="type_id_1">
                   <?php
-                    $stmt=$mysqli->prepare("select * from site_type ORDER BY id");
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-                    while ($row = $result->fetch_assoc()) {
-                      if ($row['id'] == $type_id) echo "<option selected value=\"" . $row['id'] . "\">" . $row['name'] . "</option>";
-                      else echo "<option value=\"" . $row['id'] . "\">" . $row['name'] . "</option>";
-                    } ?>
+                  $stmt=$mysqli->prepare("SELECT * FROM site_type ORDER BY id");
+                  $stmt->execute();
+                  $result = $stmt->get_result();
+                  while ($row = $result->fetch_assoc()) {
+                    if ($row['id'] == $type_id) echo "<option selected value=\"" . $row['id'] . "\">" . $row['name'] . "</option>";
+                    else echo "<option value=\"" . $row['id'] . "\">" . $row['name'] . "</option>";
+                  } ?>
                 </select>
                 <label for="type_id_1">网站类别</label>
               </div>
@@ -287,10 +286,10 @@ else exit();
           </thead>
           <tbody>
             <?php
-              $stmt=$mysqli->prepare("select * from site WHERE type_id = ? ORDER BY id");
-              $stmt->bind_param('i', $type_id);
-              $stmt->execute();
-              $result = $stmt->get_result();
+            $stmt=$mysqli->prepare("SELECT * FROM site WHERE type_id = ? ORDER BY id");
+            $stmt->bind_param('i', $type_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
             ?>
             <?php while ($row = $result->fetch_assoc()) {?>
               <tr>
@@ -312,7 +311,7 @@ else exit();
                         <div class="input-field col s6">
                           <select id="type_id_1" name="type_id_1">
                             <?php
-                            $stmt=$mysqli->prepare("select * from site_type ORDER BY id");
+                            $stmt=$mysqli->prepare("SELECT * FROM site_type ORDER BY id");
                             $stmt->execute();
                             $result_type = $stmt->get_result();
                             while ($row_type = $result_type->fetch_assoc()) {

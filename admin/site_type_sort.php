@@ -25,12 +25,10 @@ if (!is_empty($pre) && !is_empty($now && $pre!=$now)){
     }
     $index_name = $names[0];
     for ($i=1;$i<count($ids);$i++){
-        //printf("UPDATE search SET name = ".$names[$i] .",url=".$urls[$i]." WHERE id = ".$ids[$i-1]."\n");
         $stmt=$mysqli->prepare("UPDATE site_type SET name = ? WHERE id = ?");
         $stmt->bind_param('si', $names[$i], $ids[$i-1]);
         $stmt->execute();
     }
-    //printf("UPDATE search SET name = ".$index_name .",url=".$index_url." WHERE id = ".$now."\n");
     $stmt=$mysqli->prepare("UPDATE site_type SET name = ? WHERE id = ?");
     $stmt->bind_param('si', $index_name,  $now);
     $stmt->execute();

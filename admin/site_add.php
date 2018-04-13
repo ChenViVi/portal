@@ -16,15 +16,15 @@
     <script src="../js/materialize.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <?php
-        $stmt=$mysqli->prepare("select * from site_type ORDER BY id");
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $type_ids = array();
-        $type_names = array();
-        while ($row = $result->fetch_assoc()){
-            array_push($type_ids, $row['id']);
-            array_push($type_names, $row['name']);
-        }
+    $stmt=$mysqli->prepare("SELECT * FROM site_type ORDER BY id");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $type_ids = array();
+    $type_names = array();
+    while ($row = $result->fetch_assoc()){
+        array_push($type_ids, $row['id']);
+        array_push($type_names, $row['name']);
+    }
     ?>
     <script type="text/javascript">
         $(document).ready(function() {
@@ -98,11 +98,10 @@
                             <div class="input-field col s6">
                                 <select id="type_id_1" name="type_id_1">
                                     <?php
-                                        for($i = 0; $i < count($type_ids); $i++){
-                                            if ($type_ids[$i] == $type_id) echo "<option selected value=\"" . $type_ids[$i] . "\">" . $type_names[$i] . "</option>";
-                                            else echo "<option value=\"" . $type_ids[$i] . "\">" . $type_names[$i]  . "</option>";
-                                        }
-                                    ?>
+                                    for($i = 0; $i < count($type_ids); $i++){
+                                        if ($type_ids[$i] == $type_id) echo "<option selected value=\"" . $type_ids[$i] . "\">" . $type_names[$i] . "</option>";
+                                        else echo "<option value=\"" . $type_ids[$i] . "\">" . $type_names[$i]  . "</option>";
+                                    } ?>
                                 </select>
                                 <label for="type_id_1">网站类别</label>
                             </div>
