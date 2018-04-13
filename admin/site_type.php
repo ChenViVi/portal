@@ -15,7 +15,7 @@ else exit();
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>网站分类：<?php echo $name?></title>
+    <title>网站分类：<?php echo $type_name?></title>
     <link href="../css/ghpages-materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
     <link href="../css/materializecss-font.css" rel="stylesheet" type="text/css">
     <script src="../js/jquery-3.3.1.min.js"></script>
@@ -137,9 +137,9 @@ else exit();
             }
             if (start != end){
               $.ajax({
-                url:"search_sort.php",
+                url:"site_sort.php",
                 type:"get",
-                data:("start=" + start + "&end=" + end),
+                data:("start=" + start + "&end=" + end + "&type_id=" + '<?php echo $type_id?>'),
                 async:false
               });
               Materialize.toast("排序成功", 2000);
