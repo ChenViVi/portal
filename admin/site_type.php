@@ -2,8 +2,6 @@
 require_once("../func.php");
 $mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$DB_PORT);
 $mysqli->set_charset("utf8");
-$mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$DB_PORT);
-$mysqli->set_charset("utf8");
 $type_id = $_GET["id"];
 if (is_empty($type_id)) exit();
 $stmt=$mysqli->prepare("select name from site_type WHERE id = ?");
@@ -272,7 +270,7 @@ else exit();
               </div>
             </div>
             <div class="modal-footer">
-              <a href="search_add.php" class="modal-action modal-close waves-effect waves-red btn-flat ">批量添加</a>
+              <a href="site_add.php?id=<?php echo $type_id?>" class="modal-action modal-close waves-effect waves-red btn-flat ">批量添加</a>
               <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
               <a class="add modal-action modal-close waves-effect waves-green btn-flat ">确定</a>
             </div>
