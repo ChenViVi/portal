@@ -22,5 +22,8 @@ else{
         $stmt=$mysqli->prepare("DELETE FROM site_type WHERE id = ?");
         $stmt->bind_param('i', $id);
         $stmt->execute();
+        $stmt=$mysqli->prepare("DELETE FROM site WHERE type_id = ?");
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
     }
 }

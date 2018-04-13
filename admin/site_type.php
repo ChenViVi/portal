@@ -78,7 +78,6 @@ else exit();
           Materialize.toast("修改成功", 2000);
         });
         $("a.delete_site_type").click(function(){
-          var id = $("a.delete").attr("name");
           $.ajax({
             url:"site_type_modify.php",
             type:"get",
@@ -86,6 +85,38 @@ else exit();
             async:false
           });
           window.location.href='index.php';
+          Materialize.toast("删除成功", 2000);
+        });
+        $("a.add").click(function(){
+          $.ajax({
+            url:"site_modify.php",
+            type:"get",
+            data:$("form.add").serialize(),
+            async:false
+          });
+          window.location.href='site_type.php?id='+ <?php echo $type_id?>;
+          Materialize.toast("添加成功", 2000);
+        });
+        $("a.update").click(function(){
+          var id = $("a.update").attr("name");
+          $.ajax({
+            url:"site_modify.php",
+            type:"get",
+            data:$("form.update[name='"+id+"']").serialize(),
+            async:false
+          });
+          window.location.href='site_type.php?id='+ <?php echo $type_id?>;
+          Materialize.toast("修改成功", 2000);
+        });
+        $("a.delete").click(function(){
+          var id = $("a.delete").attr("name");
+          $.ajax({
+            url:"site_modify.php",
+            type:"get",
+            data:$("form.delete[name='"+id+"']").serialize(),
+            async:false
+          });
+          window.location.href='site_type.php?id='+ <?php echo $type_id?>;
           Materialize.toast("删除成功", 2000);
         });
         $('tbody').sortable({
@@ -223,7 +254,7 @@ else exit();
                 <label for="name_1">名称&nbsp;例如：百度</label>
               </div>
               <div class="input-field col s6">
-                <select id="site_type_1" name="site_type_1">
+                <select id="type_id_1" name="type_id_1">
                   <?php
                     $stmt=$mysqli->prepare("select * from site_type ORDER BY id");
                     $stmt->execute();
@@ -233,11 +264,11 @@ else exit();
                       else echo "<option value=\"" . $row['id'] . "\">" . $row['name'] . "</option>";
                     } ?>
                 </select>
-                <label for="site_type_1">网站类别</label>
+                <label for="type_id_1">网站类别</label>
               </div>
               <div class="input-field col s12">
                 <input name="url_1" id="url_1" type="text" class="validate">
-                <label for="url_1">链接地址&nbsp;例如：baidu.com/s?wd=</label>
+                <label for="url_1">链接地址&nbsp;例如：www.baidu.com</label>
               </div>
             </div>
             <div class="modal-footer">
@@ -273,17 +304,29 @@ else exit();
                   <a type="submit" class="waves-effect waves-light btn red lighten-1" data-target="modal_delete_<?php echo $row['id']; ?>">删除</a>
                   <form name="<?php echo $row['id']; ?>" class="update">
                     <div id="modal_update_<?php echo $row['id']; ?>" class="modal">
-                      <div class="modal-content">
-                        <h4>修改搜索引擎</h4>
-                          <input type="hidden" id="id" name="id" value="<?php echo $row['id']; ?>"/>
-                          <div class="input-field">
-                            <input name="name_1" id="name_1" type="text" class="validate" value="<?php echo $row['name']; ?>">
-                            <label for="name_1">名称</label>
-                          </div>
-                          <div class="input-field">
-                            <input name="url_1" id=url_1" type="text" class="validate" value="<?php echo $row['url']; ?>">
-                            <label for="url_1">链接地址</label>
-                          </div>
+                      <div class="modal-content row">
+                        <h4>修改网站</h4>
+                        <input type="hidden" id="id" name="id" value="<?php echo $row['id']; ?>"/>
+                        <div class="input-field col s6">
+                          <input name="name_1" id="name_1" type="text" class="validate" value="<?php echo $row['name']; ?>">
+                          <label for="name_1">名称</label>
+                        </div>
+                        <div class="input-field col s6">
+                          <select id="type_id_1" name="type_id_1">
+                            <?php
+                            $stmt=$mysqli->prepare("select * from site_type ORDER BY id");
+                            $stmt->execute();
+                            $result_type = $stmt->get_result();
+                            while ($row_type = $result_type->fetch_assoc()) {
+                              if ($row_type['id'] == $type_id) echo "<option selected value=\"" . $row_type['id'] . "\">" . $row_type['name'] . "</option>";
+                              else echo "<option value=\"" . $row_type['id'] . "\">" . $row_type['name'] . "</option>";
+                            } ?>
+                          </select>
+                        </div>
+                        <div class="input-field col s12">
+                          <input name="url_1" id="url_1" type="text" class="validate" value="<?php echo $row['url']; ?>">
+                          <label for="url_1">链接地址</label>
+                        </div>
                       </div>
                       <div class="modal-footer">
                         <a class="modal-action modal-close waves-effect waves-red btn-flat">取消</a>
@@ -295,7 +338,7 @@ else exit();
                     <div id="modal_delete_<?php echo $row['id']; ?>" class="modal">
                       <div class="modal-content">
                         <h4>确定要删除<?php echo $row['name']; ?>吗？</h4>
-                          <input type="hidden" id="id" name="id" value="<?php echo $row['id']; ?>"/>
+                        <input type="hidden" id="id" name="id" value="<?php echo $row['id']; ?>"/>
                       </div>
                       <div class="modal-footer">
                         <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
