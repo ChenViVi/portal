@@ -226,15 +226,15 @@ $mysqli->set_charset("utf8");
                     <div id="modal_update_<?php echo $row['id']; ?>" class="modal">
                       <div class="modal-content">
                         <h4>修改搜索引擎</h4>
-                          <input type="hidden" id="id" name="id" value="<?php echo $row['id']; ?>"/>
-                          <div class="input-field">
-                            <input name="name_1" id="name_1" type="text" class="validate" value="<?php echo $row['name']; ?>">
-                            <label for="name_1">名称</label>
-                          </div>
-                          <div class="input-field">
-                            <input name="url_1" id=url_1" type="text" class="validate" value="<?php echo $row['url']; ?>">
-                            <label for="url_1">链接地址</label>
-                          </div>
+                        <input type="hidden" id="id" name="id" value="<?php echo $row['id']; ?>"/>
+                        <div class="input-field">
+                          <input name="name_1" id="name_1" type="text" class="validate" value="<?php echo $row['name']; ?>">
+                          <label for="name_1">名称</label>
+                        </div>
+                        <div class="input-field">
+                          <input name="url_1" id="url_1" type="text" class="validate" value="<?php echo $row['url']; ?>">
+                          <label for="url_1">链接地址</label>
+                        </div>
                       </div>
                       <div class="modal-footer">
                         <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
@@ -246,7 +246,7 @@ $mysqli->set_charset("utf8");
                     <div id="modal_delete_<?php echo $row['id']; ?>" class="modal">
                       <div class="modal-content">
                         <h4>确定要删除<?php echo $row['name']; ?>吗？</h4>
-                          <input type="hidden" id="id" name="id" value="<?php echo $row['id']; ?>"/>
+                        <input type="hidden" id="id" name="id" value="<?php echo $row['id']; ?>"/>
                       </div>
                       <div class="modal-footer">
                         <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
