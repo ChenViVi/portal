@@ -10,6 +10,7 @@ $mysqli->set_charset("utf8");?>
     <link href="css/ghpages-materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
     <link href="css/materializecss-font.css" rel="stylesheet" type="text/css">
     <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/jquery-ui.js"></script>
     <script src="js/materialize.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">
@@ -38,6 +39,7 @@ $mysqli->set_charset("utf8");?>
     </style>
     <script type="text/javascript">
         $(document).ready(function() {
+            $('.types').sortable();
             $('.searchbar').on('keydown',function(event){
                 if(event.keyCode == 13){
                     window.open ($('input[name=group1]:checked').val() + $("input[name='search_param']").val());
@@ -52,11 +54,11 @@ $mysqli->set_charset("utf8");?>
     </script>
 </head>
 <?php
-    $stmt=$mysqli->prepare("SELECT * FROM background WHERE id >= ((SELECT MAX(id) FROM background)-(SELECT MIN(id) FROM background)) * RAND() + (SELECT MIN(id) FROM background)  LIMIT 1");
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
-    $background = $row['url'];
+$stmt=$mysqli->prepare("SELECT * FROM background WHERE id >= ((SELECT MAX(id) FROM background)-(SELECT MIN(id) FROM background)) * RAND() + (SELECT MIN(id) FROM background)  LIMIT 1");
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+$background = $row['url'];
 ?>
 <body style="background-size:cover;background-image: url(<?php if ($background !=null) echo $row['url']; else echo "http://p6uy59lci.bkt.clouddn.com/5.jpg";?>);">
 <div class= "searchbar">
@@ -69,12 +71,11 @@ $mysqli->set_charset("utf8");?>
         </div>
         <div class="row col s12">
             <?php
-                $stmt=$mysqli->prepare("select * from search");
-                $stmt->execute();
-                $result = $stmt->get_result();
-                $checked = true;
-            ?>
-            <?php while ($row = $result->fetch_assoc()) {
+            $stmt=$mysqli->prepare("SELECT * FROM search");
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $checked = true;
+            while ($row = $result->fetch_assoc()) {
                 if($checked){
                     echo "<div class=\"col s2\">"
                         . "<input checked class=\"with-gap\" name=\"group1\" type=\"radio\" id=\"radio" . $row['id'] . "\" value=\"" . $row['url'] . "\"/>"
@@ -97,11 +98,10 @@ $mysqli->set_charset("utf8");?>
         </a>
         <ul>
             <?php
-                $stmt=$mysqli->prepare("select * from fab");
-                $stmt->execute();
-                $result = $stmt->get_result();
-            ?>
-            <?php while ($row = $result->fetch_assoc()) {?>
+            $stmt=$mysqli->prepare("SELECT * FROM fab");
+            $stmt->execute();
+            $result = $stmt->get_result();
+            while ($row = $result->fetch_assoc()) {?>
                 <li>
                     <a class="btn-floating tooltipped fab <?php echo $row['fab_color'] ?>" data-tooltip="<?php echo $row['tip'] ?>" data-position="left" data-delay="20" target="_blank" href="<?php echo $row['url'] ?>">
                         <i class="<?php echo $row['icon_img'] ?>" style="color:<?php echo $row['icon_color'] ?>;"></i>
@@ -114,35 +114,30 @@ $mysqli->set_charset("utf8");?>
 <div class="tabnav">
     <nav class="nav-extended transparent">
         <div class="nav-content">
-            <ul class="tabs pink transparent">
+            <ul class="tabs transparent">
                 <?php
-                    $stmt=$mysqli->prepare("select * from site_type");
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-                ?>
-                <?php while ($row = $result->fetch_assoc()) {?>
+                $stmt=$mysqli->prepare("SELECT * FROM site_type");
+                $stmt->execute();
+                $result = $stmt->get_result();
+                while ($row = $result->fetch_assoc()) { ?>
                     <li class="tab"><a href="#<?php echo $row['id']; ?>"  class="teal-text"><?php echo $row['name']; ?></a></li>
                 <?php } ?>
-                <li class="indicator black" style="right: 186px; left: 68px;"></li>
+                <li class="indicator teal" style="right: 186px; left: 68px;"></li>
             </ul>
         </div>
     </nav>
     <?php
-        $stmt=$mysqli->prepare("select COUNT(1) from site_type");
+    $stmt=$mysqli->prepare("SELECT id FROM site_type ORDER BY id");
+    $stmt->execute();
+    $type_result = $stmt->get_result();
+    while($type_row = $type_result->fetch_assoc()){ ?>
+    <div id="<?php echo $type_row['id'] ?>" class="row" style="margin-top: 20px; display: block;">
+        <?php
+        $stmt=$mysqli->prepare("select * from site WHERE type_id = ?");
+        $stmt->bind_param('i', $type_row['id']);
         $stmt->execute();
         $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        $count=$row['COUNT(1)'];
-    ?>
-    <?php for($i=1; $i<=$count ;$i++){ ?>
-    <div id="<?php echo $i ?>" class="row" style="margin-top: 20px; display: block;">
-        <?php
-            $stmt=$mysqli->prepare("select * from site WHERE type_id = ?");
-            $stmt->bind_param('i', $i);
-            $stmt->execute();
-            $result = $stmt->get_result();
-        ?>
-        <?php while ($row = $result->fetch_assoc()) {?>
+        while ($row = $result->fetch_assoc()) {?>
             <div class="col s3" style="margin-top: 20px; display: block;">
                 <a href="<?php echo $row['url'] ?>" target="_blank">
                     <div class="website hoverable" style="position:relative;">
