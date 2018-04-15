@@ -133,7 +133,7 @@ $background = $row['url'];
     while($type_row = $type_result->fetch_assoc()){ ?>
     <div id="<?php echo $type_row['id'] ?>" class="row" style="margin-top: 20px; display: block;">
         <?php
-        $stmt=$mysqli->prepare("select * from site WHERE type_id = ?");
+        $stmt=$mysqli->prepare("SELECT * FROM site WHERE type_id = ?");
         $stmt->bind_param('i', $type_row['id']);
         $stmt->execute();
         $result = $stmt->get_result();
