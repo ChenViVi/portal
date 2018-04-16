@@ -183,7 +183,7 @@ else exit();
           </li>
         </ul>
         <li class="bold"><a class="waves-effect" href="#!"><i class="material-icons">group_work</i>悬浮按钮</a></li>
-        <li class="bold"><a class="waves-effect" href="#!"><i class="material-icons">perm_media</i>背景</a></li>
+        <li class="bold"><a class="waves-effect" href="bg.php"><i class="material-icons">perm_media</i>背景</a></li>
       </ul>
     </header>
     <main>
