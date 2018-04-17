@@ -23,10 +23,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- 表的结构 `background`
+-- 表的结构 `bg`
 --
 
-CREATE TABLE `background` (
+CREATE TABLE `bg` (
   `id` int(11) NOT NULL,
   `url` text NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -87,9 +87,9 @@ CREATE TABLE `site_type` (
 --
 
 --
--- Indexes for table `background`
+-- Indexes for table `bg`
 --
-ALTER TABLE `background`
+ALTER TABLE `bg`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -121,9 +121,9 @@ ALTER TABLE `site_type`
 --
 
 --
--- 使用表AUTO_INCREMENT `background`
+-- 使用表AUTO_INCREMENT `bg`
 --
-ALTER TABLE `background`
+ALTER TABLE `bg`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- 使用表AUTO_INCREMENT `fab`
