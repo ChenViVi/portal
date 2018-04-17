@@ -54,13 +54,13 @@ $mysqli->set_charset("utf8");?>
     </script>
 </head>
 <?php
-$stmt=$mysqli->prepare("SELECT * FROM background WHERE id >= ((SELECT MAX(id) FROM background)-(SELECT MIN(id) FROM background)) * RAND() + (SELECT MIN(id) FROM background)  LIMIT 1");
+$stmt=$mysqli->prepare("SELECT * FROM bg ORDER BY rand() limit 1");
 $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 $background = $row['url'];
 ?>
-<body style="background-size:cover;background-image: url(<?php if ($background !=null) echo $row['url']; else echo "http://p6uy59lci.bkt.clouddn.com/5.jpg";?>);">
+<body style="background-size:cover;background-image: url(<?php if ($background !=null) echo "bg/" . $row['url']; else echo "bg/bg_default.jpg";?>);">
 <div class= "searchbar">
     <div class="row">
         <div class="row col s12" style="position:relative;">
