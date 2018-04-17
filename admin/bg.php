@@ -56,6 +56,45 @@ $mysqli->set_charset("utf8");
           window.location.href='index.php';
           Materialize.toast("添加成功", 2000);
         });
+        $("a.add").click(function(){
+          $.ajax({
+            url: 'upload_bg.php',
+            type: 'POST',
+            cache: false,
+            data: new FormData($('#upload_bg')[0]),
+            processData: false,
+            contentType: false,
+            dataType:'json',
+            success: function (response) {
+              Materialize.toast(response.msg, 3000);
+              if (response.status == 0){
+                $("#content").append(
+                    '<div class="col s3">' +
+                    '<div class="card">' +
+                    '<div class="card-image">' +
+                    '<img src="../bg/' + response.data.url + '" height="180px">' +
+                    '</div>' +
+                    '<div class="card-action">' +
+                    '<a class="red-text text-lighten-3" href="#">删除</a>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>'
+                );
+                $("#file").val("");
+                $(".file-path").val("");
+              }
+            },
+            error:function (jqXHR, textStatus, errorThrown) {
+              Materialize.toast("未知错误", 3000);
+              /*alert(jqXHR.responseText);
+               alert(jqXHR.status);
+               alert(jqXHR.readyState);
+               alert(jqXHR.statusText);
+               alert(textStatus);
+               alert(errorThrown);*/
+            }
+          });
+        });
       });
     </script>
   </head>
@@ -117,7 +156,7 @@ $mysqli->set_charset("utf8");
       </nav>
       <div class="container">
         <button data-target="modal_add" type="button" class="btn blue btn waves-effect waves-blue" style="margin-top: 20px">添加</button>
-        <form class="add" method="post" action="upload_bg.php" enctype="multipart/form-data">
+        <form id="upload_bg" class="add" method="post" action="upload_bg.php" enctype="multipart/form-data">
           <div id="modal_add" class="modal">
             <input type="hidden" name="count" value="1"/>
             <div class="modal-content">
@@ -128,19 +167,33 @@ $mysqli->set_charset("utf8");
                   <input type="file" name="file" id="file">
                 </div>
                 <div class="file-path-wrapper">
-                  <input class="file-path validate" type="text">
+                  <input id="#file-path" class="file-path validate" type="text">
                 </div>
               </div>
             </div>
             <div class="modal-footer">
               <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
-              <button type="submit" name="submit" class="add modal-action modal-close waves-effect waves-green btn-flat ">确定</button>
+              <a name="submit" class="add modal-action modal-close waves-effect waves-green btn-flat ">确定</a>
             </div>
           </div>
         </form>
-        <div class="row" style="margin-top: 20px; display: block;">
-          <img class="col s3" src="http://p6uy59lci.bkt.clouddn.com/0.jpg" style="background-size:cover;">
-          <img class="col s3" src="http://p6uy59lci.bkt.clouddn.com/0.jpg" style="background-size:cover;">
+        <div id="content" class="row" style="margin-top: 20px; display: block;">
+          <?php
+          $stmt=$mysqli->prepare("SELECT * FROM bg ORDER BY id");
+          $stmt->execute();
+          $result = $stmt->get_result();
+          while ($row = $result->fetch_assoc()) { ?>
+            <div class="col s3">
+              <div class="card">
+                <div class="card-image">
+                  <img src="../bg/<?php echo $row['url']?>" height="180px">
+                </div>
+                <div class="card-action">
+                  <a class="red-text text-lighten-3" href="#">删除</a>
+                </div>
+              </div>
+            </div>
+          <?php } ?>
         </div>
       </div>
     </main>
