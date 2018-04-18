@@ -155,6 +155,8 @@ $mysqli->set_charset("utf8");
         </ul>
         <li class="bold"><a class="waves-effect" href="#!"><i class="material-icons">group_work</i>悬浮按钮</a></li>
         <li class="bold active teal"><a class="waves-effect" href="#"><i class="material-icons">perm_media</i>背景</a></li>
+        <li><div class="divider"></div></li>
+        <li><a href="../index.php" class="btn waves-effect waves-teal">查看效果</a></li>
       </ul>
     </header>
     <main>

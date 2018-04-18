@@ -92,9 +92,9 @@ $background = $row['url'];
     </div>
 </div>
 <?php if ($ENABLE_FAB){?>
-    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-        <a class="btn-floating btn-large green">
-            <i class="fas fa-link"></i>
+    <div class="fixed-action-btn"  style="bottom: 45px; right: 24px;">
+        <a class="btn-floating btn-large grey" data-tooltip="控制台" href="admin/index.php">
+            <i class="fas fa-cog"></i>
         </a>
         <ul>
             <?php
