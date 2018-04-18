@@ -143,7 +143,7 @@ $background = $row['url'];
             <div class="col s3" style="margin-top: 20px; display: block;">
                 <a href="<?php echo $row['url'] ?>" target="_blank">
                     <div class="website hoverable" style="position:relative;">
-                        <img src="http://www.google.com/s2/favicons?domain=<?php echo $row['url'] ?>" width="16px" style="position: absolute;top: 50%;transform: translateY(-50%);">
+                        <img src="http://favicon.byi.pw/?url=<?php echo $row['url'] ?>" width="16px" style="position: absolute;top: 50%;transform: translateY(-50%);">
                         <p class="teal-text center"><?php echo $row['name'] ?></p>
                     </div>
                 </a>
