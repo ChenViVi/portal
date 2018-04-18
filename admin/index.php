@@ -96,7 +96,7 @@ $mysqli->set_charset("utf8");
           Materialize.toast("添加成功", 2000);
         });
         $("a.update").click(function(){
-          var id = $("a.update").attr("name");
+          var id = $(this).attr("name");
           $.ajax({
             url:"search_modify.php",
             type:"get",
