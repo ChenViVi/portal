@@ -79,13 +79,13 @@ $background = $row['url'];
                 if($checked){
                     echo "<div class=\"col s2\">"
                         . "<input checked class=\"with-gap\" name=\"group1\" type=\"radio\" id=\"radio" . $row['id'] . "\" value=\"" . $row['url'] . "\"/>"
-                        . "<label for=\"radio" . $row['id'] . "\">" . $row['name'] . "</label>"
+                        . "<label class=\"grey-text text-darken-3\" for=\"radio" . $row['id'] . "\">" . $row['name'] . "</label>"
                         . "</div>";
                     $checked = false;
                 }
                 else echo "<div class=\"col s2\">"
                             . "<input class=\"with-gap\" name=\"group1\" type=\"radio\" id=\"radio" . $row['id'] . "\" value=\"" . $row['url'] . "\"/>"
-                            . "<label for=\"radio" . $row['id'] . "\">" . $row['name'] . "</label>"
+                            . "<label class=\"grey-text text-darken-3\" for=\"radio" . $row['id'] . "\">" . $row['name'] . "</label>"
                             . "</div>";
            }?>
         </div>
