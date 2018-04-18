@@ -7,6 +7,8 @@ $mysqli->set_charset("utf8");
 <html lang="zh-cmn-Hans">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon" />
     <title>背景</title>
     <link href="../css/ghpages-materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
     <link href="../css/materializecss-font.css" rel="stylesheet" type="text/css">
