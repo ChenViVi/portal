@@ -1,8 +1,8 @@
 <?php
+require_once("../func.php");
 $status = 1;
 $msg = "出现未知错误";
 $data = array();
-require_once("../func.php");
 $mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$DB_PORT);
 $mysqli->set_charset("utf8");
 $allowed = array("gif", "jpeg", "jpg", "png");

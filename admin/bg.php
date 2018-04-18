@@ -69,23 +69,26 @@ $mysqli->set_charset("utf8");
               Materialize.toast(response.msg, 3000);
               if (response.status == 0){
                 $("#content").append(
-                    '<div class="col s3">' +
+                    '<div class="col s3" id="item_'+ response.data.id + '">' +
                     '<div class="card">' +
                     '<div class="card-image">' +
                     '<img src="../bg/' + response.data.url + '" height="180px">' +
                     '</div>' +
                     '<div class="card-action">' +
-                    '<a class="red-text text-lighten-3" href="#">删除</a>' +
+                    '<a class="delete red-text text-lighten-3" href="#" name="'+ response.data.id + '">删除</a>' +
                     '</div>' +
                     '</div>' +
                     '</div>'
                 );
+                delete_click();
                 $("#file").val("");
                 $(".file-path").val("");
               }
             },
             error:function (jqXHR, textStatus, errorThrown) {
               Materialize.toast("未知错误", 3000);
+              $("#file").val("");
+              $(".file-path").val("");
               /*alert(jqXHR.responseText);
                alert(jqXHR.status);
                alert(jqXHR.readyState);
@@ -95,6 +98,27 @@ $mysqli->set_charset("utf8");
             }
           });
         });
+        delete_click();
+        function delete_click() {
+          $("a.delete").click(function(){
+            var id =$(this).attr("name");
+            $.ajax({
+              url: 'bg_modify.php',
+              type: 'get',
+              data: ("id=" + id),
+              dataType:'json',
+              success: function (response) {
+                Materialize.toast(response.msg, 3000);
+                if (response.status == 0){
+                  $("#item_" + id).remove();
+                }
+              },
+              error:function (jqXHR, textStatus, errorThrown) {
+                Materialize.toast("未知错误", 3000);
+              }
+            });
+          });
+        }
       });
     </script>
   </head>
@@ -183,13 +207,13 @@ $mysqli->set_charset("utf8");
           $stmt->execute();
           $result = $stmt->get_result();
           while ($row = $result->fetch_assoc()) { ?>
-            <div class="col s3">
+            <div class="col s3" id="item_<?php echo $row['id']?>">
               <div class="card">
                 <div class="card-image">
                   <img src="../bg/<?php echo $row['url']?>" height="180px">
                 </div>
                 <div class="card-action">
-                  <a class="red-text text-lighten-3" href="#">删除</a>
+                  <a class="delete red-text text-lighten-3" href="#" name="<?php echo $row['id']?>">删除</a>
                 </div>
               </div>
             </div>
