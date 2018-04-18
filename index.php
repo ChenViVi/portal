@@ -91,14 +91,14 @@ $background = $row['url'];
         </div>
     </div>
 </div>
-<?php if ($ENABLE_FAB){?>
-    <div class="fixed-action-btn"  style="bottom: 45px; right: 24px;">
-        <a class="btn-floating btn-large grey" data-tooltip="控制台" href="admin/index.php">
-            <i class="fas fa-cog"></i>
-        </a>
+<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+    <a class="btn-floating btn-large grey tooltipped" data-tooltip="控制台" data-position="left" href="admin/index.php">
+        <i class="fas fa-cog"></i>
+    </a>
+    <?php if ($ENABLE_FAB){?>
         <ul>
             <?php
-            $stmt=$mysqli->prepare("SELECT * FROM fab");
+            $stmt=$mysqli->prepare("SELECT * FROM fab ORDER BY id");
             $stmt->execute();
             $result = $stmt->get_result();
             while ($row = $result->fetch_assoc()) {?>
@@ -109,8 +109,8 @@ $background = $row['url'];
                 </li>
             <?php } ?>
         </ul>
-    </div>
-<?php } ?>
+    <?php } ?>
+</div>
 <div class="tabnav">
     <nav class="nav-extended transparent">
         <div class="nav-content">
