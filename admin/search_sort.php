@@ -1,5 +1,7 @@
 <?php
 require_once("../func.php");
+$status = 1;
+$msg = "出现未知错误";
 $mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$DB_PORT);
 $mysqli->set_charset("utf8");
 $pre = $_GET["start"];
@@ -36,4 +38,11 @@ if (!is_empty($pre) && !is_empty($now && $pre!=$now)){
     $stmt=$mysqli->prepare("UPDATE search SET name = ? ,url = ? WHERE id = ?");
     $stmt->bind_param('ssi', $index_name, $index_url, $now);
     $stmt->execute();
+    $status = 0;
+    $msg = "排序成功";
 }
+else $msg="参数不正确";
+echo json_encode(array(
+    'status' => $status,
+    'msg' => $msg,
+));
