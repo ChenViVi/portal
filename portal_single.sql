@@ -34,21 +34,6 @@ CREATE TABLE `bg` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `fab`
---
-
-CREATE TABLE `fab` (
-  `id` int(11) NOT NULL,
-  `icon_img` varchar(20) NOT NULL DEFAULT 'far fa-file',
-  `icon_color` varchar(20) NOT NULL DEFAULT '#ffffff',
-  `fab_color` varchar(15) NOT NULL DEFAULT 'black',
-  `tip` varchar(20) NOT NULL,
-  `url` text NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- 表的结构 `search`
 --
 
@@ -93,12 +78,6 @@ ALTER TABLE `bg`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `fab`
---
-ALTER TABLE `fab`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `search`
 --
 ALTER TABLE `search`
@@ -125,11 +104,6 @@ ALTER TABLE `site_type`
 --
 ALTER TABLE `bg`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- 使用表AUTO_INCREMENT `fab`
---
-ALTER TABLE `fab`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- 使用表AUTO_INCREMENT `search`
 --

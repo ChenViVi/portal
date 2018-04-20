@@ -73,7 +73,7 @@ $background = $row['url'];
         </div>
         <div class="row col s12">
             <?php
-            $stmt=$mysqli->prepare("SELECT * FROM search");
+            $stmt=$mysqli->prepare("SELECT * FROM search ORDER BY id");
             $stmt->execute();
             $result = $stmt->get_result();
             $checked = true;
