@@ -77,7 +77,6 @@ $mysqli->set_charset("utf8");
               end = tbody.children("tr").eq(end_pos+1).children("td").eq(0).text();
             }
             if (start != end){
-              alert("start=" + start + " end=" + end);
               $.ajax({
                 url:"search_sort.php",
                 type:"get",
@@ -85,12 +84,7 @@ $mysqli->set_charset("utf8");
                 async:true,
                 dataType:'json',
                 success: function (response) {
-                  if (response.status == 0){
-                    Materialize.toast("排序成功", 2000);
-                  }
-                  else {
-                    Materialize.toast(response.msg, 3000);
-                  }
+                  Materialize.toast(response.msg, 3000);
                 },
                 error:function (jqXHR, textStatus, errorThrown) {
                   Materialize.toast("未知错误", 3000);
