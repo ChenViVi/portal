@@ -6,7 +6,7 @@ $mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$DB_PORT);
 $mysqli->set_charset("utf8");
 $pre = $_GET["start"];
 $now = $_GET["end"];
-if (!is_empty($pre) && !is_empty($now && $pre!=$now)){
+if (!is_empty($pre) && !is_empty($now) && $pre!=$now){
     if ($pre < $now){
         $stmt=$mysqli->prepare("SELECT * FROM search WHERE id >= ? AND id <= ?");
         $stmt->bind_param('ii', $pre, $now);
