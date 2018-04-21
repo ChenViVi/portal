@@ -42,6 +42,7 @@ $mysqli->set_charset("utf8");?>
     <script type="text/javascript">
         $(document).ready(function() {
             var search_radios = $('#search-radios');
+            var site_types = $("#site-types");
             $('.modal').modal();
             var search_param = $("input[name='search-param']");
             $('.searchbar').on('keydown',function(event){
@@ -63,14 +64,14 @@ $mysqli->set_charset("utf8");?>
                     ui.item.data('end_pos', ui.item.index());
                     var start_pos = ui.item.data('start_pos');
                     var end_pos = ui.item.index();
-                    var start,end,search_radios = $("#search-radios");
+                    var start,end;
                     if (start_pos < end_pos){
-                        start = search_radios.children().eq(end_pos).attr("tabindex");
-                        end = search_radios.children().eq(end_pos-1).attr("tabindex");
+                        start = search_radios.children().eq(end_pos).attr("data-id");
+                        end = search_radios.children().eq(end_pos-1).attr("data-id");
                     }
                     else {
-                        start = search_radios.children().eq(end_pos).attr("tabindex");
-                        end = search_radios.children().eq(end_pos+1).attr("tabindex");
+                        start = search_radios.children().eq(end_pos).attr("data-id");
+                        end = search_radios.children().eq(end_pos+1).attr("data-id");
                     }
                     if (start != end){
                         $.ajax({
@@ -107,7 +108,7 @@ $mysqli->set_charset("utf8");?>
                         name: "删除",
                         callback: function() {
                             var item = $(this);
-                            var id = item.attr("tabindex");
+                            var id = item.attr("data-id");
                             $.ajax({
                                 url:"request/search_delete.php",
                                 type:"get",
@@ -130,7 +131,7 @@ $mysqli->set_charset("utf8");?>
                         name: "编辑",
                         callback: function() {
                             var item = $(this);
-                            var id = item.attr("tabindex");
+                            var id = item.attr("data-id");
                             var name = item.children('label').text();
                             var url = item.children('input').val();
                             var modal = $('#modal-update-search');
@@ -173,7 +174,7 @@ $mysqli->set_charset("utf8");?>
                         Materialize.toast(response.msg, 3000);
                         if (response.status == 0){
                             search_radios.append(
-                                "<div class='col s2 radios-div' tabindex='" + response.data.id + "'>" +
+                                "<div class='col s2 radios-div' data-id='" + response.data.id + "'>" +
                                 "<input class='with-gap' name='group1' type='radio' id='radio" + response.data.id + "' value='" + response.data.url + "'>" +
                                 "<label class='grey-text text-darken-3' for='radio" + response.data.id + "'>" + response.data.name + "</label>" +
                                 "</div>"
@@ -189,6 +190,50 @@ $mysqli->set_charset("utf8");?>
                         modal_content.children('div').eq(1).children('input').val("");
                     }
                 });
+            });
+            site_types.sortable({
+                start: function(event, ui) {
+                    var start_pos = ui.item.index();
+                    ui.item.data('start_pos', start_pos);
+                },
+                update: function (event, ui) {
+                    ui.item.data('end_pos', ui.item.index());
+                    var start_pos = ui.item.data('start_pos');
+                    var end_pos = ui.item.index();
+                    var start,end;
+                    if (start_pos < end_pos){
+                        start = site_types.children().eq(end_pos).attr("data-id");
+                        end = site_types.children().eq(end_pos-1).attr("data-id");
+                    }
+                    else {
+                        start = site_types.children().eq(end_pos).attr("data-id");
+                        end = site_types.children().eq(end_pos+1).attr("data-id");
+                    }
+                    if (start != end){
+                        $.ajax({
+                            url:"request/site_type_sort.php",
+                            type:"get",
+                            data:("start=" + start + "&end=" + end),
+                            async:true,
+                            dataType:'json',
+                            success: function (response) {
+                                Materialize.toast("排序成功", 2000);
+                                if (response.status == 0){
+
+                                }
+                            },
+                            error:function (jqXHR, textStatus, errorThrown) {
+                                Materialize.toast("未知错误", 3000);
+                                alert(jqXHR.responseText);
+                                 alert(jqXHR.status);
+                                 alert(jqXHR.readyState);
+                                 alert(jqXHR.statusText);
+                                 alert(textStatus);
+                                 alert(errorThrown);
+                            }
+                        });
+                    }
+                }
             });
         });
     </script>
@@ -257,13 +302,13 @@ $background = $row['url'];
             $checked = true;
             while ($row = $result->fetch_assoc()) {
                 if($checked){
-                    echo "<div class=\"col s2 radios-div\"  tabindex=\"" . $row['id'] . "\">"
+                    echo "<div class=\"col s2 radios-div\"  data-id=\"" . $row['id'] . "\">"
                         . "<input checked class=\"with-gap\" name=\"group1\" type=\"radio\" id=\"radio" . $row['id'] . "\" value=\"" . $row['url'] . "\"/>"
                         . "<label class=\"grey-text text-darken-3\" for=\"radio" . $row['id'] . "\">" . $row['name'] . "</label>"
                         . "</div>";
                     $checked = false;
                 }
-                else echo "<div class=\"col s2 radios-div\"  tabindex=\"" . $row['id'] . "\">"
+                else echo "<div class=\"col s2 radios-div\"  data-id=\"" . $row['id'] . "\">"
                             . "<input class=\"with-gap\" name=\"group1\" type=\"radio\" id=\"radio" . $row['id'] . "\" value=\"" . $row['url'] . "\"/>"
                             . "<label class=\"grey-text text-darken-3\" for=\"radio" . $row['id'] . "\">" . $row['name'] . "</label>"
                             . "</div>";
@@ -275,16 +320,18 @@ $background = $row['url'];
     <nav class="nav-extended transparent">
         <div class="nav-content">
             <ul class="tabs transparent">
-                <?php
-                $stmt=$mysqli->prepare("SELECT * FROM site_type ORDER BY id");
-                $stmt->execute();
-                $result = $stmt->get_result();
-                $site_type_ids = array();
-                while ($row = $result->fetch_assoc()) {
-                    array_push($site_type_ids, $row['id']);
-                    ?>
-                    <li class="tab"><a href="#<?php echo $row['id']; ?>"  class="teal-text"><?php echo $row['name']; ?></a></li>
-                <?php } ?>
+                <div id="site-types">
+                    <?php
+                    $stmt=$mysqli->prepare("SELECT * FROM site_type ORDER BY id");
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    $site_type_ids = array();
+                    while ($row = $result->fetch_assoc()) {
+                        array_push($site_type_ids, $row['id']);
+                        ?>
+                        <li data-id="<?php echo $row['id']; ?>" class="tab"><a href="#<?php echo $row['id']; ?>"  class="teal-text"><?php echo $row['name']; ?></a></li>
+                    <?php } ?>
+                </div>
                 <li class="indicator teal" style="right: 186px; left: 68px;"></li>
             </ul>
         </div>
