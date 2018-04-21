@@ -41,6 +41,7 @@ $mysqli->set_charset("utf8");?>
     </style>
     <script type="text/javascript">
         $(document).ready(function() {
+            var search_radios = $('#search-radios');
             $('.modal').modal();
             var search_param = $("input[name='search-param']");
             $('.searchbar').on('keydown',function(event){
@@ -53,7 +54,6 @@ $mysqli->set_charset("utf8");?>
                 window.open ($('input[name=group1]:checked').val() + search_param.val());
                 search_param.val("");
             });
-            var search_radios = $('#search-radios');
             search_radios.sortable({
                 start: function(event, ui) {
                     var start_pos = ui.item.index();
@@ -97,56 +97,74 @@ $mysqli->set_charset("utf8");?>
             search_radios.contextMenu({
                 selector: '.radios-div',
                 items: {
-                    "update": {name: "编辑",callback: function() {
-                        var id = $(this).attr("tabindex");
-                        var name = $(this).children('label').text();
-                        var url = $(this).children('input').val();
-                        var modal = $('#modal-update-search');
-                        $("a.update-search").click(function(){
+                    "add": {
+                        name: "添加",
+                        callback: function() {
+                            $('#modal-add-search').modal('open');
+                        }
+                    },
+                    "delete": {
+                        name: "删除",
+                        callback: function() {
+                            var id = $(this).attr("tabindex");
                             $.ajax({
                                 url:"admin/search_modify.php",
                                 type:"get",
-                                data:$("form.update-search").serialize(),
+                                data:("id=" + id),
                                 async:false
                             });
                             window.location.href='index.php';
-                            Materialize.toast("修改成功", 3000);
-                        });
-                        var modal_content = modal.children('.modal-content');
-                        modal_content.children('input').val(id);
-                        modal_content.children('div').eq(0).children('input').val(name);
-                        modal_content.children('div').eq(1).children('input').val(url);
-                        modal.modal('open');
-                    }},
-                    "delete": {name: "删除",callback: function() {
-                        var id = $(this).attr("tabindex");
-                        $.ajax({
-                            url:"admin/search_modify.php",
-                            type:"get",
-                            data:("id=" + id),
-                            async:false
-                        });
-                        window.location.href='index.php';
-                        Materialize.toast("删除成功", 3000);
-                    }},
-                    "add": {name: "添加",callback: function() {
-                        $('#modal-add-search').modal('open');
-                    }},
-                    "sep1": "---------",
-                    "quit": {name: "控制台",callback: function() {
-                        window.location.href='admin/index.php';
-                    }}
+                            Materialize.toast("删除成功", 3000);
+                        }
+                    },
+                    "update": {
+                        name: "编辑",
+                        callback: function() {
+                            var id = $(this).attr("tabindex");
+                            var name = $(this).children('label').text();
+                            var url = $(this).children('input').val();
+                            var modal = $('#modal-update-search');
+                            $("a.update-search").click(function(){
+                                $.ajax({
+                                    url:"admin/search_modify.php",
+                                    type:"get",
+                                    data:$("form.update-search").serialize(),
+                                    async:false
+                                });
+                                window.location.href='index.php';
+                                Materialize.toast("修改成功", 3000);
+                            });
+                            var modal_content = modal.children('.modal-content');
+                            modal_content.children('input').val(id);
+                            modal_content.children('div').eq(0).children('input').val(name);
+                            modal_content.children('div').eq(1).children('input').val(url);
+                            modal.modal('open');
+                        }
+                    }
                 }
             });
             $("a.add-search").click(function(){
                 $.ajax({
-                    url:"admin/search_modify.php",
+                    url:"request/search_add_one.php",
                     type:"get",
                     data:$("form.add-search").serialize(),
-                    async:false
+                    async:true,
+                    dataType:'json',
+                    success: function (response) {
+                        Materialize.toast(response.msg, 3000);
+                        if (response.status == 0){
+                            search_radios.append(
+                                "<div class='col s2 radios-div' tabindex='" + response.data.id + "'>" +
+                                "<input class='with-gap' name='group1' type='radio' id='radio" + response.data.id + "' value='" + response.data.url + "'>" +
+                                "<label class='grey-text text-darken-3' for='radio" + response.data.id + "'>" + response.data.name + "</label>" +
+                                "</div>"
+                            );
+                        }
+                    },
+                    error:function (jqXHR, textStatus, errorThrown) {
+                        Materialize.toast("未知错误", 3000);
+                    }
                 });
-                window.location.href='index.php';
-                Materialize.toast("添加成功", 3000);
             });
         });
     </script>
@@ -181,20 +199,19 @@ $background = $row['url'];
 </form>
 <form class="add-search">
     <div id="modal-add-search" class="modal">
-        <input type="hidden" name="count" value="1"/>
         <div class="modal-content">
             <h4>添加搜索引擎</h4>
             <div class="input-field">
-                <input name="name_1" id="name_1" type="text" class="validate" autocomplete="off">
-                <label for="name_1">名称&nbsp;例如：百度</label>
+                <input name="name" id="name" type="text" class="validate" autocomplete="off">
+                <label for="name">名称&nbsp;例如：百度</label>
             </div>
             <div class="input-field">
-                <input name="url_1" id="url_1" type="text" class="validate" autocomplete="off">
-                <label for="url_1">链接地址&nbsp;例如：baidu.com/s?wd=</label>
+                <input name="url" id="url" type="text" class="validate" autocomplete="off">
+                <label for="url">链接地址&nbsp;例如：baidu.com/s?wd=</label>
             </div>
         </div>
         <div class="modal-footer">
-            <a href="admin/search_add.php" class="modal-action modal-close waves-effect waves-red btn-flat ">批量添加</a>
+            <a href="search_add.php" class="modal-action modal-close waves-effect waves-red btn-flat">批量添加</a>
             <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
             <a class="add-search modal-action modal-close waves-effect waves-green btn-flat">确定</a>
         </div>
