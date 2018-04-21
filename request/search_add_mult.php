@@ -16,4 +16,4 @@ if (!is_empty($name) && !is_empty($url) && !is_empty($count)){
         }
     }
 }
-?>﻿
+mysqli_close($mysqli);

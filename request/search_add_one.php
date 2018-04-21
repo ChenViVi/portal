@@ -35,8 +35,8 @@ else{
             $data = $result->fetch_assoc();
         }
     }
+    mysqli_close($mysqli);
 }
-mysqli_close($mysqli);
 echo json_encode(array(
     'status' => $status,
     'msg' => $msg,

@@ -106,33 +106,52 @@ $mysqli->set_charset("utf8");?>
                     "delete": {
                         name: "删除",
                         callback: function() {
-                            var id = $(this).attr("tabindex");
+                            var item = $(this);
+                            var id = item.attr("tabindex");
                             $.ajax({
-                                url:"admin/search_modify.php",
+                                url:"request/search_delete.php",
                                 type:"get",
                                 data:("id=" + id),
-                                async:false
+                                async:true,
+                                dataType:'json',
+                                success: function (response) {
+                                    Materialize.toast(response.msg, 3000);
+                                    if (response.status == 0){
+                                        item.remove();
+                                    }
+                                },
+                                error:function (jqXHR, textStatus, errorThrown) {
+                                    Materialize.toast("未知错误", 3000);
+                                }
                             });
-                            window.location.href='index.php';
-                            Materialize.toast("删除成功", 3000);
                         }
                     },
                     "update": {
                         name: "编辑",
                         callback: function() {
-                            var id = $(this).attr("tabindex");
-                            var name = $(this).children('label').text();
-                            var url = $(this).children('input').val();
+                            var item = $(this);
+                            var id = item.attr("tabindex");
+                            var name = item.children('label').text();
+                            var url = item.children('input').val();
                             var modal = $('#modal-update-search');
                             $("a.update-search").click(function(){
                                 $.ajax({
-                                    url:"admin/search_modify.php",
+                                    url:"request/search_update.php",
                                     type:"get",
                                     data:$("form.update-search").serialize(),
-                                    async:false
+                                    async:true,
+                                    dataType:'json',
+                                    success: function (response) {
+                                        Materialize.toast(response.msg, 3000);
+                                        if (response.status == 0){
+                                            item.children('label').text(response.data.name);
+                                            item.children('input').val(response.data.url);
+                                        }
+                                    },
+                                    error:function (jqXHR, textStatus, errorThrown) {
+                                        Materialize.toast("未知错误", 3000);
+                                    }
                                 });
-                                window.location.href='index.php';
-                                Materialize.toast("修改成功", 3000);
                             });
                             var modal_content = modal.children('.modal-content');
                             modal_content.children('input').val(id);
@@ -163,6 +182,11 @@ $mysqli->set_charset("utf8");?>
                     },
                     error:function (jqXHR, textStatus, errorThrown) {
                         Materialize.toast("未知错误", 3000);
+                    },
+                    complete:function (jqXHR, textStatus, errorThrown) {
+                        var modal_content = $('#modal-add-search').children('.modal-content');
+                        modal_content.children('div').eq(0).children('input').val("");
+                        modal_content.children('div').eq(1).children('input').val("");
                     }
                 });
             });
@@ -183,12 +207,12 @@ $background = $row['url'];
             <h4>修改搜索引擎</h4>
             <input type="hidden" id="id" name="id" value="" autocomplete="off"/>
             <div class="input-field">
-                <input name="name_1" id="name_1" type="text" class="validate" value="" autocomplete="off">
-                <label for="name_1">名称</label>
+                <input name="name" id="name" type="text" class="validate" value="" autocomplete="off">
+                <label for="name">名称</label>
             </div>
             <div class="input-field">
-                <input name="url_1" id="url_1" type="text" class="validate" value="" autocomplete="off">
-                <label for="url_1">链接地址</label>
+                <input name="url" id="url" type="text" class="validate" value="" autocomplete="off">
+                <label for="url">链接地址</label>
             </div>
         </div>
         <div class="modal-footer">
@@ -255,7 +279,10 @@ $background = $row['url'];
                 $stmt=$mysqli->prepare("SELECT * FROM site_type ORDER BY id");
                 $stmt->execute();
                 $result = $stmt->get_result();
-                while ($row = $result->fetch_assoc()) { ?>
+                $site_type_ids = array();
+                while ($row = $result->fetch_assoc()) {
+                    array_push($site_type_ids, $row['id']);
+                    ?>
                     <li class="tab"><a href="#<?php echo $row['id']; ?>"  class="teal-text"><?php echo $row['name']; ?></a></li>
                 <?php } ?>
                 <li class="indicator teal" style="right: 186px; left: 68px;"></li>
@@ -263,14 +290,11 @@ $background = $row['url'];
         </div>
     </nav>
     <?php
-    $stmt=$mysqli->prepare("SELECT id FROM site_type ORDER BY id");
-    $stmt->execute();
-    $type_result = $stmt->get_result();
-    while($type_row = $type_result->fetch_assoc()){ ?>
-    <div id="<?php echo $type_row['id'] ?>" class="row website_row">
+    for ($i = 0; $i < count($site_type_ids); $i++){ ?>
+    <div id="<?php echo $site_type_ids[$i] ?>" class="row website_row">
         <?php
         $stmt=$mysqli->prepare("SELECT * from site WHERE type_id = ?");
-        $stmt->bind_param('i', $type_row['id']);
+        $stmt->bind_param('i', $site_type_ids[$i]);
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_assoc()) {?>
