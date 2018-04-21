@@ -18,13 +18,13 @@ $mysqli->set_charset("utf8");?>
     <link href="js/jquery.contextMenu.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        .searchbar{
+        #search-bar{
             margin:20px auto;
             background-color: rgba(255,255,255,0.65);
             width:60%;
             border-radius:3px;
         }
-        .tabnav{
+        #tab-nav{
             min-height:500px; height:auto!important; height:500px;
             margin:20px auto;
             background-color: rgba(255,255,255,0.55);
@@ -45,13 +45,13 @@ $mysqli->set_charset("utf8");?>
             var site_types = $("#site-types");
             $('.modal').modal();
             var search_param = $("input[name='search-param']");
-            $('.searchbar').on('keydown',function(event){
+            $('#search-bar').on('keydown',function(event){
                 if(event.keyCode == 13){
                     window.open ($('input[name=group1]:checked').val() + search_param.val());
                     search_param.val("");
                 }
             });
-            $(".searchbtn").click(function(){
+            $("#search-btn").click(function(){
                 window.open ($('input[name=group1]:checked').val() + search_param.val());
                 search_param.val("");
             });
@@ -219,17 +219,13 @@ $mysqli->set_charset("utf8");?>
                             success: function (response) {
                                 Materialize.toast("排序成功", 2000);
                                 if (response.status == 0){
-
+                                    var tab_nav = $("#tab-nav");
+                                    tab_nav.html(tab_nav.html());
+                                    $('.tabs').tabs();
                                 }
                             },
                             error:function (jqXHR, textStatus, errorThrown) {
                                 Materialize.toast("未知错误", 3000);
-                                alert(jqXHR.responseText);
-                                 alert(jqXHR.status);
-                                 alert(jqXHR.readyState);
-                                 alert(jqXHR.statusText);
-                                 alert(textStatus);
-                                 alert(errorThrown);
                             }
                         });
                     }
@@ -286,13 +282,13 @@ $background = $row['url'];
         </div>
     </div>
 </form>
-<div class= "searchbar">
+<div id="search-bar">
     <div class="row">
         <div class="row col s12" style="position:relative;">
             <div class="input-field col s11" >
                 <input name="search-param" type="text" class="validate" autocomplete="off">
             </div>
-            <a class="waves-effect waves-light btn col s1 searchbtn" style="position: absolute;top: 50%;transform: translateY(-50%);"><i class="material-icons">search</i></a>
+            <a id="search-btn" class="waves-effect waves-light btn col s1" style="position: absolute;top: 50%;transform: translateY(-50%);"><i class="material-icons">search</i></a>
         </div>
         <div class="row col s12" id="search-radios">
             <?php
@@ -316,7 +312,7 @@ $background = $row['url'];
         </div>
     </div>
 </div>
-<div class="tabnav">
+<div id="tab-nav">
     <nav class="nav-extended transparent">
         <div class="nav-content">
             <ul class="tabs transparent">
@@ -338,24 +334,25 @@ $background = $row['url'];
     </nav>
     <?php
     for ($i = 0; $i < count($site_type_ids); $i++){ ?>
-    <div id="<?php echo $site_type_ids[$i] ?>" class="row website_row">
-        <?php
-        $stmt=$mysqli->prepare("SELECT * from site WHERE type_id = ?");
-        $stmt->bind_param('i', $site_type_ids[$i]);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        while ($row = $result->fetch_assoc()) {?>
-            <div class="col s3" style="margin-top: 20px; display: block;">
-                <a href="<?php echo $row['url'] ?>" target="_blank">
-                    <div class="website hoverable" style="position:relative;">
-                        <img src="http://favicon.byi.pw/?url=<?php echo $row['url'] ?>" width="16px" style="position: absolute;top: 50%;transform: translateY(-50%);">
-                        <p class="teal-text center"><?php echo $row['name'] ?></p>
-                    </div>
-                </a>
-            </div>
-        <?php } ?>
-    </div>
-    <?php } mysqli_close($mysqli);?>
+        <div id="<?php echo $site_type_ids[$i] ?>" class="row website_row">
+            <?php
+            $stmt=$mysqli->prepare("SELECT * from site WHERE type_id = ?");
+            $stmt->bind_param('i', $site_type_ids[$i]);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            while ($row = $result->fetch_assoc()) {?>
+                <div class="col s3" style="margin-top: 20px; display: block;">
+                    <a href="<?php echo $row['url'] ?>" target="_blank">
+                        <div class="website hoverable" style="position:relative;">
+                            <img src="http://favicon.byi.pw/?url=<?php echo $row['url'] ?>" width="16px" style="position: absolute;top: 50%;transform: translateY(-50%);">
+                            <p class="teal-text center"><?php echo $row['name'] ?></p>
+                        </div>
+                    </a>
+                </div>
+            <?php } ?>
+        </div>
+    <?php } ?>
+    <?php mysqli_close($mysqli);?>
 </div>
 </body>
 </html>
