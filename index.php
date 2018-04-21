@@ -158,7 +158,27 @@ $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 $background = $row['url'];
 ?>
-<body style="background-size:cover;background-image: url(<?php if ($background !=null) echo "bg/" . $row['url']; else echo "bg/bg_default.jpg";?>);"
+<body style="background-size:cover;background-image: url(<?php if ($background !=null) echo "bg/" . $row['url']; else echo "bg/bg_default.jpg";?>);">
+<form class="update-search">
+    <div id="modal-update-search" class="modal">
+        <div class="modal-content">
+            <h4>修改搜索引擎</h4>
+            <input type="hidden" id="id" name="id" value="" autocomplete="off"/>
+            <div class="input-field">
+                <input name="name_1" id="name_1" type="text" class="validate" value="" autocomplete="off">
+                <label for="name_1">名称</label>
+            </div>
+            <div class="input-field">
+                <input name="url_1" id="url_1" type="text" class="validate" value="" autocomplete="off">
+                <label for="url_1">链接地址</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
+            <a class="update-search modal-action modal-close waves-effect waves-green btn-flat">提交</a>
+        </div>
+    </div>
+</form>
 <form class="add-search">
     <div id="modal-add-search" class="modal">
         <input type="hidden" name="count" value="1"/>
@@ -177,26 +197,6 @@ $background = $row['url'];
             <a href="admin/search_add.php" class="modal-action modal-close waves-effect waves-red btn-flat ">批量添加</a>
             <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
             <a class="add-search modal-action modal-close waves-effect waves-green btn-flat">确定</a>
-        </div>
-    </div>
-</form>
-<form class="update-search">
-    <div id="modal-update-search" class="modal">
-        <div class="modal-content">
-            <h4>修改搜索引擎</h4>
-            <input type="hidden" id="id" name="id" value="" autocomplete="off"/>
-            <div class="input-field">
-                <input name="name_1" id="name_1" type="text" class="validate" value="" autocomplete="off">
-                <label for="name_1">名称</label>
-            </div>
-            <div class="input-field">
-                <input name="url_1" id="url_1" type="text" class="validate" value="" autocomplete="off">
-                <label for="url_1">链接地址</label>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
-            <a class="update-search modal-action modal-close waves-effect waves-green btn-flat">提交</a>
         </div>
     </div>
 </form>
