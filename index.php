@@ -41,9 +41,11 @@ $mysqli->set_charset("utf8");?>
     </style>
     <script type="text/javascript">
         $(document).ready(function() {
+            $('.modal').modal();
+            $('select').material_select();
             var search_radios = $('#search-radios');
             var site_types = $("#site-types");
-            $('.modal').modal();
+            var website_row = $(".website-row");
             var search_param = $("input[name='search-param']");
             $('#search-bar').on('keydown',function(event){
                 if(event.keyCode == 13){
@@ -81,12 +83,7 @@ $mysqli->set_charset("utf8");?>
                             async:true,
                             dataType:'json',
                             success: function (response) {
-                                if (response.status == 0){
-                                    Materialize.toast("排序成功", 2000);
-                                }
-                                else {
-                                    Materialize.toast(response.msg, 3000);
-                                }
+                                Materialize.toast(response.msg, 3000);
                             },
                             error:function (jqXHR, textStatus, errorThrown) {
                                 Materialize.toast("未知错误", 3000);
@@ -217,7 +214,7 @@ $mysqli->set_charset("utf8");?>
                             async:true,
                             dataType:'json',
                             success: function (response) {
-                                Materialize.toast("排序成功", 2000);
+                                Materialize.toast("排序成功", 3000);
                                 if (response.status == 0){
                                     var tab_nav = $("#tab-nav");
                                     tab_nav.html(tab_nav.html());
@@ -322,6 +319,130 @@ $mysqli->set_charset("utf8");?>
                     }
                 });
             });
+            website_row.sortable({
+                start: function(event, ui) {
+                    var start_pos = ui.item.index();
+                    ui.item.data('start_pos', start_pos);
+                },
+                update: function (event, ui) {
+                    ui.item.data('end_pos', ui.item.index());
+                    var start_pos = ui.item.data('start_pos');
+                    var end_pos = ui.item.index();
+                    var start,end;
+                    if (start_pos < end_pos){
+                        start = $(this).children().eq(end_pos).attr("data-id");
+                        end = $(this).children().eq(end_pos-1).attr("data-id");
+                    }
+                    else {
+                        start = $(this).children().eq(end_pos).attr("data-id");
+                        end = $(this).children().eq(end_pos+1).attr("data-id");
+                    }
+                    if (start != end){
+                        $.ajax({
+                            url:"request/site_sort.php",
+                            type:"get",
+                            data:("start=" + start + "&end=" + end),
+                            async:true,
+                            dataType:'json',
+                            success: function (response) {
+                                Materialize.toast("排序成功", 3000);
+                            },
+                            error:function (jqXHR, textStatus, errorThrown) {
+                                Materialize.toast("未知错误", 3000);
+                            }
+                        });
+                    }
+                }
+            });
+            website_row.contextMenu({
+                selector: '.website-div',
+                items: {
+                    "add": {
+                        name: "添加",
+                        callback: function() {
+                            var type_id = $(this).parent().attr("id");
+                            $.ajax({
+                                url:"request/site_type_get.php",
+                                type:"get",
+                                async:true,
+                                dataType:'json',
+                                success: function (response) {
+                                    if (response.status == 0){
+                                        var select = $("select[id='type_id']");
+                                        select.html("");
+                                        for(var i = 0; i < response.data.length; i++){
+                                            if(response.data[i].id == type_id) select.append("<option value='" + response.data[i].id + "'>" + response.data[i].name + "</option>");
+                                            else select.append("<option value='" + response.data[i].id + "'>" + response.data[i].name + "</option>");
+                                        }
+                                        $('select').material_select();
+                                        $('#modal-add-site').modal('open');
+                                    }
+                                },
+                                error:function (jqXHR, textStatus, errorThrown) {
+                                    Materialize.toast("未知错误", 3000);
+                                }
+                            });
+                        }
+                    },
+                    "delete": {
+                        name: "删除",
+                        callback: function() {
+                            var item = $(this);
+                            var id = item.attr("data-id");
+                            $.ajax({
+                                url:"request/search_delete.php",
+                                type:"get",
+                                data:("id=" + id),
+                                async:true,
+                                dataType:'json',
+                                success: function (response) {
+                                    Materialize.toast(response.msg, 3000);
+                                    if (response.status == 0){
+                                        item.remove();
+                                    }
+                                },
+                                error:function (jqXHR, textStatus, errorThrown) {
+                                    Materialize.toast("未知错误", 3000);
+                                }
+                            });
+                        }
+                    },
+                    "update": {
+                        name: "编辑",
+                        callback: function() {
+                            var item = $(this);
+                            var id = item.attr("data-id");
+                            var name = item.children('label').text();
+                            var url = item.children('input').val();
+                            var modal = $('#modal-update-search');
+                            $("a.update-search").click(function(){
+                                $.ajax({
+                                    url:"request/search_update.php",
+                                    type:"get",
+                                    data:$("form.update-search").serialize(),
+                                    async:true,
+                                    dataType:'json',
+                                    success: function (response) {
+                                        Materialize.toast(response.msg, 3000);
+                                        if (response.status == 0){
+                                            item.children('label').text(response.data.name);
+                                            item.children('input').val(response.data.url);
+                                        }
+                                    },
+                                    error:function (jqXHR, textStatus, errorThrown) {
+                                        Materialize.toast("未知错误", 3000);
+                                    }
+                                });
+                            });
+                            var modal_content = modal.children('.modal-content');
+                            modal_content.children('input').val(id);
+                            modal_content.children('div').eq(0).children('input').val(name);
+                            modal_content.children('div').eq(1).children('input').val(url);
+                            modal.modal('open');
+                        }
+                    }
+                }
+            });
         });
     </script>
 </head>
@@ -383,7 +504,6 @@ $background = $row['url'];
             </div>
         </div>
         <div class="modal-footer">
-            <a href="site_type_add.php" class="modal-action modal-close waves-effect waves-red btn-flat">批量添加</a>
             <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
             <a class="add-site-type modal-action modal-close waves-effect waves-green btn-flat">确定</a>
         </div>
@@ -402,6 +522,31 @@ $background = $row['url'];
         <div class="modal-footer">
             <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
             <a class="update-site-type modal-action modal-close waves-effect waves-green btn-flat">提交</a>
+        </div>
+    </div>
+</form>
+<form class="add-site">
+    <div id="modal-add-site" class="modal">
+        <div class="modal-content row">
+            <h4>添加网站</h4>
+            <div class="input-field col s6">
+                <input name="name" id="name" type="text" class="validate" autocomplete="off">
+                <label for="name">名称&nbsp;例如：百度</label>
+            </div>
+            <div class="input-field col s6">
+                <select id="type_id" name="type_id">
+                </select>
+                <label for="type_id">网站类别</label>
+            </div>
+            <div class="input-field col s12">
+                <input name="url" id="url" type="text" class="validate" autocomplete="off">
+                <label for="url">链接地址&nbsp;例如：baidu.com/s?wd=</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="site_add.php" class="modal-action modal-close waves-effect waves-red btn-flat">批量添加</a>
+            <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
+            <a class="add-site modal-action modal-close waves-effect waves-green btn-flat">确定</a>
         </div>
     </div>
 </form>
@@ -457,14 +602,14 @@ $background = $row['url'];
     </nav>
     <?php
     for ($i = 0; $i < count($site_type_ids); $i++){ ?>
-        <div id="<?php echo $site_type_ids[$i] ?>" class="row website_row">
+        <div id="<?php echo $site_type_ids[$i] ?>" class="row website-row">
             <?php
             $stmt=$mysqli->prepare("SELECT * from site WHERE type_id = ?");
             $stmt->bind_param('i', $site_type_ids[$i]);
             $stmt->execute();
             $result = $stmt->get_result();
             while ($row = $result->fetch_assoc()) {?>
-                <div class="col s3" style="margin-top: 20px; display: block;">
+                <div class="website-div col s3" style="margin-top: 20px; display: block;" data-id="<?php echo $row['id']; ?>">
                     <a href="<?php echo $row['url'] ?>" target="_blank">
                         <div class="website hoverable" style="position:relative;">
                             <img src="http://favicon.byi.pw/?url=<?php echo $row['url'] ?>" width="16px" style="position: absolute;top: 50%;transform: translateY(-50%);">
