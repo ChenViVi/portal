@@ -298,6 +298,7 @@ $mysqli->set_charset("utf8");?>
                     }
                 }
             });
+            $('.tabs').tabs();
             $("a.add-site-type").click(function(){
                 $.ajax({
                     url:"request/site_type_add_one.php",
@@ -308,9 +309,8 @@ $mysqli->set_charset("utf8");?>
                     success: function (response) {
                         Materialize.toast(response.msg, 3000);
                         if (response.status == 0){
-                            /*site_types.append("<li data-id='"+ response.data.id +"'><a href='#" + response.data.id + "'  class='teal-text'>" + response.data.name + "</a></li>");
-                            site_types.html(site_types.html());
-                            $('.tabs').tabs();*/
+                            site_types.append("<li data-id='" + response.data.id + "' class='tab ui-sortable-handle'><a href='#" + response.data.id + "' class='teal-text active'>" + response.data.name + "</a></li>");
+                            $('.tabs').tabs();
                         }
                     },
                     error:function (jqXHR, textStatus, errorThrown) {
