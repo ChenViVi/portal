@@ -231,6 +231,97 @@ $mysqli->set_charset("utf8");?>
                     }
                 }
             });
+            site_types.contextMenu({
+                selector: 'li',
+                items: {
+                    "add": {
+                        name: "添加",
+                        callback: function() {
+                            $('#modal-add-site-type').modal('open');
+                        }
+                    },
+                    "delete": {
+                        name: "删除",
+                        callback: function() {
+                            var item = $(this);
+                            var id = item.attr("data-id");
+                            var pre_item_id = item.prev().attr("data-id");
+                            $.ajax({
+                                url:"request/site_type_delete.php",
+                                type:"get",
+                                data:("id=" + id),
+                                async:true,
+                                dataType:'json',
+                                success: function (response) {
+                                    Materialize.toast(response.msg, 3000);
+                                    if (response.status == 0){
+                                        item.remove();
+                                        $('.tabs').tabs('select_tab', pre_item_id);
+                                    }
+                                },
+                                error:function (jqXHR, textStatus, errorThrown) {
+                                    Materialize.toast("未知错误", 3000);
+                                }
+                            });
+                        }
+                    },
+                    "update": {
+                        name: "编辑",
+                        callback: function() {
+                            var item = $(this);
+                            var id = item.attr("data-id");
+                            var name = item.children().text();
+                            var modal = $('#modal-update-site-type');
+                            $("a.update-site-type").click(function(){
+                                $.ajax({
+                                    url:"request/site_type_update.php",
+                                    type:"get",
+                                    data:$("form.update-site-type").serialize(),
+                                    async:true,
+                                    dataType:'json',
+                                    success: function (response) {
+                                        Materialize.toast(response.msg, 3000);
+                                        if (response.status == 0){
+                                            item.children().text(response.data.name);
+                                        }
+                                    },
+                                    error:function (jqXHR, textStatus, errorThrown) {
+                                        Materialize.toast("未知错误", 3000);
+                                    }
+                                });
+                            });
+                            var modal_content = modal.children('.modal-content');
+                            modal_content.children('input').val(id);
+                            modal_content.children('div').eq(0).children('input').val(name);
+                            modal.modal('open');
+                        }
+                    }
+                }
+            });
+            $("a.add-site-type").click(function(){
+                $.ajax({
+                    url:"request/site_type_add_one.php",
+                    type:"get",
+                    data:$("form.add-site-type").serialize(),
+                    async:true,
+                    dataType:'json',
+                    success: function (response) {
+                        Materialize.toast(response.msg, 3000);
+                        if (response.status == 0){
+                            /*site_types.append("<li data-id='"+ response.data.id +"'><a href='#" + response.data.id + "'  class='teal-text'>" + response.data.name + "</a></li>");
+                            site_types.html(site_types.html());
+                            $('.tabs').tabs();*/
+                        }
+                    },
+                    error:function (jqXHR, textStatus, errorThrown) {
+                        Materialize.toast("未知错误", 3000);
+                    },
+                    complete:function (jqXHR, textStatus, errorThrown) {
+                        var modal_content = $('#modal-add-site-type').children('.modal-content');
+                        modal_content.children('div').eq(0).children('input').val("");
+                    }
+                });
+            });
         });
     </script>
 </head>
@@ -242,6 +333,26 @@ $row = $result->fetch_assoc();
 $background = $row['url'];
 ?>
 <body style="background-size:cover;background-image: url(<?php if ($background !=null) echo "bg/" . $row['url']; else echo "bg/bg_default.jpg";?>);">
+<form class="add-search">
+    <div id="modal-add-search" class="modal">
+        <div class="modal-content">
+            <h4>添加搜索引擎</h4>
+            <div class="input-field">
+                <input name="name" id="name" type="text" class="validate" autocomplete="off">
+                <label for="name">名称&nbsp;例如：百度</label>
+            </div>
+            <div class="input-field">
+                <input name="url" id="url" type="text" class="validate" autocomplete="off">
+                <label for="url">链接地址&nbsp;例如：baidu.com/s?wd=</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="search_add.php" class="modal-action modal-close waves-effect waves-red btn-flat">批量添加</a>
+            <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
+            <a class="add-search modal-action modal-close waves-effect waves-green btn-flat">确定</a>
+        </div>
+    </div>
+</form>
 <form class="update-search">
     <div id="modal-update-search" class="modal">
         <div class="modal-content">
@@ -262,23 +373,35 @@ $background = $row['url'];
         </div>
     </div>
 </form>
-<form class="add-search">
-    <div id="modal-add-search" class="modal">
+<form class="add-site-type">
+    <div id="modal-add-site-type" class="modal">
         <div class="modal-content">
-            <h4>添加搜索引擎</h4>
+            <h4>添加网站分类</h4>
             <div class="input-field">
                 <input name="name" id="name" type="text" class="validate" autocomplete="off">
-                <label for="name">名称&nbsp;例如：百度</label>
-            </div>
-            <div class="input-field">
-                <input name="url" id="url" type="text" class="validate" autocomplete="off">
-                <label for="url">链接地址&nbsp;例如：baidu.com/s?wd=</label>
+                <label for="name">名称</label>
             </div>
         </div>
         <div class="modal-footer">
-            <a href="search_add.php" class="modal-action modal-close waves-effect waves-red btn-flat">批量添加</a>
+            <a href="site_type_add.php" class="modal-action modal-close waves-effect waves-red btn-flat">批量添加</a>
             <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
-            <a class="add-search modal-action modal-close waves-effect waves-green btn-flat">确定</a>
+            <a class="add-site-type modal-action modal-close waves-effect waves-green btn-flat">确定</a>
+        </div>
+    </div>
+</form>
+<form class="update-site-type">
+    <div id="modal-update-site-type" class="modal">
+        <div class="modal-content">
+            <h4>修改搜索引擎</h4>
+            <input type="hidden" id="id" name="id" value="" autocomplete="off"/>
+            <div class="input-field">
+                <input name="name" id="name" type="text" class="validate" value="" autocomplete="off">
+                <label for="name">名称</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
+            <a class="update-site-type modal-action modal-close waves-effect waves-green btn-flat">提交</a>
         </div>
     </div>
 </form>
