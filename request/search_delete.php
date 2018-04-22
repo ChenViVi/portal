@@ -21,11 +21,19 @@ else{
             $msg = "tan90°_(:3」∠)_";
         }
         else{
-            $stmt=$mysqli->prepare("DELETE FROM search WHERE id = ?");
-            $stmt->bind_param('i', $id);
+            $stmt=$mysqli->prepare("SELECT COUNT(id) FROM search");
             $stmt->execute();
-            $status = 0;
-            $msg = "删除成功";
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+            if ($row['COUNT(id)'] == 0) $msg = "说！是不是你动了数据库";
+            else if ($row['COUNT(id)'] == 1) $msg = "留一个搜索引擎好不好嘛，伦家求求你了嘛~";
+            else{
+                $stmt=$mysqli->prepare("DELETE FROM search WHERE id = ?");
+                $stmt->bind_param('i', $id);
+                $stmt->execute();
+                $status = 0;
+                $msg = "删除成功";
+            }
         }
     }
     mysqli_close($mysqli);
