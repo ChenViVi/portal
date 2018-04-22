@@ -2,7 +2,7 @@
 
 一个优雅的网站导航
 
-![](http://omqwegju8.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20180422160019small.png)
+![](http://omqwegju8.bkt.clouddn.com/portal.png)
 
 ## 功能
 

@@ -26,7 +26,7 @@ else{
             $result = $stmt->get_result();
             $row = $result->fetch_assoc();
             if ($row['COUNT(id)'] == 0) $msg = "说！是不是你动了数据库";
-            else if ($row['COUNT(id)'] == 1) $msg = "留一个搜索引擎好不好嘛，伦家求求你了嘛~";
+            else if ($row['COUNT(id)'] == 1) $msg = "你要删除所有的搜索引擎做什么？杂修";
             else{
                 $stmt=$mysqli->prepare("DELETE FROM search WHERE id = ?");
                 $stmt->bind_param('i', $id);

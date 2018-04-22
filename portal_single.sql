@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 2018-04-08 10:03:06
+-- Generation Time: 2018-04-22 08:46:45
 -- 服务器版本： 5.7.14
 -- PHP Version: 5.6.25
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `portal_single`
+-- Database: `test`
 --
 
 -- --------------------------------------------------------
@@ -34,29 +34,21 @@ CREATE TABLE `bg` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `fab`
---
-
-CREATE TABLE `fab` (
-  `id` int(11) NOT NULL,
-  `icon_img` varchar(20) NOT NULL DEFAULT 'far fa-file',
-  `icon_color` varchar(20) NOT NULL DEFAULT '#ffffff',
-  `fab_color` varchar(15) NOT NULL DEFAULT 'black',
-  `tip` varchar(20) NOT NULL,
-  `url` text NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- 表的结构 `search`
 --
 
 CREATE TABLE `search` (
   `id` int(11) NOT NULL,
-  `name` varchar(20) NOT NULL,
+  `name` varchar(40) NOT NULL,
   `url` text NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `search`
+--
+
+INSERT INTO `search` (`id`, `name`, `url`) VALUES
+(1, '百度', 'https://www.baidu.com/s?wd=');
 
 -- --------------------------------------------------------
 
@@ -67,7 +59,7 @@ CREATE TABLE `search` (
 CREATE TABLE `site` (
   `id` int(11) NOT NULL,
   `type_id` int(11) NOT NULL,
-  `name` varchar(20) NOT NULL,
+  `name` varchar(40) NOT NULL,
   `url` text NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -79,8 +71,15 @@ CREATE TABLE `site` (
 
 CREATE TABLE `site_type` (
   `id` int(11) NOT NULL,
-  `name` varchar(20) NOT NULL
+  `name` varchar(40) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `site_type`
+--
+
+INSERT INTO `site_type` (`id`, `name`) VALUES
+(1, '默认');
 
 --
 -- Indexes for dumped tables
@@ -93,12 +92,6 @@ ALTER TABLE `bg`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `fab`
---
-ALTER TABLE `fab`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `search`
 --
 ALTER TABLE `search`
@@ -108,7 +101,8 @@ ALTER TABLE `search`
 -- Indexes for table `site`
 --
 ALTER TABLE `site`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_site_type` (`type_id`);
 
 --
 -- Indexes for table `site_type`
@@ -124,27 +118,22 @@ ALTER TABLE `site_type`
 -- 使用表AUTO_INCREMENT `bg`
 --
 ALTER TABLE `bg`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- 使用表AUTO_INCREMENT `fab`
---
-ALTER TABLE `fab`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- 使用表AUTO_INCREMENT `search`
 --
 ALTER TABLE `search`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- 使用表AUTO_INCREMENT `site`
 --
 ALTER TABLE `site`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- 使用表AUTO_INCREMENT `site_type`
 --
 ALTER TABLE `site_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
