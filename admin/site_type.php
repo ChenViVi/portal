@@ -109,7 +109,7 @@ else exit();
           Materialize.toast("修改成功", 2000);
         });
         $("a.delete").click(function(){
-          var id = $("a.delete").attr("name");
+          var id = $(this).attr("name");
           $.ajax({
             url:"site_modify.php",
             type:"get",

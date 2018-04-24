@@ -109,7 +109,7 @@ $mysqli->set_charset("utf8");
           Materialize.toast("修改成功", 2000);
         });
         $("a.delete").click(function(){
-          var id = $("a.delete").attr("name");
+          var id = $(this).attr("name");
           $.ajax({
             url:"search_modify.php",
             type:"get",
