@@ -8,7 +8,7 @@ $mysqli->set_charset("utf8");?>
     <meta charset="UTF-8">
     <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-    <title>ViVi的传送门</title>
+    <title><?php echo $TITLE?></title>
     <link href="css/ghpages-materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
     <link href="css/materializecss-font.css" rel="stylesheet" type="text/css">
     <script src="js/jquery-3.3.1.min.js"></script>
@@ -97,28 +97,13 @@ $background = $row['url'];
     <a class="btn-floating btn-large grey tooltipped" data-tooltip="控制台" data-position="left" href="admin/index.php">
         <i class="fas fa-cog"></i>
     </a>
-    <?php if ($ENABLE_FAB){?>
-        <ul>
-            <?php
-            $stmt=$mysqli->prepare("SELECT * FROM fab ORDER BY id");
-            $stmt->execute();
-            $result = $stmt->get_result();
-            while ($row = $result->fetch_assoc()) {?>
-                <li>
-                    <a class="btn-floating tooltipped fab <?php echo $row['fab_color'] ?>" data-tooltip="<?php echo $row['tip'] ?>" data-position="left" data-delay="20" target="_blank" href="<?php echo $row['url'] ?>">
-                        <i class="<?php echo $row['icon_img'] ?>" style="color:<?php echo $row['icon_color'] ?>;"></i>
-                    </a>
-                </li>
-            <?php } ?>
-        </ul>
-    <?php } ?>
 </div>
 <div class="tabnav">
     <nav class="nav-extended transparent">
         <div class="nav-content">
             <ul class="tabs transparent">
                 <?php
-                $stmt=$mysqli->prepare("SELECT * FROM site_type");
+                $stmt=$mysqli->prepare("SELECT * FROM site_type ORDER BY id");
                 $stmt->execute();
                 $result = $stmt->get_result();
                 while ($row = $result->fetch_assoc()) { ?>
@@ -135,7 +120,7 @@ $background = $row['url'];
     while($type_row = $type_result->fetch_assoc()){ ?>
     <div id="<?php echo $type_row['id'] ?>" class="row" style="margin-top: 20px; display: block;">
         <?php
-        $stmt=$mysqli->prepare("SELECT * from site WHERE type_id = ?");
+        $stmt=$mysqli->prepare("SELECT * from site WHERE type_id = ? ORDER BY id");
         $stmt->bind_param('i', $type_row['id']);
         $stmt->execute();
         $result = $stmt->get_result();

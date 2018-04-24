@@ -6,7 +6,7 @@ $pre = $_GET["start"];
 $now = $_GET["end"];
 if (!is_empty($pre) && !is_empty($now && $pre!=$now)){
     if ($pre < $now){
-        $stmt=$mysqli->prepare("SELECT * FROM site_type WHERE id >= ? AND id <= ?");
+        $stmt=$mysqli->prepare("SELECT * FROM site_type WHERE id >= ? AND id <= ? ORDER BY id");
         $stmt->bind_param('ii', $pre, $now);
         $stmt->execute();
     }
