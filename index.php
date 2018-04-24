@@ -35,9 +35,6 @@ $mysqli->set_charset("utf8");?>
             padding: 5px;
             border-radius:5px;
         }
-        .fab{
-            transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;
-        }
     </style>
     <script type="text/javascript">
         $(document).ready(function() {
