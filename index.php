@@ -25,7 +25,7 @@ $mysqli->set_charset("utf8");?>
             border-radius:3px;
         }
         #tab-nav{
-            min-height:500px; height:auto!important; height:500px;
+            min-height:450px; height:auto!important; height:450px;
             margin:20px auto;
             background-color: rgba(255,255,255,0.55);
             width:80%;
@@ -474,6 +474,39 @@ $mysqli->set_charset("utf8");?>
                     }
                 }
             });
+            $.contextMenu({
+                selector: '.website-row',
+                items: {
+                    "add": {
+                        name: "添加",
+                        callback: function() {
+                            var type_id = $(this).attr("id");
+                            $.ajax({
+                                url:"request/site_type_get.php",
+                                type:"get",
+                                async:true,
+                                dataType:'json',
+                                success: function (response) {
+                                    if (response.status == 0){
+                                        var select = $("select[id='type_id']");
+                                        select.html("");
+                                        for(var i = 0; i < response.data.length; i++){
+                                            if(response.data[i].id == type_id) select.append("<option selected value='" + response.data[i].id + "'>" + response.data[i].name + "</option>");
+                                            else select.append("<option value='" + response.data[i].id + "'>" + response.data[i].name + "</option>");
+                                        }
+                                        $('select').material_select();
+                                        $("#add_site_mult").attr("href", "site_add.php?id=" + type_id);
+                                        $('#modal-add-site').modal('open');
+                                    }
+                                },
+                                error:function (jqXHR, textStatus, errorThrown) {
+                                    Materialize.toast("未知错误", 3000);
+                                }
+                            });
+                        }
+                    }
+                }
+            });
             $("a.add-site").click(function(){
                 $.ajax({
                     url:"request/site_add_one.php",
@@ -690,7 +723,7 @@ $background = $row['url'];
     </nav>
     <?php
     for ($i = 0; $i < count($site_type_ids); $i++){ ?>
-        <div id="<?php echo $site_type_ids[$i] ?>" class="row website-row">
+        <div id="<?php echo $site_type_ids[$i] ?>" class="row website-row" style="min-height:450px; height:auto!important; height:450px;">
             <?php
             $stmt=$mysqli->prepare("SELECT * from site WHERE type_id = ?");
             $stmt->bind_param('i', $site_type_ids[$i]);
