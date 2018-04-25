@@ -155,6 +155,7 @@ $mysqli->set_charset("utf8");?>
                             modal_content.children('input').val(id);
                             modal_content.children('div').eq(0).children('input').val(name);
                             modal_content.children('div').eq(1).children('input').val(url);
+                            Materialize.updateTextFields();
                             modal.modal('open');
                         }
                     }
@@ -290,6 +291,7 @@ $mysqli->set_charset("utf8");?>
                             var modal_content = modal.children('.modal-content');
                             modal_content.children('input').val(id);
                             modal_content.children('div').eq(0).children('input').val(name);
+                            Materialize.updateTextFields();
                             modal.modal('open');
                         }
                     }
@@ -354,7 +356,7 @@ $mysqli->set_charset("utf8");?>
                     }
                 }
             });
-            website_row.contextMenu({
+            $.contextMenu({
                 selector: '.website-div',
                 items: {
                     "add": {
@@ -371,10 +373,11 @@ $mysqli->set_charset("utf8");?>
                                         var select = $("select[id='type_id']");
                                         select.html("");
                                         for(var i = 0; i < response.data.length; i++){
-                                            if(response.data[i].id == type_id) select.append("<option value='" + response.data[i].id + "'>" + response.data[i].name + "</option>");
+                                            if(response.data[i].id == type_id) select.append("<option selected value='" + response.data[i].id + "'>" + response.data[i].name + "</option>");
                                             else select.append("<option value='" + response.data[i].id + "'>" + response.data[i].name + "</option>");
                                         }
                                         $('select').material_select();
+                                        $("#add_site_mult").attr("href", "site_add.php?id=" + type_id);
                                         $('#modal-add-site').modal('open');
                                     }
                                 },
@@ -390,7 +393,7 @@ $mysqli->set_charset("utf8");?>
                             var item = $(this);
                             var id = item.attr("data-id");
                             $.ajax({
-                                url:"request/search_delete.php",
+                                url:"request/site_delete.php",
                                 type:"get",
                                 data:("id=" + id),
                                 async:true,
@@ -411,22 +414,29 @@ $mysqli->set_charset("utf8");?>
                         name: "编辑",
                         callback: function() {
                             var item = $(this);
+                            var item_a = item.children();
+                            var item_p = item_a.children().children('p');
                             var id = item.attr("data-id");
-                            var name = item.children('label').text();
-                            var url = item.children('input').val();
-                            var modal = $('#modal-update-search');
-                            $("a.update-search").click(function(){
+                            var type_id = $(this).parent().attr("id");
+                            var name = item_p.text();
+                            var url = item_a.attr("href");
+                            var modal = $('#modal-update-site');
+                            $("a.update-site").click(function(){
                                 $.ajax({
-                                    url:"request/search_update.php",
+                                    url:"request/site_update.php",
                                     type:"get",
-                                    data:$("form.update-search").serialize(),
+                                    data:$("form.update-site").serialize(),
                                     async:true,
                                     dataType:'json',
                                     success: function (response) {
                                         Materialize.toast(response.msg, 3000);
                                         if (response.status == 0){
-                                            item.children('label').text(response.data.name);
-                                            item.children('input').val(response.data.url);
+                                            item_p.text(response.data.name);
+                                            item_a.attr("href", response.data.url);
+                                            if (response.data.name != type_id) {
+                                                item.remove();
+                                                $(".website-row[id='" + response.data.type_id + "']").append(item);
+                                            }
                                         }
                                     },
                                     error:function (jqXHR, textStatus, errorThrown) {
@@ -434,14 +444,67 @@ $mysqli->set_charset("utf8");?>
                                     }
                                 });
                             });
-                            var modal_content = modal.children('.modal-content');
-                            modal_content.children('input').val(id);
-                            modal_content.children('div').eq(0).children('input').val(name);
-                            modal_content.children('div').eq(1).children('input').val(url);
-                            modal.modal('open');
+                            $.ajax({
+                                url:"request/site_type_get.php",
+                                type:"get",
+                                async:true,
+                                dataType:'json',
+                                success: function (response) {
+                                    if (response.status == 0){
+                                        var select = $("select[id='type_id']");
+                                        select.html("");
+                                        for(var i = 0; i < response.data.length; i++){
+                                            if(response.data[i].id == type_id) select.append("<option selected value='" + response.data[i].id + "'>" + response.data[i].name + "</option>");
+                                            else select.append("<option value='" + response.data[i].id + "'>" + response.data[i].name + "</option>");
+                                        }
+                                        $('select').material_select();
+                                        var modal_content = modal.children('.modal-content');
+                                        modal_content.children('input').val(id);
+                                        modal_content.children('div').eq(0).children('input').val(name);
+                                        modal_content.children('div').eq(2).children('input').val(url);
+                                        Materialize.updateTextFields();
+                                        modal.modal('open');
+                                    }
+                                },
+                                error:function (jqXHR, textStatus, errorThrown) {
+                                    Materialize.toast("未知错误", 3000);
+                                }
+                            });
                         }
                     }
                 }
+            });
+            $("a.add-site").click(function(){
+                $.ajax({
+                    url:"request/site_add_one.php",
+                    type:"get",
+                    data:$("form.add-site").serialize(),
+                    async:true,
+                    dataType:'json',
+                    success: function (response) {
+                        Materialize.toast(response.msg, 3000);
+                        if (response.status == 0){
+                            $(".website-row[id='" + response.data.type_id + "']").append(
+                                "<div class='website-div col s3' style='margin-top: 20px; display: block;' data-id='" + response.data.id + "'>" +
+                                "<a href='" + response.data.url + "' target='_blank'>" +
+                                "<div class='website hoverable' style='position:relative;'>" +
+                                "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
+                                "<p class='teal-text center'> " + response.data.name + "</p>" +
+                                "</div>" +
+                                "</a>" +
+                                "</div>"
+                            );
+                        }
+                    },
+                    error:function (jqXHR, textStatus, errorThrown) {
+                        Materialize.toast("未知错误", 3000);
+                    },
+                    complete:function (jqXHR, textStatus, errorThrown) {
+                        var modal_content = $('#modal-add-site').children('.modal-content');
+                        modal_content.children('div').eq(0).children('input').val("");
+                        modal_content.children('div').eq(2).children('input').val("");
+                    }
+                });
             });
         });
     </script>
@@ -540,13 +603,38 @@ $background = $row['url'];
             </div>
             <div class="input-field col s12">
                 <input name="url" id="url" type="text" class="validate" autocomplete="off">
-                <label for="url">链接地址&nbsp;例如：baidu.com/s?wd=</label>
+                <label for="url">链接地址&nbsp;例如：www.baidu.com</label>
             </div>
         </div>
         <div class="modal-footer">
-            <a href="site_add.php" class="modal-action modal-close waves-effect waves-red btn-flat">批量添加</a>
+            <a href="site_add.php" id="add_site_mult" class="modal-action modal-close waves-effect waves-red btn-flat">批量添加</a>
             <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
             <a class="add-site modal-action modal-close waves-effect waves-green btn-flat">确定</a>
+        </div>
+    </div>
+</form>
+<form class="update-site">
+    <div id="modal-update-site" class="modal">
+        <div class="modal-content row">
+            <h4>修改网站</h4>
+            <input type="hidden" id="id" name="id" value="" autocomplete="off"/>
+            <div class="input-field col s6">
+                <input name="name" id="name" type="text" class="validate" autocomplete="off">
+                <label for="name">名称</label>
+            </div>
+            <div class="input-field col s6">
+                <select id="type_id" name="type_id">
+                </select>
+                <label for="type_id">网站类别</label>
+            </div>
+            <div class="input-field col s12">
+                <input name="url" id="url" type="text" class="validate" autocomplete="off">
+                <label for="url">链接地址</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
+            <a class="update-site modal-action modal-close waves-effect waves-green btn-flat">提交</a>
         </div>
     </div>
 </form>
