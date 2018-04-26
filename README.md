@@ -20,7 +20,7 @@
 ```
 git clone https://github.com/ChenViVi/portal.git
 
-cd Portal
+cd portal
 
 mysql -uroot -p
 
