@@ -18,7 +18,7 @@
 整个项目copy到Web服务器目录下，然后创建个数据库并导入`portal.sql`，最后在`config.php`编辑你自己的设置，就搞定了。例如下面：
 
 ```
-git clone https://github.com/ChenViVi/Portal.git
+git clone https://github.com/ChenViVi/portal.git
 
 cd Portal
 
