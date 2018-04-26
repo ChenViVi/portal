@@ -340,10 +340,11 @@ $mysqli->set_charset("utf8");?>
                         end = $(this).children().eq(end_pos+1).attr("data-id");
                     }
                     if (start != end){
+                        var type_id = $(this).attr("id");
                         $.ajax({
                             url:"request/site_sort.php",
                             type:"get",
-                            data:("start=" + start + "&end=" + end),
+                            data:("start=" + start + "&end=" + end + "&type_id=" + type_id),
                             async:true,
                             dataType:'json',
                             success: function (response) {
@@ -507,6 +508,17 @@ $mysqli->set_charset("utf8");?>
                     }
                 }
             });
+            $.contextMenu({
+                selector: 'body',
+                items: {
+                    "add": {
+                        name: "添加背景图"
+                    },
+                    "delete": {
+                        name: "这张背景看腻了，朕要将其打入冷宫"
+                    }
+                }
+            });
             $("a.add-site").click(function(){
                 $.ajax({
                     url:"request/site_add_one.php",
@@ -549,7 +561,7 @@ $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 $background = $row['url'];
 ?>
-<body style="background-size:cover;background-image: url(<?php if ($background !=null) echo "bg/" . $row['url']; else echo "bg/bg_default.jpg";?>);">
+<body style="background-size:cover;background-image: url(https://api.ikmoe.com/moeu-api.php);">
 <form class="add-search">
     <div id="modal-add-search" class="modal">
         <div class="modal-content">

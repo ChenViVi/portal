@@ -4,21 +4,22 @@ $status = 1;
 $msg = "出现未知错误";
 $pre = $_GET["start"];
 $now = $_GET["end"];
+$type_id = $_GET["type_id"];
 $mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$DB_PORT);
 $mysqli->set_charset("utf8");
 if ($mysqli->connect_errno){
     $msg = "数据库连接失败，请检查配置文件";
 }
 else{
-    if (!is_empty($pre) && !is_empty($now) && $pre!=$now){
+    if (!is_empty($pre) && !is_empty($now) && !is_empty($type_id) && $pre!=$now){
         if ($pre < $now){
-            $stmt=$mysqli->prepare("SELECT * FROM site WHERE id >= ? AND id <= ? ORDER BY id");
-            $stmt->bind_param('ii', $pre, $now);
+            $stmt=$mysqli->prepare("SELECT * FROM site WHERE id >= ? AND id <= ? AND type_id = ? ORDER BY id");
+            $stmt->bind_param('iii', $pre, $now, $type_id);
             $stmt->execute();
         }
         else {
-            $stmt=$mysqli->prepare("SELECT * FROM site WHERE id >= ? AND id <= ? ORDER BY id DESC");
-            $stmt->bind_param('ii', $now, $pre);
+            $stmt=$mysqli->prepare("SELECT * FROM site WHERE id >= ? AND id <= ? AND type_id = ? ORDER BY id DESC");
+            $stmt->bind_param('iii', $now, $pre, $type_id);
             $stmt->execute();
         }
         $result = $stmt->get_result();
