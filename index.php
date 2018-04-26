@@ -43,6 +43,7 @@ $mysqli->set_charset("utf8");?>
         $(document).ready(function() {
             $('.modal').modal();
             $('select').material_select();
+            var body = $('body');
             var search_radios = $('#search-radios');
             var site_types = $("#site-types");
             var website_row = $(".website-row");
@@ -541,35 +542,59 @@ $mysqli->set_charset("utf8");?>
             });
             $.contextMenu({
                 selector: 'body',
-                items: {
-                    "add": {
-                        name: "添加背景图",
-                        callback: function() {
-                            $('#modal-add-bg').modal('open');
-                        }
-                    },
-                    "delete": {
-                        name: "这张背景看腻了，朕要将其打入冷宫",
-                        callback: function() {
-                            var id =$("body").attr("data-id");
-                            $.ajax({
-                                url: 'request/bg_delete.php',
-                                type: 'get',
-                                data: ("id=" + id),
-                                dataType:'json',
-                                success: function (response) {
-                                    Materialize.toast(response.msg, 3000);
-                                    if (response.status == 0){
-                                        var body = $("body");
-                                        body.css("background-image","url(bg/" + response.data.url +")");
-                                        body.attr("data-id", response.data.id);
+                build: function() {
+                    if (body.attr("data-id") != -1){
+                        return {
+                            items: {
+                                "add": {
+                                    name: "添加背景图",
+                                    callback: function() {
+                                        $('#modal-add-bg').modal('open');
                                     }
                                 },
-                                error:function (jqXHR, textStatus, errorThrown) {
-                                    Materialize.toast("未知错误", 3000);
+                                "delete": {
+                                    name: "这张背景看腻了，朕要将其打入冷宫",
+                                    callback: function() {
+                                        var id =$("body").attr("data-id");
+                                        $.ajax({
+                                            url: 'request/bg_delete.php',
+                                            type: 'get',
+                                            data: ("id=" + id),
+                                            dataType:'json',
+                                            success: function (response) {
+                                                Materialize.toast(response.msg, 3000);
+                                                if (response.status == 0){
+                                                    var body = $("body");
+                                                    if (response.data != null){
+                                                        body.css("background-image","url(bg/" + response.data.url +")");
+                                                        body.attr("data-id", response.data.id);
+                                                    }
+                                                    else {
+                                                        body.css("background-image","url(https://api.ikmoe.com/moeu-api.php)");
+                                                        body.attr("data-id", -1);
+                                                    }
+                                                }
+                                            },
+                                            error:function (jqXHR, textStatus, errorThrown) {
+                                                Materialize.toast("未知错误", 3000);
+                                            }
+                                        });
+                                    }
                                 }
-                            });
-                        }
+                            }
+                        };
+                    }
+                    else {
+                        return {
+                            items: {
+                                "add": {
+                                    name: "什么辣鸡图，劳资要自己设壁纸",
+                                    callback: function() {
+                                        $('#modal-add-bg').modal('open');
+                                    }
+                                }
+                            }
+                        };
                     }
                 }
             });
@@ -588,12 +613,12 @@ $mysqli->set_charset("utf8");?>
                             var body = $("body");
                             body.css("background-image","url(bg/" + response.data.url +")");
                             body.attr("data-id", response.data.id);
-                            $("#file").val("");
-                            $(".file-path").val("");
                         }
                     },
                     error:function (jqXHR, textStatus, errorThrown) {
                         Materialize.toast("未知错误", 3000);
+                    },
+                    complete:function () {
                         $("#file").val("");
                         $(".file-path").val("");
                     }
@@ -608,7 +633,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 ?>
-<body data-id="<?php echo $row['id'];?>" style="background-size:cover;background-image: url(<?php if ($row['url'] != null) echo "bg/" . $row['url']; else echo "https://api.ikmoe.com/moeu-api.php";?>);">
+<body data-id="<?php if ($row['id'] != null) echo $row['id']; else echo "-1";?>" style="background-size:cover;background-image: url(<?php if ($row['url'] != null) echo "bg/" . $row['url']; else echo "https://api.ikmoe.com/moeu-api.php";?>);">
 <form class="add-search">
     <div id="modal-add-search" class="modal">
         <div class="modal-content">
