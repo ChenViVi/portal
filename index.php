@@ -78,7 +78,7 @@ $mysqli->set_charset("utf8");?>
                     if (start != end){
                         $.ajax({
                             url:"admin/search_sort.php",
-                            type:"get",
+                            type:"post",
                             data:("start=" + start + "&end=" + end),
                             async:true,
                             dataType:'json',
@@ -108,7 +108,7 @@ $mysqli->set_charset("utf8");?>
                             var id = item.attr("data-id");
                             $.ajax({
                                 url:"request/search_delete.php",
-                                type:"get",
+                                type:"post",
                                 data:("id=" + id),
                                 async:true,
                                 dataType:'json',
@@ -135,7 +135,7 @@ $mysqli->set_charset("utf8");?>
                             $("a.update-search").click(function(){
                                 $.ajax({
                                     url:"request/search_update.php",
-                                    type:"get",
+                                    type:"post",
                                     data:$("form.update-search").serialize(),
                                     async:true,
                                     dataType:'json',
@@ -164,7 +164,7 @@ $mysqli->set_charset("utf8");?>
             $("a.add-search").click(function(){
                 $.ajax({
                     url:"request/search_add_one.php",
-                    type:"get",
+                    type:"post",
                     data:$("form.add-search").serialize(),
                     async:true,
                     dataType:'json',
@@ -210,7 +210,7 @@ $mysqli->set_charset("utf8");?>
                     if (start != end){
                         $.ajax({
                             url:"request/site_type_sort.php",
-                            type:"get",
+                            type:"post",
                             data:("start=" + start + "&end=" + end),
                             async:true,
                             dataType:'json',
@@ -246,7 +246,7 @@ $mysqli->set_charset("utf8");?>
                             var pre_item_id = item.prev().attr("data-id");
                             $.ajax({
                                 url:"request/site_type_delete.php",
-                                type:"get",
+                                type:"post",
                                 data:("id=" + id),
                                 async:true,
                                 dataType:'json',
@@ -273,7 +273,7 @@ $mysqli->set_charset("utf8");?>
                             $("a.update-site-type").click(function(){
                                 $.ajax({
                                     url:"request/site_type_update.php",
-                                    type:"get",
+                                    type:"post",
                                     data:$("form.update-site-type").serialize(),
                                     async:true,
                                     dataType:'json',
@@ -300,7 +300,7 @@ $mysqli->set_charset("utf8");?>
             $("a.add-site-type").click(function(){
                 $.ajax({
                     url:"request/site_type_add_one.php",
-                    type:"get",
+                    type:"post",
                     data:$("form.add-site-type").serialize(),
                     async:true,
                     dataType:'json',
@@ -342,7 +342,7 @@ $mysqli->set_charset("utf8");?>
                         var type_id = $(this).attr("id");
                         $.ajax({
                             url:"request/site_sort.php",
-                            type:"get",
+                            type:"post",
                             data:("start=" + start + "&end=" + end + "&type_id=" + type_id),
                             async:true,
                             dataType:'json',
@@ -365,7 +365,7 @@ $mysqli->set_charset("utf8");?>
                             var type_id = $(this).parent().attr("id");
                             $.ajax({
                                 url:"request/site_type_get.php",
-                                type:"get",
+                                type:"post",
                                 async:true,
                                 dataType:'json',
                                 success: function (response) {
@@ -394,7 +394,7 @@ $mysqli->set_charset("utf8");?>
                             var id = item.attr("data-id");
                             $.ajax({
                                 url:"request/site_delete.php",
-                                type:"get",
+                                type:"post",
                                 data:("id=" + id),
                                 async:true,
                                 dataType:'json',
@@ -424,7 +424,7 @@ $mysqli->set_charset("utf8");?>
                             $("a.update-site").click(function(){
                                 $.ajax({
                                     url:"request/site_update.php",
-                                    type:"get",
+                                    type:"post",
                                     data:$("form.update-site").serialize(),
                                     async:true,
                                     dataType:'json',
@@ -446,7 +446,7 @@ $mysqli->set_charset("utf8");?>
                             });
                             $.ajax({
                                 url:"request/site_type_get.php",
-                                type:"get",
+                                type:"post",
                                 async:true,
                                 dataType:'json',
                                 success: function (response) {
@@ -483,7 +483,7 @@ $mysqli->set_charset("utf8");?>
                             var type_id = $(this).attr("id");
                             $.ajax({
                                 url:"request/site_type_get.php",
-                                type:"get",
+                                type:"post",
                                 async:true,
                                 dataType:'json',
                                 success: function (response) {
@@ -510,7 +510,7 @@ $mysqli->set_charset("utf8");?>
             $("a.add-site").click(function(){
                 $.ajax({
                     url:"request/site_add_one.php",
-                    type:"get",
+                    type:"post",
                     data:$("form.add-site").serialize(),
                     async:true,
                     dataType:'json',
@@ -557,7 +557,7 @@ $mysqli->set_charset("utf8");?>
                                         var id =$("body").attr("data-id");
                                         $.ajax({
                                             url: 'request/bg_delete.php',
-                                            type: 'get',
+                                            type: 'post',
                                             data: ("id=" + id),
                                             dataType:'json',
                                             success: function (response) {

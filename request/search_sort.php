@@ -2,8 +2,8 @@
 require_once("../func.php");
 $status = 1;
 $msg = "出现未知错误";
-$pre = $_GET["start"];
-$now = $_GET["end"];
+$pre = $_POST["start"];
+$now = $_POST["end"];
 $mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$DB_PORT);
 $mysqli->set_charset("utf8");
 if ($mysqli->connect_errno){

@@ -9,7 +9,7 @@ if ($mysqli->connect_errno){
     $msg = "数据库连接失败，请检查 config.php 配置文件";
 }
 else {
-    $id = $_GET["id"];
+    $id = $_POST["id"];
     if (!is_empty($id)){
         $stmt=$mysqli->prepare("SELECT * FROM bg WHERE id = ?");
         $stmt->bind_param('i', $id);

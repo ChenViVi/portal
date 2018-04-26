@@ -2,7 +2,7 @@
 require_once("../func.php");
 $status = 1;
 $msg = "出现未知错误";
-$id = $_GET["id"];
+$id = $_POST["id"];
 $mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$DB_PORT);
 $mysqli->set_charset("utf8");
 if ($mysqli->connect_errno){
