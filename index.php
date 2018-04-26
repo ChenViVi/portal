@@ -9,13 +9,12 @@ $mysqli->set_charset("utf8");?>
     <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
     <title><?php echo $TITLE?></title>
-    <link href="css/ghpages-materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
-    <link href="css/materializecss-font.css" rel="stylesheet" type="text/css">
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/jquery-ui.js"></script>
-    <script src="js/materialize.js"></script>
+    <script src="js/materialize.min.js"></script>
     <script src="js/jquery.contextMenu.js" type="text/javascript"></script>
-    <link href="js/jquery.contextMenu.css" rel="stylesheet" type="text/css">
+    <link href="css/materialize.min.css" rel="stylesheet" type="text/css">
+    <link href="css/jquery.contextMenu.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         #search-bar{

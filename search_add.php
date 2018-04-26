@@ -4,10 +4,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>添加搜索引擎</title>
-    <link href="css/ghpages-materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
-    <link href="css/materializecss-font.css" rel="stylesheet" type="text/css">
     <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/materialize.js"></script>
+    <script src="js/materialize.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript">
         $(document).ready(function() {

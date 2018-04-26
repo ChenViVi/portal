@@ -10,10 +10,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>添加网站</title>
-    <link href="css/ghpages-materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
-    <link href="css/materializecss-font.css" rel="stylesheet" type="text/css">
     <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/materialize.js"></script>
+    <script src="js/materialize.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <?php
     $stmt=$mysqli->prepare("SELECT * FROM site_type ORDER BY id");

@@ -30,6 +30,8 @@ use portal;
 
 set names utf8;
 
+source portal.sql;
+
 quit
 
 vim config.php
