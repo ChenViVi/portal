@@ -9,7 +9,7 @@ $url = $_GET["url"];
 $mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$DB_PORT);
 $mysqli->set_charset("utf8");
 if ($mysqli->connect_errno){
-    $msg = "数据库连接失败，请检查配置文件";
+    $msg = "数据库连接失败，请检查 config.php 配置文件";
 }
 else{
     if (is_empty($type_id) || is_empty($url) || is_empty($name)){

@@ -8,7 +8,7 @@ $mysqli->set_charset("utf8");?>
     <meta charset="UTF-8">
     <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-    <title>ViVi的传送门</title>
+    <title><?php echo $TITLE?></title>
     <link href="css/ghpages-materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
     <link href="css/materializecss-font.css" rel="stylesheet" type="text/css">
     <script src="js/jquery-3.3.1.min.js"></script>
@@ -297,7 +297,6 @@ $mysqli->set_charset("utf8");?>
                     }
                 }
             });
-            $('.tabs').tabs();
             $("a.add-site-type").click(function(){
                 $.ajax({
                     url:"request/site_type_add_one.php",
@@ -508,17 +507,6 @@ $mysqli->set_charset("utf8");?>
                     }
                 }
             });
-            $.contextMenu({
-                selector: 'body',
-                items: {
-                    "add": {
-                        name: "添加背景图"
-                    },
-                    "delete": {
-                        name: "这张背景看腻了，朕要将其打入冷宫"
-                    }
-                }
-            });
             $("a.add-site").click(function(){
                 $.ajax({
                     url:"request/site_add_one.php",
@@ -551,6 +539,66 @@ $mysqli->set_charset("utf8");?>
                     }
                 });
             });
+            $.contextMenu({
+                selector: 'body',
+                items: {
+                    "add": {
+                        name: "添加背景图",
+                        callback: function() {
+                            $('#modal-add-bg').modal('open');
+                        }
+                    },
+                    "delete": {
+                        name: "这张背景看腻了，朕要将其打入冷宫",
+                        callback: function() {
+                            var id =$("body").attr("data-id");
+                            $.ajax({
+                                url: 'request/bg_delete.php',
+                                type: 'get',
+                                data: ("id=" + id),
+                                dataType:'json',
+                                success: function (response) {
+                                    Materialize.toast(response.msg, 3000);
+                                    if (response.status == 0){
+                                        var body = $("body");
+                                        body.css("background-image","url(bg/" + response.data.url +")");
+                                        body.attr("data-id", response.data.id);
+                                    }
+                                },
+                                error:function (jqXHR, textStatus, errorThrown) {
+                                    Materialize.toast("未知错误", 3000);
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+            $("a.add-bg").click(function(){
+                $.ajax({
+                    url: 'request/bg_add.php',
+                    type: 'POST',
+                    cache: false,
+                    data: new FormData($('#add-bg')[0]),
+                    processData: false,
+                    contentType: false,
+                    dataType:'json',
+                    success: function (response) {
+                        Materialize.toast(response.msg, 3000);
+                        if (response.status == 0){
+                            var body = $("body");
+                            body.css("background-image","url(bg/" + response.data.url +")");
+                            body.attr("data-id", response.data.id);
+                            $("#file").val("");
+                            $(".file-path").val("");
+                        }
+                    },
+                    error:function (jqXHR, textStatus, errorThrown) {
+                        Materialize.toast("未知错误", 3000);
+                        $("#file").val("");
+                        $(".file-path").val("");
+                    }
+                });
+            });
         });
     </script>
 </head>
@@ -559,9 +607,8 @@ $stmt=$mysqli->prepare("SELECT * FROM bg ORDER BY rand() limit 1");
 $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc();
-$background = $row['url'];
 ?>
-<body style="background-size:cover;background-image: url(https://api.ikmoe.com/moeu-api.php);">
+<body data-id="<?php echo $row['id'];?>" style="background-size:cover;background-image: url(<?php if ($row['url'] != null) echo "bg/" . $row['url']; else echo "https://api.ikmoe.com/moeu-api.php";?>);">
 <form class="add-search">
     <div id="modal-add-search" class="modal">
         <div class="modal-content">
@@ -680,6 +727,26 @@ $background = $row['url'];
         <div class="modal-footer">
             <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
             <a class="update-site modal-action modal-close waves-effect waves-green btn-flat">提交</a>
+        </div>
+    </div>
+</form>
+<form id="add-bg" enctype="multipart/form-data">
+    <div id="modal-add-bg" class="modal">
+        <div class="modal-content">
+            <h4>添加背景图片</h4>
+            <div class="file-field input-field">
+                <div class="btn">
+                    <span>文件</span>
+                    <input type="file" name="file" id="file">
+                </div>
+                <div class="file-path-wrapper">
+                    <input id="#file-path" class="file-path validate" type="text">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
+            <a name="submit" class="add-bg modal-action modal-close waves-effect waves-green btn-flat ">确定</a>
         </div>
     </div>
 </form>
