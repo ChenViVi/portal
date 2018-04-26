@@ -37,6 +37,9 @@ $mysqli->set_charset("utf8");?>
             padding: 5px;
             border-radius:5px;
         }
+        .tabs .indicator {
+            background-color: #26A69A;
+        }
     </style>
     <script type="text/javascript">
         $(document).ready(function() {
