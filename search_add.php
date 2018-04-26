@@ -40,7 +40,7 @@
             $("a.add").click(function(){
                 $.ajax({
                     url:"request/search_add_mult.php",
-                    type:"get",
+                    type:"post",
                     data:$("form.add").serialize(),
                     async:false
                 });

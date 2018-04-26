@@ -67,7 +67,7 @@
             $("a.add").click(function(){
                 $.ajax({
                     url:"request/site_add_mult.php",
-                    type:"get",
+                    type:"post",
                     data:$("form.add").serialize(),
                     async:false
                 });

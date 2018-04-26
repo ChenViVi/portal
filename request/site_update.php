@@ -3,10 +3,10 @@ require_once("../func.php");
 $status = 1;
 $msg = "出现未知错误";
 $data = "";
-$id = $_GET["id"];
-$type_id = $_GET["type_id"];
-$name = $_GET["name"];
-$url = $_GET["url"];
+$id = $_POST["id"];
+$type_id = $_POST["type_id"];
+$name = $_POST["name"];
+$url = $_POST["url"];
 $mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$DB_PORT);
 $mysqli->set_charset("utf8");
 if ($mysqli->connect_errno){
