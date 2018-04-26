@@ -243,7 +243,10 @@ $mysqli->set_charset("utf8");?>
                         callback: function() {
                             var item = $(this);
                             var id = item.attr("data-id");
-                            var pre_item_id = item.prev().attr("data-id");
+                            var item_id;
+                            var item_pre = item.prev();
+                            if (item_pre.length == 0) item_id = item.next().attr("data-id");
+                            else item_id = item.prev().attr("data-id");
                             $.ajax({
                                 url:"request/site_type_delete.php",
                                 type:"post",
@@ -254,7 +257,7 @@ $mysqli->set_charset("utf8");?>
                                     Materialize.toast(response.msg, 3000);
                                     if (response.status == 0){
                                         item.remove();
-                                        $('.tabs').tabs('select_tab', pre_item_id);
+                                        $('.tabs').tabs('select_tab', item_id);
                                     }
                                 },
                                 error:function (jqXHR, textStatus, errorThrown) {
@@ -688,7 +691,7 @@ $row = $result->fetch_assoc();
         </div>
     </div>
 </form>
-<form class="update-site-type">
+<form class="update-site-type" method="post">
     <div id="modal-update-site-type" class="modal">
         <div class="modal-content">
             <h4>修改搜索引擎</h4>
