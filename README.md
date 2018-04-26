@@ -2,7 +2,7 @@
 
 一个优雅的网站导航
 
-![](portal.png)
+![](sreenshots/portal.png)
 
 ## 优点
 
@@ -11,7 +11,37 @@
 - 可以自由的定制搜索引擎，不仅可以使用谷歌或百度这种常用搜索引擎，还可以搜知乎，搜B站，搜有土鳖，甚至搜种子。只要你知道站点的搜索链接，啥都能搜
 - 抛弃复杂的后台，所有增删改操作都在一个页面完成
 - 使用ip白名单来限制访问，无需繁杂的注册登录找回密码操作
-- UI美观，且背景默认使用 [漫月API](https://ikmoe.com/8548.html)，每次打开随机加载一张背景图片。也可自定义背景墙
+- UI美观，且背景默认使用 [漫月API](http://api.ikmoe.com/)，每次打开随机加载一张背景图片。也可自定义背景墙
+
+## 食用方法
+
+整个项目copy到Web服务器目录下，然后创建个数据库并导入`portal.sql`，最后在`config.php`编辑你自己的设置，就搞定了。例如下面：
+
+```
+git clone https://github.com/ChenViVi/Portal.git
+
+cd Portal
+
+mysql -uroot -p
+
+create database portal;
+
+use portal;
+
+set names utf8;
+
+quit
+
+vim config.php
+```
+
+## 感谢
+
+[漫月API](http://api.ikmoe.com/)：一款在线获取随机壁纸的小工具，让你每次刷新，得到不一样的图片！并且均为1080P的标准二次元壁纸
+
+[jQuery-contextMenu](https://github.com/swisnl/jQuery-contextMenu)：一个功能强大且兼容性极高的快捷菜单
+
+[Materialize](http://www.materializecss.cn/)：基于Material Design的主流前端响应式框架
 
 ## TODO
 
