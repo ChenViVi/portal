@@ -11,10 +11,10 @@ $mysqli->set_charset("utf8");?>
     <title><?php echo $TITLE?></title>
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/jquery-ui.js"></script>
-    <script src="js/materialize.min.js"></script>
-    <script src="js/jquery.contextMenu.js" type="text/javascript"></script>
     <link href="css/materialize.min.css" rel="stylesheet" type="text/css">
+    <script src="js/materialize.min.js"></script>
     <link href="css/jquery.contextMenu.css" rel="stylesheet" type="text/css">
+    <script src="js/jquery.contextMenu.js" type="text/javascript"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         #search-bar{
@@ -45,6 +45,7 @@ $mysqli->set_charset("utf8");?>
         $(document).ready(function() {
             $('.modal').modal();
             $('select').material_select();
+            $('.tooltipped').tooltip();
             var body = $('body');
             var search_radios = $('#search-radios');
             var site_types = $("#site-types");
@@ -52,6 +53,7 @@ $mysqli->set_charset("utf8");?>
             var search_param = $("input[name='search-param']");
             $('#search-bar').on('keydown',function(event){
                 if(event.keyCode == 13){
+                    alert("sdf");
                     window.open ($('input[name=group1]:checked').val() + search_param.val());
                     search_param.val("");
                 }
@@ -147,6 +149,7 @@ $mysqli->set_charset("utf8");?>
                                         if (response.status == 0){
                                             item.children('label').text(response.data.name);
                                             item.children('input').val(response.data.url);
+                                            $("#modal-update-search").modal('close');
                                         }
                                     },
                                     error:function (jqXHR, textStatus, errorThrown) {
@@ -180,15 +183,15 @@ $mysqli->set_charset("utf8");?>
                                 "<label class='grey-text text-darken-3' for='radio" + response.data.id + "'>" + response.data.name + "</label>" +
                                 "</div>"
                             );
+                            var modal = $("#modal-add-search");
+                            modal.modal('close');
+                            var modal_content = modal.children('.modal-content');
+                            modal_content.children('div').eq(0).children('input').val("");
+                            modal_content.children('div').eq(1).children('input').val("");
                         }
                     },
                     error:function (jqXHR, textStatus, errorThrown) {
                         Materialize.toast("未知错误", 3000);
-                    },
-                    complete:function (jqXHR, textStatus, errorThrown) {
-                        var modal_content = $('#modal-add-search').children('.modal-content');
-                        modal_content.children('div').eq(0).children('input').val("");
-                        modal_content.children('div').eq(1).children('input').val("");
                     }
                 });
             });
@@ -315,14 +318,14 @@ $mysqli->set_charset("utf8");?>
                         if (response.status == 0){
                             site_types.append("<li data-id='" + response.data.id + "' class='tab ui-sortable-handle'><a href='#" + response.data.id + "' class='teal-text active'>" + response.data.name + "</a></li>");
                             $('.tabs').tabs();
+                            var modal = $('#modal-add-site-type');
+                            modal.modal('close');
+                            var modal_content = modal.children('.modal-content');
+                            modal_content.children('div').eq(0).children('input').val("");
                         }
                     },
                     error:function (jqXHR, textStatus, errorThrown) {
                         Materialize.toast("未知错误", 3000);
-                    },
-                    complete:function (jqXHR, textStatus, errorThrown) {
-                        var modal_content = $('#modal-add-site-type').children('.modal-content');
-                        modal_content.children('div').eq(0).children('input').val("");
                     }
                 });
             });
@@ -421,10 +424,9 @@ $mysqli->set_charset("utf8");?>
                         callback: function() {
                             var item = $(this);
                             var item_a = item.children();
-                            var item_p = item_a.children().children('p');
                             var id = item.attr("data-id");
                             var type_id = $(this).parent().attr("id");
-                            var name = item_p.text();
+                            var name = item.attr("data-tooltip");
                             var url = item_a.attr("href");
                             var modal = $('#modal-update-site');
                             $("a.update-site").click(function(){
@@ -437,12 +439,41 @@ $mysqli->set_charset("utf8");?>
                                     success: function (response) {
                                         Materialize.toast(response.msg, 3000);
                                         if (response.status == 0){
-                                            item_p.text(response.data.name);
-                                            item_a.attr("href", response.data.url);
                                             if (response.data.name != type_id) {
                                                 item.remove();
-                                                $(".website-row[id='" + response.data.type_id + "']").append(item);
+                                                if (response.data.name.length <= 14){
+                                                    $(".website-row[id='" + response.data.type_id + "']").append(
+                                                        "<div class='website-div tooltipped col s3' style='margin-top: 20px; display: block;' data-id='" + response.data.id + "' data-position='right' data-tooltip='" + response.data.name + "'>" +
+                                                        "<a href='" + response.data.url + "' target='_blank'>" +
+                                                        "<div class='website hoverable' style='position:relative;'>" +
+                                                        "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
+                                                        "<p class='teal-text center'>" + response.data.name + "</p>" +
+                                                        "</div>" +
+                                                        "</a>" +
+                                                        "</div>"
+                                                    );
+                                                }
+                                                else {
+                                                    $(".website-row[id='" + response.data.type_id + "']").append(
+                                                        "<div class='website-div tooltipped col s3' style='margin-top: 20px; display: block;' data-id='" + response.data.id + "' data-position='right' data-tooltip='" + response.data.name + "'>" +
+                                                        "<a href='" + response.data.url + "' target='_blank'>" +
+                                                        "<div class='website hoverable' style='position:relative;'>" +
+                                                        "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
+                                                        "<p class='teal-text center'>" + response.data.name.substring(0,13) + "...</p>" +
+                                                        "</div>" +
+                                                        "</a>" +
+                                                        "</div>"
+                                                    );
+                                                }
+                                                $('.tooltipped').tooltip();
                                             }
+                                            else {
+                                                var item_p = item_a.children().children('p');
+                                                item_p.text(response.data.name);
+                                                item.attr("data-tooltip", response.data.name);
+                                                item_a.attr("href", response.data.url);
+                                            }
+                                            $("#modal-update-site").modal('close');
                                         }
                                     },
                                     error:function (jqXHR, textStatus, errorThrown) {
@@ -523,25 +554,39 @@ $mysqli->set_charset("utf8");?>
                     success: function (response) {
                         Materialize.toast(response.msg, 3000);
                         if (response.status == 0){
-                            $(".website-row[id='" + response.data.type_id + "']").append(
-                                "<div class='website-div col s3' style='margin-top: 20px; display: block;' data-id='" + response.data.id + "'>" +
-                                "<a href='" + response.data.url + "' target='_blank'>" +
-                                "<div class='website hoverable' style='position:relative;'>" +
-                                "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
-                                "<p class='teal-text center'> " + response.data.name + "</p>" +
-                                "</div>" +
-                                "</a>" +
-                                "</div>"
-                            );
+                            if (response.data.name.length <= 12){
+                                $(".website-row[id='" + response.data.type_id + "']").append(
+                                    "<div class='website-div tooltipped col s3' style='margin-top: 20px; display: block;' data-id='" + response.data.id + "' data-position='right' data-tooltip='" + response.data.name + "'>" +
+                                    "<a href='" + response.data.url + "' target='_blank'>" +
+                                    "<div class='website hoverable' style='position:relative;'>" +
+                                    "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
+                                    "<p class='teal-text center'>" + response.data.name + "</p>" +
+                                    "</div>" +
+                                    "</a>" +
+                                    "</div>"
+                                );
+                            }
+                            else {
+                                $(".website-row[id='" + response.data.type_id + "']").append(
+                                    "<div class='website-div tooltipped col s3' style='margin-top: 20px; display: block;' data-id='" + response.data.id + "' data-position='right' data-tooltip='" + response.data.name + "'>" +
+                                    "<a href='" + response.data.url + "' target='_blank'>" +
+                                    "<div class='website hoverable' style='position:relative;'>" +
+                                    "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
+                                    "<p class='teal-text center'>" + response.data.name.substring(0,11) + "...</p>" +
+                                    "</div>" +
+                                    "</a>" +
+                                    "</div>"
+                                );
+                            }
+                            $('.tooltipped').tooltip();
+                            var modal = $('#modal-add-site').modal('close');
+                            var modal_content = modal.children('.modal-content');
+                            modal_content.children('div').eq(0).children('input').val("");
+                            modal_content.children('div').eq(2).children('input').val("");
                         }
                     },
                     error:function (jqXHR, textStatus, errorThrown) {
                         Materialize.toast("未知错误", 3000);
-                    },
-                    complete:function (jqXHR, textStatus, errorThrown) {
-                        var modal_content = $('#modal-add-site').children('.modal-content');
-                        modal_content.children('div').eq(0).children('input').val("");
-                        modal_content.children('div').eq(2).children('input').val("");
                     }
                 });
             });
@@ -606,7 +651,7 @@ $mysqli->set_charset("utf8");?>
             $("a.add-bg").click(function(){
                 $.ajax({
                     url: 'request/bg_add.php',
-                    type: 'POST',
+                    type: 'post',
                     cache: false,
                     data: new FormData($('#add-bg')[0]),
                     processData: false,
@@ -618,14 +663,13 @@ $mysqli->set_charset("utf8");?>
                             var body = $("body");
                             body.css("background-image","url(bg/" + response.data.url +")");
                             body.attr("data-id", response.data.id);
+                            $("#modal-add-bg").modal('close');
+                            $("#file").val("");
+                            $(".file-path").val("");
                         }
                     },
                     error:function (jqXHR, textStatus, errorThrown) {
                         Materialize.toast("未知错误", 3000);
-                    },
-                    complete:function () {
-                        $("#file").val("");
-                        $(".file-path").val("");
                     }
                 });
             });
@@ -654,8 +698,8 @@ $row = $result->fetch_assoc();
         </div>
         <div class="modal-footer">
             <a href="search_add.php" class="modal-action modal-close waves-effect waves-red btn-flat">批量添加</a>
-            <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
-            <a class="add-search modal-action modal-close waves-effect waves-green btn-flat">确定</a>
+            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
+            <a class="add-search waves-effect btn-flat">确定</a>
         </div>
     </div>
 </form>
@@ -674,8 +718,8 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
-            <a class="update-search modal-action modal-close waves-effect waves-green btn-flat">提交</a>
+            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
+            <a class="update-search waves-effect btn-flat">确定</a>
         </div>
     </div>
 </form>
@@ -689,8 +733,8 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
-            <a class="add-site-type modal-action modal-close waves-effect waves-green btn-flat">确定</a>
+            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
+            <a class="add-site-type waves-effect btn-flat">确定</a>
         </div>
     </div>
 </form>
@@ -705,8 +749,8 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
-            <a class="update-site-type modal-action modal-close waves-effect waves-green btn-flat">提交</a>
+            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
+            <a class="update-site-type modal-action modal-close waves-effect btn-flat">提交</a>
         </div>
     </div>
 </form>
@@ -729,9 +773,9 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-            <a href="site_add.php" id="add_site_mult" class="modal-action modal-close waves-effect waves-red btn-flat">批量添加</a>
-            <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
-            <a class="add-site modal-action modal-close waves-effect waves-green btn-flat">确定</a>
+            <a href="site_add.php" id="add_site_mult" class="modal-action modal-close waves-effect btn-flat">批量添加</a>
+            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
+            <a class="add-site waves-effect btn-flat">确定</a>
         </div>
     </div>
 </form>
@@ -755,8 +799,8 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
-            <a class="update-site modal-action modal-close waves-effect waves-green btn-flat">提交</a>
+            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
+            <a class="update-site waves-effect btn-flat">确定</a>
         </div>
     </div>
 </form>
@@ -775,8 +819,8 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
-            <a name="submit" class="add-bg modal-action modal-close waves-effect waves-green btn-flat ">确定</a>
+            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
+            <a name="submit" class="add-bg waves-effect btn-flat ">确定</a>
         </div>
     </div>
 </form>
@@ -811,25 +855,21 @@ $row = $result->fetch_assoc();
     </div>
 </div>
 <div id="tab-nav">
-    <nav class="nav-extended transparent">
-        <div class="nav-content">
-            <ul class="tabs transparent">
-                <div id="site-types">
-                    <?php
-                    $stmt=$mysqli->prepare("SELECT * FROM site_type ORDER BY id");
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-                    $site_type_ids = array();
-                    while ($row = $result->fetch_assoc()) {
-                        array_push($site_type_ids, $row['id']);
-                        ?>
-                        <li data-id="<?php echo $row['id']; ?>" class="tab"><a href="#<?php echo $row['id']; ?>"  class="teal-text"><?php echo $row['name']; ?></a></li>
-                    <?php } ?>
-                </div>
-                <li class="indicator teal" style="right: 186px; left: 68px;"></li>
-            </ul>
+    <ul class="tabs transparent">
+        <div id="site-types">
+            <?php
+            $stmt=$mysqli->prepare("SELECT * FROM site_type ORDER BY id");
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $site_type_ids = array();
+            while ($row = $result->fetch_assoc()) {
+                array_push($site_type_ids, $row['id']);
+                ?>
+                <li data-id="<?php echo $row['id'];?>" class="tab"><a href="#<?php echo $row['id']; ?>"  class="teal-text" style="text-transform: none !important"><?php echo $row['name']; ?></a></li>
+            <?php } ?>
         </div>
-    </nav>
+        <li class="indicator teal" style="right: 186px; left: 68px;"></li>
+    </ul>
     <?php
     for ($i = 0; $i < count($site_type_ids); $i++){ ?>
         <div id="<?php echo $site_type_ids[$i] ?>" class="row website-row" style="min-height:450px; height:auto!important; height:450px;">
@@ -839,11 +879,11 @@ $row = $result->fetch_assoc();
             $stmt->execute();
             $result = $stmt->get_result();
             while ($row = $result->fetch_assoc()) {?>
-                <div class="website-div col s3" style="margin-top: 20px; display: block;" data-id="<?php echo $row['id']; ?>">
+                <div class="website-div tooltipped col s3" style="margin-top: 20px; display: block;" data-id="<?php echo $row['id']; ?>" data-position="right" data-tooltip="<?php echo $row['name']; ?>">
                     <a href="<?php echo $row['url'] ?>" target="_blank">
                         <div class="website hoverable" style="position:relative;">
                             <img src="http://favicon.byi.pw/?url=<?php echo $row['url'] ?>" width="16px" style="position: absolute;top: 50%;transform: translateY(-50%);">
-                            <p class="teal-text center"><?php echo $row['name'] ?></p>
+                            <p class="teal-text center"><?php if (strlen ($row['name']) <= 24) echo $row['name']; else echo mb_substr($row['name'], 0, 11) . "..." ?></p>
                         </div>
                     </a>
                 </div>
