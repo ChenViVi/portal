@@ -2,7 +2,7 @@
 
 一个优雅的网站导航
 
-![](sreenshots/portal.png)
+![](bg/portal.png)
 
 ## 优点
 
