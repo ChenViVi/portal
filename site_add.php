@@ -12,6 +12,7 @@
     <title>添加网站</title>
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/materialize.min.js"></script>
+    <link href="css/materialize.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <?php
     $stmt=$mysqli->prepare("SELECT * FROM site_type ORDER BY id");
