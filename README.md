@@ -15,7 +15,7 @@
 
 ## 食用方法
 
-整个项目copy到Web服务器目录下，然后创建个数据库并导入`portal.sql`，最后在`config.php`编辑你自己的设置，就搞定了。例如下面：
+整个项目copy到Web服务器目录下，然后创建个数据库并导入`portal.sql`，别忘了存放背景图的`bg`目录要加写入权限，最后在`config.php`编辑你自己的设置，就搞定了。例如下面：
 
 ```
 git clone https://github.com/ChenViVi/portal.git
@@ -33,6 +33,8 @@ set names utf8;
 source portal.sql;
 
 quit
+
+chmod a+w bg
 
 vim config.php
 ```

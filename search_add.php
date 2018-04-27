@@ -6,6 +6,7 @@
     <title>添加搜索引擎</title>
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/materialize.min.js"></script>
+    <link href="css/materialize.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript">
         $(document).ready(function() {

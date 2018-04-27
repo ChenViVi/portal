@@ -24,7 +24,7 @@ switch ($_FILES["file"]["error"]){
                 $msg = "数据库连接失败，请检查 config.php 配置文件";
             }
             else {
-                $filename = time();
+                $filename = time() . "." .$extension;
                 move_uploaded_file($_FILES["file"]["tmp_name"], "../bg/" . $filename);
                 $stmt=$mysqli->prepare("INSERT INTO bg (url) VALUES (?)");
                 $stmt->bind_param('s', $filename);
