@@ -80,7 +80,7 @@
 <body>
     <nav class="top-nav teal">
         <div class="container">
-            <div class="nav-wrapper"><a class="page-title">添加网站</a></div>
+            <div class="nav-wrapper"><a class="brand-logo">添加网站</a></div>
         </div>
     </nav>
     <div class="container" style="padding-bottom: 20px">

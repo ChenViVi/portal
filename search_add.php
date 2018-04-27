@@ -53,7 +53,7 @@
 <body>
     <nav class="top-nav teal">
         <div class="container">
-            <div class="nav-wrapper"><a class="page-title">添加搜索引擎</a></div>
+            <div class="nav-wrapper"><a class="brand-logo">添加搜索引擎</a></div>
         </div>
     </nav>
     <div class="container" style="padding-bottom: 20px">

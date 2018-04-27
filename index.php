@@ -437,11 +437,18 @@ $mysqli->set_charset("utf8");?>
                                     success: function (response) {
                                         Materialize.toast(response.msg, 3000);
                                         if (response.status == 0){
-                                            item_p.text(response.data.name);
-                                            item_a.attr("href", response.data.url);
                                             if (response.data.name != type_id) {
                                                 item.remove();
-                                                $(".website-row[id='" + response.data.type_id + "']").append(item);
+                                                $(".website-row[id='" + response.data.type_id + "']").append(
+                                                    "<div class='website-div col s3' style='margin-top: 20px; display: block;' data-id='" + response.data.id + "'>" +
+                                                    "<a href='" + response.data.url + "' target='_blank'>" +
+                                                    "<div class='website hoverable' style='position:relative;'>" +
+                                                    "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
+                                                    "<p class='teal-text center'> " + response.data.name + "</p>" +
+                                                    "</div>" +
+                                                    "</a>" +
+                                                    "</div>"
+                                                );
                                             }
                                         }
                                     },
@@ -654,8 +661,8 @@ $row = $result->fetch_assoc();
         </div>
         <div class="modal-footer">
             <a href="search_add.php" class="modal-action modal-close waves-effect waves-red btn-flat">批量添加</a>
-            <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
-            <a class="add-search modal-action modal-close waves-effect waves-green btn-flat">确定</a>
+            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
+            <a class="add-search modal-action modal-close waves-effect btn-flat">确定</a>
         </div>
     </div>
 </form>
@@ -674,8 +681,8 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
-            <a class="update-search modal-action modal-close waves-effect waves-green btn-flat">提交</a>
+            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
+            <a class="update-search modal-action modal-close waves-effect btn-flat">提交</a>
         </div>
     </div>
 </form>
@@ -689,8 +696,8 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
-            <a class="add-site-type modal-action modal-close waves-effect waves-green btn-flat">确定</a>
+            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
+            <a class="add-site-type modal-action modal-close waves-effect btn-flat">确定</a>
         </div>
     </div>
 </form>
@@ -705,8 +712,8 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
-            <a class="update-site-type modal-action modal-close waves-effect waves-green btn-flat">提交</a>
+            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
+            <a class="update-site-type modal-action modal-close waves-effect btn-flat">提交</a>
         </div>
     </div>
 </form>
@@ -729,9 +736,9 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-            <a href="site_add.php" id="add_site_mult" class="modal-action modal-close waves-effect waves-red btn-flat">批量添加</a>
-            <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
-            <a class="add-site modal-action modal-close waves-effect waves-green btn-flat">确定</a>
+            <a href="site_add.php" id="add_site_mult" class="modal-action modal-close waves-effect btn-flat">批量添加</a>
+            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
+            <a class="add-site modal-action modal-close waves-effect btn-flat">确定</a>
         </div>
     </div>
 </form>
@@ -755,8 +762,8 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
-            <a class="update-site modal-action modal-close waves-effect waves-green btn-flat">提交</a>
+            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
+            <a class="update-site modal-action modal-close waves-effect btn-flat">提交</a>
         </div>
     </div>
 </form>
@@ -775,8 +782,8 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect waves-red btn-flat ">取消</a>
-            <a name="submit" class="add-bg modal-action modal-close waves-effect waves-green btn-flat ">确定</a>
+            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
+            <a name="submit" class="add-bg modal-action modal-close waves-effect btn-flat ">确定</a>
         </div>
     </div>
 </form>
@@ -823,7 +830,7 @@ $row = $result->fetch_assoc();
                     while ($row = $result->fetch_assoc()) {
                         array_push($site_type_ids, $row['id']);
                         ?>
-                        <li data-id="<?php echo $row['id']; ?>" class="tab"><a href="#<?php echo $row['id']; ?>"  class="teal-text"><?php echo $row['name']; ?></a></li>
+                        <li data-id="<?php echo $row['id'];?>" class="tab"><a href="#<?php echo $row['id']; ?>"  class="teal-text" style="text-transform: none !important"><?php echo $row['name']; ?></a></li>
                     <?php } ?>
                 </div>
                 <li class="indicator teal" style="right: 186px; left: 68px;"></li>
