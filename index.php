@@ -477,39 +477,6 @@ $mysqli->set_charset("utf8");?>
                             var name = item.attr("data-tooltip");
                             var url = item_a.attr("href");
                             var modal = $('#modal-update-site');
-<<<<<<< HEAD
-                            $("a.update-site").click(function(){
-                                $.ajax({
-                                    url:"request/site_update.php",
-                                    type:"post",
-                                    data:$("form.update-site").serialize(),
-                                    async:true,
-                                    dataType:'json',
-                                    success: function (response) {
-                                        Materialize.toast(response.msg, 3000);
-                                        if (response.status == 0){
-                                            if (response.data.name != type_id) {
-                                                item.remove();
-                                                $(".website-row[id='" + response.data.type_id + "']").append(
-                                                    "<div class='website-div col s3' style='margin-top: 20px; display: block;' data-id='" + response.data.id + "'>" +
-                                                    "<a href='" + response.data.url + "' target='_blank'>" +
-                                                    "<div class='website hoverable' style='position:relative;'>" +
-                                                    "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
-                                                    "<p class='teal-text center'> " + response.data.name + "</p>" +
-                                                    "</div>" +
-                                                    "</a>" +
-                                                    "</div>"
-                                                );
-                                            }
-                                        }
-                                    },
-                                    error:function (jqXHR, textStatus, errorThrown) {
-                                        Materialize.toast("未知错误", 3000);
-                                    }
-                                });
-                            });
-=======
->>>>>>> master
                             $.ajax({
                                 url:"request/site_type_get.php",
                                 type:"post",
@@ -803,14 +770,8 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-<<<<<<< HEAD
-            <a href="search_add.php" class="modal-action modal-close waves-effect waves-red btn-flat">批量添加</a>
-            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
-            <a class="add-search modal-action modal-close waves-effect btn-flat">确定</a>
-=======
             <a class="modal-action modal-close waves-effect btn-flat">取消</a>
             <a class="add-search waves-effect btn-flat">确定</a>
->>>>>>> master
         </div>
     </div>
 </form>
@@ -829,13 +790,8 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-<<<<<<< HEAD
-            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
-            <a class="update-search modal-action modal-close waves-effect btn-flat">提交</a>
-=======
             <a class="modal-action modal-close waves-effect btn-flat">取消</a>
             <a class="update-search waves-effect btn-flat">确定</a>
->>>>>>> master
         </div>
     </div>
 </form>
@@ -849,13 +805,8 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-<<<<<<< HEAD
-            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
-            <a class="add-site-type modal-action modal-close waves-effect btn-flat">确定</a>
-=======
             <a class="modal-action modal-close waves-effect btn-flat">取消</a>
             <a class="add-site-type waves-effect btn-flat">确定</a>
->>>>>>> master
         </div>
     </div>
 </form>
@@ -870,13 +821,8 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-<<<<<<< HEAD
-            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
-            <a class="update-site-type modal-action modal-close waves-effect btn-flat">提交</a>
-=======
             <a class="modal-action modal-close waves-effect btn-flat">取消</a>
             <a class="update-site-type waves-effect btn-flat">确定</a>
->>>>>>> master
         </div>
     </div>
 </form>
@@ -899,14 +845,8 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-<<<<<<< HEAD
-            <a href="site_add.php" id="add_site_mult" class="modal-action modal-close waves-effect btn-flat">批量添加</a>
-            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
-            <a class="add-site modal-action modal-close waves-effect btn-flat">确定</a>
-=======
             <a class="modal-action modal-close waves-effect btn-flat">取消</a>
             <a class="add-site waves-effect btn-flat">确定</a>
->>>>>>> master
         </div>
     </div>
 </form>
@@ -930,13 +870,8 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-<<<<<<< HEAD
-            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
-            <a class="update-site modal-action modal-close waves-effect btn-flat">提交</a>
-=======
             <a class="modal-action modal-close waves-effect btn-flat">取消</a>
             <a class="update-site waves-effect btn-flat">确定</a>
->>>>>>> master
         </div>
     </div>
 </form>
@@ -955,13 +890,8 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-<<<<<<< HEAD
-            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
-            <a name="submit" class="add-bg modal-action modal-close waves-effect btn-flat ">确定</a>
-=======
             <a class="modal-action modal-close waves-effect btn-flat">取消</a>
             <a name="submit" class="add-bg waves-effect btn-flat ">确定</a>
->>>>>>> master
         </div>
     </div>
 </form>
@@ -996,25 +926,6 @@ $row = $result->fetch_assoc();
     </div>
 </div>
 <div id="tab-nav">
-<<<<<<< HEAD
-    <nav class="nav-extended transparent">
-        <div class="nav-content">
-            <ul class="tabs transparent">
-                <div id="site-types">
-                    <?php
-                    $stmt=$mysqli->prepare("SELECT * FROM site_type ORDER BY id");
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-                    $site_type_ids = array();
-                    while ($row = $result->fetch_assoc()) {
-                        array_push($site_type_ids, $row['id']);
-                        ?>
-                        <li data-id="<?php echo $row['id'];?>" class="tab"><a href="#<?php echo $row['id']; ?>"  class="teal-text" style="text-transform: none !important"><?php echo $row['name']; ?></a></li>
-                    <?php } ?>
-                </div>
-                <li class="indicator teal" style="right: 186px; left: 68px;"></li>
-            </ul>
-=======
     <ul class="tabs transparent">
         <div id="site-types">
             <?php
@@ -1027,7 +938,6 @@ $row = $result->fetch_assoc();
                 ?>
                 <li data-id="<?php echo $row['id'];?>" class="tab"><a href="#<?php echo $row['id']; ?>"  class="teal-text" style="text-transform: none !important"><?php echo $row['name']; ?></a></li>
             <?php } ?>
->>>>>>> master
         </div>
         <li class="indicator teal" style="right: 186px; left: 68px;"></li>
     </ul>
