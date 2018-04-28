@@ -51,9 +51,28 @@ $mysqli->set_charset("utf8");?>
             var site_types = $("#site-types");
             var website_row = $(".website-row");
             var search_param = $("input[name='search-param']");
+            function utf8_length(str) {
+                var str_array = str.split("");
+                var count = 0;
+                for (var i = 0; i < str_array.length; i++){
+                    if (/^[\u4E00-\u9FA5]+$/.test(str_array[i])) count = count + 1;
+                    else count = count + 0.5;
+                }
+                return count;
+            }
+            function utf8_substring(str, length) {
+                var str_array = str.split("");
+                var count = 0;
+                var result = "";
+                for (var i = 0; i < str_array.length && count < length; i++){
+                    if (/^[\u4E00-\u9FA5]+$/.test(str_array[i])) count = count + 1;
+                    else count = count + 0.5;
+                    result = result + str_array[i];
+                }
+                return result;
+            }
             $('#search-bar').on('keydown',function(event){
                 if(event.keyCode == 13){
-                    alert("sdf");
                     window.open ($('input[name=group1]:checked').val() + search_param.val());
                     search_param.val("");
                 }
@@ -279,24 +298,7 @@ $mysqli->set_charset("utf8");?>
                             var id = item.attr("data-id");
                             var name = item.children().text();
                             var modal = $('#modal-update-site-type');
-                            $("a.update-site-type").click(function(){
-                                $.ajax({
-                                    url:"request/site_type_update.php",
-                                    type:"post",
-                                    data:$("form.update-site-type").serialize(),
-                                    async:true,
-                                    dataType:'json',
-                                    success: function (response) {
-                                        Materialize.toast(response.msg, 3000);
-                                        if (response.status == 0){
-                                            item.children().text(response.data.name);
-                                        }
-                                    },
-                                    error:function (jqXHR, textStatus, errorThrown) {
-                                        Materialize.toast("未知错误", 3000);
-                                    }
-                                });
-                            });
+
                             var modal_content = modal.children('.modal-content');
                             modal_content.children('input').val(id);
                             modal_content.children('div').eq(0).children('input').val(name);
@@ -322,6 +324,24 @@ $mysqli->set_charset("utf8");?>
                             modal.modal('close');
                             var modal_content = modal.children('.modal-content');
                             modal_content.children('div').eq(0).children('input').val("");
+                        }
+                    },
+                    error:function (jqXHR, textStatus, errorThrown) {
+                        Materialize.toast("未知错误", 3000);
+                    }
+                });
+            });
+            $("a.update-site-type").click(function(){
+                $.ajax({
+                    url:"request/site_type_update.php",
+                    type:"post",
+                    data:$("form.update-site-type").serialize(),
+                    async:true,
+                    dataType:'json',
+                    success: function (response) {
+                        Materialize.toast(response.msg, 3000);
+                        if (response.status == 0){
+                            $("li.tab[data-id='"+ response.data.id +"']").children().text(response.data.name);
                         }
                     },
                     error:function (jqXHR, textStatus, errorThrown) {
@@ -429,58 +449,6 @@ $mysqli->set_charset("utf8");?>
                             var name = item.attr("data-tooltip");
                             var url = item_a.attr("href");
                             var modal = $('#modal-update-site');
-                            $("a.update-site").click(function(){
-                                $.ajax({
-                                    url:"request/site_update.php",
-                                    type:"post",
-                                    data:$("form.update-site").serialize(),
-                                    async:true,
-                                    dataType:'json',
-                                    success: function (response) {
-                                        Materialize.toast(response.msg, 3000);
-                                        if (response.status == 0){
-                                            if (response.data.name != type_id) {
-                                                item.remove();
-                                                if (response.data.name.length <= 14){
-                                                    $(".website-row[id='" + response.data.type_id + "']").append(
-                                                        "<div class='website-div tooltipped col s3' style='margin-top: 20px; display: block;' data-id='" + response.data.id + "' data-position='right' data-tooltip='" + response.data.name + "'>" +
-                                                        "<a href='" + response.data.url + "' target='_blank'>" +
-                                                        "<div class='website hoverable' style='position:relative;'>" +
-                                                        "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
-                                                        "<p class='teal-text center'>" + response.data.name + "</p>" +
-                                                        "</div>" +
-                                                        "</a>" +
-                                                        "</div>"
-                                                    );
-                                                }
-                                                else {
-                                                    $(".website-row[id='" + response.data.type_id + "']").append(
-                                                        "<div class='website-div tooltipped col s3' style='margin-top: 20px; display: block;' data-id='" + response.data.id + "' data-position='right' data-tooltip='" + response.data.name + "'>" +
-                                                        "<a href='" + response.data.url + "' target='_blank'>" +
-                                                        "<div class='website hoverable' style='position:relative;'>" +
-                                                        "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
-                                                        "<p class='teal-text center'>" + response.data.name.substring(0,13) + "...</p>" +
-                                                        "</div>" +
-                                                        "</a>" +
-                                                        "</div>"
-                                                    );
-                                                }
-                                                $('.tooltipped').tooltip();
-                                            }
-                                            else {
-                                                var item_p = item_a.children().children('p');
-                                                item_p.text(response.data.name);
-                                                item.attr("data-tooltip", response.data.name);
-                                                item_a.attr("href", response.data.url);
-                                            }
-                                            $("#modal-update-site").modal('close');
-                                        }
-                                    },
-                                    error:function (jqXHR, textStatus, errorThrown) {
-                                        Materialize.toast("未知错误", 3000);
-                                    }
-                                });
-                            });
                             $.ajax({
                                 url:"request/site_type_get.php",
                                 type:"post",
@@ -501,39 +469,6 @@ $mysqli->set_charset("utf8");?>
                                         modal_content.children('div').eq(2).children('input').val(url);
                                         Materialize.updateTextFields();
                                         modal.modal('open');
-                                    }
-                                },
-                                error:function (jqXHR, textStatus, errorThrown) {
-                                    Materialize.toast("未知错误", 3000);
-                                }
-                            });
-                        }
-                    }
-                }
-            });
-            $.contextMenu({
-                selector: '.website-row',
-                items: {
-                    "add": {
-                        name: "添加",
-                        callback: function() {
-                            var type_id = $(this).attr("id");
-                            $.ajax({
-                                url:"request/site_type_get.php",
-                                type:"post",
-                                async:true,
-                                dataType:'json',
-                                success: function (response) {
-                                    if (response.status == 0){
-                                        var select = $("select[id='type_id']");
-                                        select.html("");
-                                        for(var i = 0; i < response.data.length; i++){
-                                            if(response.data[i].id == type_id) select.append("<option selected value='" + response.data[i].id + "'>" + response.data[i].name + "</option>");
-                                            else select.append("<option value='" + response.data[i].id + "'>" + response.data[i].name + "</option>");
-                                        }
-                                        $('select').material_select();
-                                        $("#add_site_mult").attr("href", "site_add.php?id=" + type_id);
-                                        $('#modal-add-site').modal('open');
                                     }
                                 },
                                 error:function (jqXHR, textStatus, errorThrown) {
@@ -589,6 +524,95 @@ $mysqli->set_charset("utf8");?>
                         Materialize.toast("未知错误", 3000);
                     }
                 });
+            });
+            $("a.update-site").click(function(){
+                $.ajax({
+                    url:"request/site_update.php",
+                    type:"post",
+                    data:$("form.update-site").serialize(),
+                    async:true,
+                    dataType:'json',
+                    success: function (response) {
+                        Materialize.toast(response.msg, 3000);
+                        if (response.status == 0){
+                            var item = $(".website-div[data-id='" + response.data.id + "']");
+                            var type_id = $(this).parent().attr("id");
+                            if (response.data.name != type_id) {
+                                item.remove();
+                                if (utf8_length(response.data.name) <= 12){
+                                    $(".website-row[id='" + response.data.type_id + "']").append(
+                                        "<div class='website-div tooltipped col s3' style='margin-top: 20px; display: block;' data-id='" + response.data.id + "' data-position='right' data-tooltip='" + response.data.name + "'>" +
+                                        "<a href='" + response.data.url + "' target='_blank'>" +
+                                        "<div class='website hoverable' style='position:relative;'>" +
+                                        "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
+                                        "<p class='teal-text center'>" + response.data.name + "</p>" +
+                                        "</div>" +
+                                        "</a>" +
+                                        "</div>"
+                                    );
+                                }
+                                else {
+                                    $(".website-row[id='" + response.data.type_id + "']").append(
+                                        "<div class='website-div tooltipped col s3' style='margin-top: 20px; display: block;' data-id='" + response.data.id + "' data-position='right' data-tooltip='" + response.data.name + "'>" +
+                                        "<a href='" + response.data.url + "' target='_blank'>" +
+                                        "<div class='website hoverable' style='position:relative;'>" +
+                                        "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
+                                        "<p class='teal-text center'>" + utf8_substring(response.data.name,11) + "...</p>" +
+                                        "</div>" +
+                                        "</a>" +
+                                        "</div>"
+                                    );
+                                }
+                                $('.tooltipped').tooltip();
+                            }
+                            else {
+                                var item_p = item_a.children().children('p');
+                                var item_a = item.children();
+                                if (utf8_length(response.data.name) <= 12) item_p.text(response.data.name);
+                                else item_p.text(utf8_substring(response.data.name,11));
+                                item.attr("data-tooltip", response.data.name);
+                                item_a.attr("href", response.data.url);
+                            }
+                            $("#modal-update-site").modal('close');
+                        }
+                    },
+                    error:function (jqXHR, textStatus, errorThrown) {
+                        Materialize.toast("未知错误", 3000);
+                    }
+                });
+            });
+            $.contextMenu({
+                selector: '.website-row',
+                items: {
+                    "add": {
+                        name: "添加",
+                        callback: function() {
+                            var type_id = $(this).attr("id");
+                            $.ajax({
+                                url:"request/site_type_get.php",
+                                type:"post",
+                                async:true,
+                                dataType:'json',
+                                success: function (response) {
+                                    if (response.status == 0){
+                                        var select = $("select[id='type_id']");
+                                        select.html("");
+                                        for(var i = 0; i < response.data.length; i++){
+                                            if(response.data[i].id == type_id) select.append("<option selected value='" + response.data[i].id + "'>" + response.data[i].name + "</option>");
+                                            else select.append("<option value='" + response.data[i].id + "'>" + response.data[i].name + "</option>");
+                                        }
+                                        $('select').material_select();
+                                        $("#add_site_mult").attr("href", "site_add.php?id=" + type_id);
+                                        $('#modal-add-site').modal('open');
+                                    }
+                                },
+                                error:function (jqXHR, textStatus, errorThrown) {
+                                    Materialize.toast("未知错误", 3000);
+                                }
+                            });
+                        }
+                    }
+                }
             });
             $.contextMenu({
                 selector: 'body',
@@ -883,7 +907,7 @@ $row = $result->fetch_assoc();
                     <a href="<?php echo $row['url'] ?>" target="_blank">
                         <div class="website hoverable" style="position:relative;">
                             <img src="http://favicon.byi.pw/?url=<?php echo $row['url'] ?>" width="16px" style="position: absolute;top: 50%;transform: translateY(-50%);">
-                            <p class="teal-text center"><?php if (strlen ($row['name']) <= 24) echo $row['name']; else echo mb_substr($row['name'], 0, 11) . "..." ?></p>
+                            <p class="teal-text center"><?php if (utf8_length($row['name']) <= 12) echo $row['name']; else echo utf8_substring($row['name'], 11) . "..." ?></p>
                         </div>
                     </a>
                 </div>
