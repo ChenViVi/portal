@@ -1,7 +1,7 @@
 <?php
 require_once("../func.php");
 $status = 1;
-$msg = "出现未知错误";
+$msg = "出现未知错误，去问问神奇的海螺吧";
 $id = $_POST["id"];
 $mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$DB_PORT);
 $mysqli->set_charset("utf8");
@@ -10,7 +10,7 @@ if ($mysqli->connect_errno){
 }
 else{
     if (is_empty($id)){
-        $msg = "参数错误";
+        $msg = "你是不是漏了什么？";
     }
     else{
         $stmt=$mysqli->prepare("SELECT * FROM site_type WHERE id = ?");

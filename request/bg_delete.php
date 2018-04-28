@@ -1,7 +1,7 @@
 <?php
 require_once("../func.php");
 $status = 1;
-$msg = "出现未知错误";
+$msg = "出现未知错误，去问问神奇的海螺吧";
 $data = "";
 $mysqli=new mysqli($DB_HOST,$DB_USER,$DB_PASS,$DB_NAME,$DB_PORT);
 $mysqli->set_charset("utf8");

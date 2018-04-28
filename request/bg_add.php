@@ -1,7 +1,7 @@
 <?php
 require_once("../func.php");
 $status = 1;
-$msg = "出现未知错误";
+$msg = "出现未知错误，去问问神奇的海螺吧";
 $data = "";
 switch ($_FILES["file"]["error"]){
     case 0:
