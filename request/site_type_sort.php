@@ -1,7 +1,7 @@
 <?php
 require_once("../func.php");
 $status = 1;
-$msg = "出现未知错误";
+$msg = "出现未知错误，去问问神奇的海螺吧";
 $data = "";
 $pre = $_POST["start"];
 $now = $_POST["end"];
@@ -57,7 +57,7 @@ else {
         $status = 0;
         $msg = "排序成功";
     }
-    else $msg="参数错误";
+    else $msg="你是不是漏了什么？";
 }
 echo json_encode(array(
     'status' => $status,

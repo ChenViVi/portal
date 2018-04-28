@@ -156,26 +156,6 @@ $mysqli->set_charset("utf8");?>
                             var name = item.children('label').text();
                             var url = item.children('input').val();
                             var modal = $('#modal-update-search');
-                            $("a.update-search").click(function(){
-                                $.ajax({
-                                    url:"request/search_update.php",
-                                    type:"post",
-                                    data:$("form.update-search").serialize(),
-                                    async:true,
-                                    dataType:'json',
-                                    success: function (response) {
-                                        Materialize.toast(response.msg, 3000);
-                                        if (response.status == 0){
-                                            item.children('label').text(response.data.name);
-                                            item.children('input').val(response.data.url);
-                                            $("#modal-update-search").modal('close');
-                                        }
-                                    },
-                                    error:function (jqXHR, textStatus, errorThrown) {
-                                        Materialize.toast("未知错误", 3000);
-                                    }
-                                });
-                            });
                             var modal_content = modal.children('.modal-content');
                             modal_content.children('input').val(id);
                             modal_content.children('div').eq(0).children('input').val(name);
@@ -187,8 +167,11 @@ $mysqli->set_charset("utf8");?>
                 }
             });
             $("a.add-search").click(function(){
+                var button = $(this);
+                button.attr("disabled",true);
+                button.attr("disabled","disabled");
                 $.ajax({
-                    url:"request/search_add_one.php",
+                    url:"request/search_add.php",
                     type:"post",
                     data:$("form.add-search").serialize(),
                     async:true,
@@ -211,6 +194,38 @@ $mysqli->set_charset("utf8");?>
                     },
                     error:function (jqXHR, textStatus, errorThrown) {
                         Materialize.toast("未知错误", 3000);
+                    },
+                    complete:function (jqXHR, textStatus, errorThrown) {
+                        button.removeAttr("disabled");
+                        button.attr("disabled",false);
+                    }
+                });
+            });
+            $("a.update-search").click(function(){
+                var button = $(this);
+                button.attr("disabled",true);
+                button.attr("disabled","disabled");
+                $.ajax({
+                    url:"request/search_update.php",
+                    type:"post",
+                    data:$("form.update-search").serialize(),
+                    async:true,
+                    dataType:'json',
+                    success: function (response) {
+                        Materialize.toast(response.msg, 3000);
+                        if (response.status == 0){
+                            var item = $(".radios-div[data-id='" + response.data.id + "']")
+                            item.children('label').text(response.data.name);
+                            item.children('input').val(response.data.url);
+                            $("#modal-update-search").modal('close');
+                        }
+                    },
+                    error:function (jqXHR, textStatus, errorThrown) {
+                        Materialize.toast("未知错误", 3000);
+                    },
+                    complete:function (jqXHR, textStatus, errorThrown) {
+                        button.removeAttr("disabled");
+                        button.attr("disabled",false);
                     }
                 });
             });
@@ -309,8 +324,11 @@ $mysqli->set_charset("utf8");?>
                 }
             });
             $("a.add-site-type").click(function(){
+                var button = $(this);
+                button.attr("disabled",true);
+                button.attr("disabled","disabled");
                 $.ajax({
-                    url:"request/site_type_add_one.php",
+                    url:"request/site_type_add.php",
                     type:"post",
                     data:$("form.add-site-type").serialize(),
                     async:true,
@@ -328,10 +346,17 @@ $mysqli->set_charset("utf8");?>
                     },
                     error:function (jqXHR, textStatus, errorThrown) {
                         Materialize.toast("未知错误", 3000);
+                    },
+                    complete:function (jqXHR, textStatus, errorThrown) {
+                        button.removeAttr("disabled");
+                        button.attr("disabled",false);
                     }
                 });
             });
             $("a.update-site-type").click(function(){
+                var button = $(this);
+                button.attr("disabled",true);
+                button.attr("disabled","disabled");
                 $.ajax({
                     url:"request/site_type_update.php",
                     type:"post",
@@ -346,6 +371,10 @@ $mysqli->set_charset("utf8");?>
                     },
                     error:function (jqXHR, textStatus, errorThrown) {
                         Materialize.toast("未知错误", 3000);
+                    },
+                    complete:function (jqXHR, textStatus, errorThrown) {
+                        button.removeAttr("disabled");
+                        button.attr("disabled",false);
                     }
                 });
             });
@@ -406,7 +435,6 @@ $mysqli->set_charset("utf8");?>
                                             else select.append("<option value='" + response.data[i].id + "'>" + response.data[i].name + "</option>");
                                         }
                                         $('select').material_select();
-                                        $("#add_site_mult").attr("href", "site_add.php?id=" + type_id);
                                         $('#modal-add-site').modal('open');
                                     }
                                 },
@@ -479,9 +507,44 @@ $mysqli->set_charset("utf8");?>
                     }
                 }
             });
+            $.contextMenu({
+                selector: '.website-row',
+                items: {
+                    "add": {
+                        name: "添加",
+                        callback: function() {
+                            var type_id = $(this).attr("id");
+                            $.ajax({
+                                url:"request/site_type_get.php",
+                                type:"post",
+                                async:true,
+                                dataType:'json',
+                                success: function (response) {
+                                    if (response.status == 0){
+                                        var select = $("select[id='type_id']");
+                                        select.html("");
+                                        for(var i = 0; i < response.data.length; i++){
+                                            if(response.data[i].id == type_id) select.append("<option selected value='" + response.data[i].id + "'>" + response.data[i].name + "</option>");
+                                            else select.append("<option value='" + response.data[i].id + "'>" + response.data[i].name + "</option>");
+                                        }
+                                        $('select').material_select();
+                                        $('#modal-add-site').modal('open');
+                                    }
+                                },
+                                error:function (jqXHR, textStatus, errorThrown) {
+                                    Materialize.toast("未知错误", 3000);
+                                }
+                            });
+                        }
+                    }
+                }
+            });
             $("a.add-site").click(function(){
+                var button = $(this);
+                button.attr("disabled",true);
+                button.attr("disabled","disabled");
                 $.ajax({
-                    url:"request/site_add_one.php",
+                    url:"request/site_add.php",
                     type:"post",
                     data:$("form.add-site").serialize(),
                     async:true,
@@ -514,7 +577,8 @@ $mysqli->set_charset("utf8");?>
                                 );
                             }
                             $('.tooltipped').tooltip();
-                            var modal = $('#modal-add-site').modal('close');
+                            var modal = $('#modal-add-site');
+                            modal.modal('close');
                             var modal_content = modal.children('.modal-content');
                             modal_content.children('div').eq(0).children('input').val("");
                             modal_content.children('div').eq(2).children('input').val("");
@@ -522,10 +586,17 @@ $mysqli->set_charset("utf8");?>
                     },
                     error:function (jqXHR, textStatus, errorThrown) {
                         Materialize.toast("未知错误", 3000);
+                    },
+                    complete:function (jqXHR, textStatus, errorThrown) {
+                        button.removeAttr("disabled");
+                        button.attr("disabled",false);
                     }
                 });
             });
             $("a.update-site").click(function(){
+                var button = $(this);
+                button.attr("disabled",true);
+                button.attr("disabled","disabled");
                 $.ajax({
                     url:"request/site_update.php",
                     type:"post",
@@ -566,8 +637,8 @@ $mysqli->set_charset("utf8");?>
                                 $('.tooltipped').tooltip();
                             }
                             else {
-                                var item_p = item_a.children().children('p');
                                 var item_a = item.children();
+                                var item_p = item_a.children().children('p');
                                 if (utf8_length(response.data.name) <= 12) item_p.text(response.data.name);
                                 else item_p.text(utf8_substring(response.data.name,11));
                                 item.attr("data-tooltip", response.data.name);
@@ -578,41 +649,12 @@ $mysqli->set_charset("utf8");?>
                     },
                     error:function (jqXHR, textStatus, errorThrown) {
                         Materialize.toast("未知错误", 3000);
+                    },
+                    complete:function (jqXHR, textStatus, errorThrown) {
+                        button.removeAttr("disabled");
+                        button.attr("disabled",false);
                     }
                 });
-            });
-            $.contextMenu({
-                selector: '.website-row',
-                items: {
-                    "add": {
-                        name: "添加",
-                        callback: function() {
-                            var type_id = $(this).attr("id");
-                            $.ajax({
-                                url:"request/site_type_get.php",
-                                type:"post",
-                                async:true,
-                                dataType:'json',
-                                success: function (response) {
-                                    if (response.status == 0){
-                                        var select = $("select[id='type_id']");
-                                        select.html("");
-                                        for(var i = 0; i < response.data.length; i++){
-                                            if(response.data[i].id == type_id) select.append("<option selected value='" + response.data[i].id + "'>" + response.data[i].name + "</option>");
-                                            else select.append("<option value='" + response.data[i].id + "'>" + response.data[i].name + "</option>");
-                                        }
-                                        $('select').material_select();
-                                        $("#add_site_mult").attr("href", "site_add.php?id=" + type_id);
-                                        $('#modal-add-site').modal('open');
-                                    }
-                                },
-                                error:function (jqXHR, textStatus, errorThrown) {
-                                    Materialize.toast("未知错误", 3000);
-                                }
-                            });
-                        }
-                    }
-                }
             });
             $.contextMenu({
                 selector: 'body',
@@ -673,6 +715,9 @@ $mysqli->set_charset("utf8");?>
                 }
             });
             $("a.add-bg").click(function(){
+                var button = $(this);
+                button.attr("disabled",true);
+                button.attr("disabled","disabled");
                 $.ajax({
                     url: 'request/bg_add.php',
                     type: 'post',
@@ -694,6 +739,10 @@ $mysqli->set_charset("utf8");?>
                     },
                     error:function (jqXHR, textStatus, errorThrown) {
                         Materialize.toast("未知错误", 3000);
+                    },
+                    complete:function (jqXHR, textStatus, errorThrown) {
+                        button.removeAttr("disabled");
+                        button.attr("disabled",false);
                     }
                 });
             });
@@ -721,8 +770,7 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-            <a href="search_add.php" class="modal-action modal-close waves-effect waves-red btn-flat">批量添加</a>
-            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
+            <a class="modal-action modal-close waves-effect btn-flat">取消</a>
             <a class="add-search waves-effect btn-flat">确定</a>
         </div>
     </div>
@@ -742,7 +790,7 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
+            <a class="modal-action modal-close waves-effect btn-flat">取消</a>
             <a class="update-search waves-effect btn-flat">确定</a>
         </div>
     </div>
@@ -757,7 +805,7 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
+            <a class="modal-action modal-close waves-effect btn-flat">取消</a>
             <a class="add-site-type waves-effect btn-flat">确定</a>
         </div>
     </div>
@@ -773,8 +821,8 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
-            <a class="update-site-type modal-action modal-close waves-effect btn-flat">提交</a>
+            <a class="modal-action modal-close waves-effect btn-flat">取消</a>
+            <a class="update-site-type waves-effect btn-flat">确定</a>
         </div>
     </div>
 </form>
@@ -797,8 +845,7 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-            <a href="site_add.php" id="add_site_mult" class="modal-action modal-close waves-effect btn-flat">批量添加</a>
-            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
+            <a class="modal-action modal-close waves-effect btn-flat">取消</a>
             <a class="add-site waves-effect btn-flat">确定</a>
         </div>
     </div>
@@ -823,7 +870,7 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
+            <a class="modal-action modal-close waves-effect btn-flat">取消</a>
             <a class="update-site waves-effect btn-flat">确定</a>
         </div>
     </div>
@@ -843,7 +890,7 @@ $row = $result->fetch_assoc();
             </div>
         </div>
         <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect btn-flat ">取消</a>
+            <a class="modal-action modal-close waves-effect btn-flat">取消</a>
             <a name="submit" class="add-bg waves-effect btn-flat ">确定</a>
         </div>
     </div>
