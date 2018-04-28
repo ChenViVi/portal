@@ -13,7 +13,7 @@ if ($mysqli->connect_errno){
 else if (is_empty($name) || is_empty($url)){
     $msg = "你是不是漏了什么？";
 }
-else if (utf8_length($name) > 10) {
+else if (utf8_length($name) > 6) {
     $msg = "插入这么长的东西的话，数据库酱会痛得受不了的哟~";
 }
 else{
