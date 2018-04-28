@@ -16,6 +16,7 @@ $mysqli->set_charset("utf8");?>
     <link href="css/jquery.contextMenu.css" rel="stylesheet" type="text/css">
     <script src="js/jquery.contextMenu.js" type="text/javascript"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">
     <style>
         #search-bar{
             margin:20px auto;
@@ -756,6 +757,19 @@ $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 ?>
 <body data-id="<?php if ($row['id'] != null) echo $row['id']; else echo "-1";?>" style="background-size:cover;background-image: url(<?php if ($row['url'] != null) echo "bg/" . $row['url']; else echo "https://api.ikmoe.com/moeu-api.php";?>);">
+<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+    <a class="btn-floating btn-large red">
+        <i class="fas fa-crosshairs"></i>
+    </a>
+    <ul>
+        <li><a class="btn-floating green" style="transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;" target="_blank" href="http://valorachen.club/shudong"><i class="far fa-image"></i></i></a></li>
+        <li><a class="btn-floating blue" style="transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;" target="_blank" href="http://valorachen.club/pubcloud/"><i class="fas fa-cloud-download-alt"></i></a></li>
+        <li><a class="btn-floating pink lighten-3" style="transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;" target="_blank" href="https://space.bilibili.com/13132412/#/"><i class="fab fa-blogger-b"></i></a></li>
+        <li><a class="btn-floating red" style="transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;" target="_blank" href="https://weibo.com/p/1005053101937447/home?from=page_100505&mod=TAB&is_all=1"><i class="fab fa-weibo"></i></a></li>
+        <li><a class="btn-floating black" style="transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;" target="_blank" href="https://github.com/ChenViVi"><i class="fab fa-github"></i></a></li>
+        <li><a class="btn-floating blue darken-3" style="transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;" target="_blank" href="http://blog.valorachen.top"><i class="far fa-address-book"></i></a></li>
+    </ul>
+</div>
 <form class="add-search">
     <div id="modal-add-search" class="modal">
         <div class="modal-content">
