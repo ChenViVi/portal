@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 2018-04-22 08:46:45
+-- Generation Time: 2018-04-29 05:49:38
 -- 服务器版本： 5.7.14
 -- PHP Version: 5.6.25
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `test`
+-- Database: `portal_test`
 --
 
 -- --------------------------------------------------------
@@ -48,7 +48,30 @@ CREATE TABLE `search` (
 --
 
 INSERT INTO `search` (`id`, `name`, `url`) VALUES
-(1, '百度', 'https://www.baidu.com/s?wd=');
+(1, 'Google', 'https://www.google.com/search?q='),
+(2, '百度', 'https://www.baidu.com/s?wd='),
+(3, '百度翻译', 'https://fanyi.baidu.com/#en/zh/'),
+(4, '知乎', 'https://www.zhihu.com/search?type=content&q='),
+(5, '淘宝', 'https://s.taobao.com/search?q='),
+(6, '京东', 'https://search.jd.com/Search?enc=utf-8&keyword='),
+(7, 'B站', 'https://search.bilibili.com/all?keyword='),
+(8, '爱奇艺', 'http://so.iqiyi.com/so/q_'),
+(9, '优酷', 'http://www.soku.com/search_video/q_'),
+(10, 'Youtube', 'https://www.youtube.com/results?search_query='),
+(11, '腾讯视频', 'https://v.qq.com/x/search/?q='),
+(12, 'niconico', 'http://www.nicovideo.jp/search/'),
+(13, 'Github', 'https://github.com/search?utf8=%E2%9C%93&q='),
+(14, 'Maven', 'https://mvnrepository.com/search?q='),
+(15, 'stackoverflow', 'https://stackoverflow.com/search?q='),
+(16, '掘金', 'https://juejin.im/search?query='),
+(17, 'segmentfault', 'https://segmentfault.com/search?q='),
+(18, 'CSDN', 'https://so.csdn.net/so/search/s.do?q='),
+(19, 'Iconfont', 'http://www.iconfont.cn/search/index?q='),
+(20, 'FontAwesome', 'https://fontawesome.com/icons?d=gallery&q='),
+(21, 'dribbble', 'ttps://dribbble.com/search?q='),
+(22, 'GooglePicture', 'https://www.google.com/search?tbm=isch&q=beauty'),
+(23, 'Pinterest', 'https://www.pinterest.com/search/pins/?q=dope'),
+(24, 'pixiv', 'https://www.pixiv.net/search.php?word=');
 
 -- --------------------------------------------------------
 
@@ -123,7 +146,7 @@ ALTER TABLE `bg`
 -- 使用表AUTO_INCREMENT `search`
 --
 ALTER TABLE `search`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 --
 -- 使用表AUTO_INCREMENT `site`
 --
