@@ -556,7 +556,7 @@ $mysqli->set_charset("utf8");?>
                                 $(".website-row[id='" + response.data.type_id + "']").append(
                                     "<div class='website-div tooltipped col s3' style='margin-top: 20px; display: block;' data-id='" + response.data.id + "' data-position='right' data-tooltip='" + response.data.name + "'>" +
                                     "<a href='" + response.data.url + "' target='_blank'>" +
-                                    "<div class='website hoverable' style='position:relative;'>" +
+                                    "<div class='website hoverable z-depth-2' style='position:relative;'>" +
                                     "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
                                     "<p class='teal-text center'>" + response.data.name + "</p>" +
                                     "</div>" +
@@ -568,7 +568,7 @@ $mysqli->set_charset("utf8");?>
                                 $(".website-row[id='" + response.data.type_id + "']").append(
                                     "<div class='website-div tooltipped col s3' style='margin-top: 20px; display: block;' data-id='" + response.data.id + "' data-position='right' data-tooltip='" + response.data.name + "'>" +
                                     "<a href='" + response.data.url + "' target='_blank'>" +
-                                    "<div class='website hoverable' style='position:relative;'>" +
+                                    "<div class='website hoverable z-depth-2' style='position:relative;'>" +
                                     "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
                                     "<p class='teal-text center'>" + response.data.name.substring(0,11) + "...</p>" +
                                     "</div>" +
@@ -614,7 +614,7 @@ $mysqli->set_charset("utf8");?>
                                     $(".website-row[id='" + response.data.type_id + "']").append(
                                         "<div class='website-div tooltipped col s3' style='margin-top: 20px; display: block;' data-id='" + response.data.id + "' data-position='right' data-tooltip='" + response.data.name + "'>" +
                                         "<a href='" + response.data.url + "' target='_blank'>" +
-                                        "<div class='website hoverable' style='position:relative;'>" +
+                                        "<div class='website hoverable z-depth-2' style='position:relative;'>" +
                                         "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
                                         "<p class='teal-text center'>" + response.data.name + "</p>" +
                                         "</div>" +
@@ -626,7 +626,7 @@ $mysqli->set_charset("utf8");?>
                                     $(".website-row[id='" + response.data.type_id + "']").append(
                                         "<div class='website-div tooltipped col s3' style='margin-top: 20px; display: block;' data-id='" + response.data.id + "' data-position='right' data-tooltip='" + response.data.name + "'>" +
                                         "<a href='" + response.data.url + "' target='_blank'>" +
-                                        "<div class='website hoverable' style='position:relative;'>" +
+                                        "<div class='website hoverable z-depth-2' style='position:relative;'>" +
                                         "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
                                         "<p class='teal-text center'>" + utf8_substring(response.data.name,11) + "...</p>" +
                                         "</div>" +
