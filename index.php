@@ -17,29 +17,62 @@ $mysqli->set_charset("utf8");?>
     <script src="js/jquery.contextMenu.js" type="text/javascript"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        #search-bar{
+        #search-bar {
             margin:20px auto;
-            background-color: rgba(255,255,255,0.65);
+            background-color: #22252A;
             width:60%;
             border-radius:3px;
         }
-        #tab-nav{
+        #tab-nav {
             min-height:450px; height:auto!important; height:450px;
             margin:20px auto;
-            background-color: rgba(255,255,255,0.55);
+            background-color: #22252A;
             width:80%;
             position: relative;
             top: 20px;
             border-radius:3px;
-            padding-bottom: 10px;
         }
-        .website{
-            background-color: rgba(255,255,255,0.3);
+        .website {
+            background-color: #22252A;
             padding: 5px;
             border-radius:5px;
         }
+        .input-field input[type=text]:focus + label {
+            color: #eeeeee;
+        }
+        .input-field input[type=text]:focus {
+            border-bottom: 1px solid #eeeeee !important;
+            box-shadow: 0 1px 0 0 #eeeeee !important
+        }
+        .input-field {
+            color:white;
+        }
+        [type="radio"].with-gap:checked + label:before {
+            border-radius: 50%;
+            border: 2px solid #eeeeee;
+        }
+        [type="radio"].with-gap:checked + label:after {
+            border-radius: 50%;
+            border: 2px solid #eeeeee;
+            background-color: #eeeeee;
+            z-index: 0;
+            -webkit-transform: scale(.5);
+            -moz-transform: scale(.5);
+            -ms-transform: scale(.5);
+            -o-transform: scale(.5);
+            transform: scale(.5);
+        }
+        #search-btn {
+            background-color: #2D3035;
+        }
         .tabs .indicator {
-            background-color: #26A69A;
+            background-color: #ffffff;
+        }
+        .modal{
+            background-color: #2D3035;
+        }
+        h4,a {
+            color: #eeeeee;
         }
     </style>
     <script type="text/javascript">
@@ -183,7 +216,7 @@ $mysqli->set_charset("utf8");?>
                             search_radios.append(
                                 "<div class='col s2 radios-div' data-id='" + response.data.id + "'>" +
                                 "<input class='with-gap' name='group1' type='radio' id='radio" + response.data.id + "' value='" + response.data.url + "'>" +
-                                "<label class='grey-text text-darken-3' for='radio" + response.data.id + "'>" + response.data.name + "</label>" +
+                                "<label class='grey-text text-lighten-3' for='radio" + response.data.id + "'>" + response.data.name + "</label>" +
                                 "</div>"
                             );
                             var modal = $("#modal-add-search");
@@ -337,7 +370,7 @@ $mysqli->set_charset("utf8");?>
                     success: function (response) {
                         Materialize.toast(response.msg, 3000);
                         if (response.status == 0){
-                            site_types.append("<li data-id='" + response.data.id + "' class='tab ui-sortable-handle'><a href='#" + response.data.id + "' class='teal-text active'>" + response.data.name + "</a></li>");
+                            site_types.append("<li data-id='" + response.data.id + "' class='tab ui-sortable-handle'><a href='#" + response.data.id + "' class='grey-text text-lighten-3' style='text-transform: none !important'>" + response.data.name + "</a></li>");
                             $('.tabs').tabs();
                             var modal = $('#modal-add-site-type');
                             modal.modal('close');
@@ -559,7 +592,7 @@ $mysqli->set_charset("utf8");?>
                                     "<a href='" + response.data.url + "' target='_blank'>" +
                                     "<div class='website hoverable z-depth-2' style='position:relative;'>" +
                                     "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
-                                    "<p class='teal-text center'>" + response.data.name + "</p>" +
+                                    "<p class='grey-text text-lighten-3 center'>" + response.data.name + "</p>" +
                                     "</div>" +
                                     "</a>" +
                                     "</div>"
@@ -571,7 +604,7 @@ $mysqli->set_charset("utf8");?>
                                     "<a href='" + response.data.url + "' target='_blank'>" +
                                     "<div class='website hoverable z-depth-2' style='position:relative;'>" +
                                     "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
-                                    "<p class='teal-text center'>" + response.data.name.substring(0,11) + "...</p>" +
+                                    "<p class='grey-text text-lighten-3 center'>" + response.data.name.substring(0,11) + "...</p>" +
                                     "</div>" +
                                     "</a>" +
                                     "</div>"
@@ -617,7 +650,7 @@ $mysqli->set_charset("utf8");?>
                                         "<a href='" + response.data.url + "' target='_blank'>" +
                                         "<div class='website hoverable z-depth-2' style='position:relative;'>" +
                                         "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
-                                        "<p class='teal-text center'>" + response.data.name + "</p>" +
+                                        "<p class='grey-text text-lighten-3 center'>" + response.data.name + "</p>" +
                                         "</div>" +
                                         "</a>" +
                                         "</div>"
@@ -629,7 +662,7 @@ $mysqli->set_charset("utf8");?>
                                         "<a href='" + response.data.url + "' target='_blank'>" +
                                         "<div class='website hoverable z-depth-2' style='position:relative;'>" +
                                         "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
-                                        "<p class='teal-text center'>" + utf8_substring(response.data.name,11) + "...</p>" +
+                                        "<p class='grey-text text-lighten-3 center'>" + utf8_substring(response.data.name,11) + "...</p>" +
                                         "</div>" +
                                         "</a>" +
                                         "</div>"
@@ -657,96 +690,6 @@ $mysqli->set_charset("utf8");?>
                     }
                 });
             });
-            $.contextMenu({
-                selector: 'body',
-                build: function() {
-                    if (body.attr("data-id") != -1){
-                        return {
-                            items: {
-                                "add": {
-                                    name: "添加背景图",
-                                    callback: function() {
-                                        $('#modal-add-bg').modal('open');
-                                    }
-                                },
-                                "delete": {
-                                    name: "这张背景看腻了，朕要将其打入冷宫",
-                                    callback: function() {
-                                        var id =$("body").attr("data-id");
-                                        $.ajax({
-                                            url: 'request/bg_delete.php',
-                                            type: 'post',
-                                            data: ("id=" + id),
-                                            dataType:'json',
-                                            success: function (response) {
-                                                Materialize.toast(response.msg, 3000);
-                                                if (response.status == 0){
-                                                    var body = $("body");
-                                                    if (response.data != null){
-                                                        body.css("background-image","url(bg/" + response.data.url +")");
-                                                        body.attr("data-id", response.data.id);
-                                                    }
-                                                    else {
-                                                        body.css("background-image","url(https://api.ikmoe.com/moeu-api.php)");
-                                                        body.attr("data-id", -1);
-                                                    }
-                                                }
-                                            },
-                                            error:function (jqXHR, textStatus, errorThrown) {
-                                                Materialize.toast("未知错误", 3000);
-                                            }
-                                        });
-                                    }
-                                }
-                            }
-                        };
-                    }
-                    else {
-                        return {
-                            items: {
-                                "add": {
-                                    name: "什么辣鸡图，劳资要自己设壁纸",
-                                    callback: function() {
-                                        $('#modal-add-bg').modal('open');
-                                    }
-                                }
-                            }
-                        };
-                    }
-                }
-            });
-            $("a.add-bg").click(function(){
-                var button = $(this);
-                button.attr("disabled",true);
-                button.attr("disabled","disabled");
-                $.ajax({
-                    url: 'request/bg_add.php',
-                    type: 'post',
-                    cache: false,
-                    data: new FormData($('#add-bg')[0]),
-                    processData: false,
-                    contentType: false,
-                    dataType:'json',
-                    success: function (response) {
-                        Materialize.toast(response.msg, 3000);
-                        if (response.status == 0){
-                            var body = $("body");
-                            body.css("background-image","url(bg/" + response.data.url +")");
-                            body.attr("data-id", response.data.id);
-                            $("#modal-add-bg").modal('close');
-                            $("#file").val("");
-                            $(".file-path").val("");
-                        }
-                    },
-                    error:function (jqXHR, textStatus, errorThrown) {
-                        Materialize.toast("未知错误", 3000);
-                    },
-                    complete:function (jqXHR, textStatus, errorThrown) {
-                        button.removeAttr("disabled");
-                        button.attr("disabled",false);
-                    }
-                });
-            });
         });
     </script>
 </head>
@@ -756,11 +699,11 @@ $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 ?>
-<body data-id="<?php if ($row['id'] != null) echo $row['id']; else echo "-1";?>" style="background-repeat:no-repeat;background-attachment:fixed;background-position:center;background-image: url(<?php if ($row['url'] != null) echo "bg/" . $row['url']; else echo "https://api.ikmoe.com/moeu-api.php";?>);">
+<body style="background-color:#2D3035;">
 <form class="add-search">
     <div id="modal-add-search" class="modal">
         <div class="modal-content">
-            <h4>添加搜索引擎</h4>
+            <h4 class="grey-text">添加搜索引擎</h4>
             <div class="input-field">
                 <input name="name" id="name" type="text" class="validate" autocomplete="off">
                 <label for="name">名称&nbsp;例如：百度</label>
@@ -770,9 +713,9 @@ $row = $result->fetch_assoc();
                 <label for="url">链接地址&nbsp;例如：baidu.com/s?wd=</label>
             </div>
         </div>
-        <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect btn-flat">取消</a>
-            <a class="add-search waves-effect btn-flat">确定</a>
+        <div class="modal-footer" style="background-color:#2D3035;">
+            <a class="modal-action modal-close waves-effect btn-flat grey-text text-lighten-3">取消</a>
+            <a class="add-search waves-effect btn-flat grey-text text-lighten-3">确定</a>
         </div>
     </div>
 </form>
@@ -790,9 +733,9 @@ $row = $result->fetch_assoc();
                 <label for="url">链接地址</label>
             </div>
         </div>
-        <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect btn-flat">取消</a>
-            <a class="update-search waves-effect btn-flat">确定</a>
+        <div class="modal-footer" style="background-color:#2D3035;">
+            <a class="modal-action modal-close waves-effect btn-flat grey-text text-lighten-3">取消</a>
+            <a class="update-search waves-effect btn-flat grey-text text-lighten-3">确定</a>
         </div>
     </div>
 </form>
@@ -805,9 +748,9 @@ $row = $result->fetch_assoc();
                 <label for="name">名称</label>
             </div>
         </div>
-        <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect btn-flat">取消</a>
-            <a class="add-site-type waves-effect btn-flat">确定</a>
+        <div class="modal-footer" style="background-color:#2D3035;">
+            <a class="modal-action modal-close waves-effect btn-flat grey-text text-lighten-3">取消</a>
+            <a class="add-site-type waves-effect btn-flat grey-text text-lighten-3">确定</a>
         </div>
     </div>
 </form>
@@ -821,9 +764,9 @@ $row = $result->fetch_assoc();
                 <label for="name">名称</label>
             </div>
         </div>
-        <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect btn-flat">取消</a>
-            <a class="update-site-type waves-effect btn-flat">确定</a>
+        <div class="modal-footer" style="background-color:#2D3035;">
+            <a class="modal-action modal-close waves-effect btn-flat grey-text text-lighten-3">取消</a>
+            <a class="update-site-type waves-effect btn-flat grey-text text-lighten-3">确定</a>
         </div>
     </div>
 </form>
@@ -845,9 +788,9 @@ $row = $result->fetch_assoc();
                 <label for="url">链接地址&nbsp;例如：www.baidu.com</label>
             </div>
         </div>
-        <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect btn-flat">取消</a>
-            <a class="add-site waves-effect btn-flat">确定</a>
+        <div class="modal-footer" style="background-color:#2D3035;">
+            <a class="modal-action modal-close waves-effect btn-flat grey-text text-lighten-3">取消</a>
+            <a class="add-site waves-effect btn-flat grey-text text-lighten-3">确定</a>
         </div>
     </div>
 </form>
@@ -870,29 +813,9 @@ $row = $result->fetch_assoc();
                 <label for="url">链接地址</label>
             </div>
         </div>
-        <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect btn-flat">取消</a>
-            <a class="update-site waves-effect btn-flat">确定</a>
-        </div>
-    </div>
-</form>
-<form id="add-bg" enctype="multipart/form-data">
-    <div id="modal-add-bg" class="modal">
-        <div class="modal-content">
-            <h4>添加背景图片</h4>
-            <div class="file-field input-field">
-                <div class="btn">
-                    <span>文件</span>
-                    <input type="file" name="file" id="file">
-                </div>
-                <div class="file-path-wrapper">
-                    <input id="#file-path" class="file-path validate" type="text">
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <a class="modal-action modal-close waves-effect btn-flat">取消</a>
-            <a name="submit" class="add-bg waves-effect btn-flat ">确定</a>
+        <div class="modal-footer" style="background-color:#2D3035;">
+            <a class="modal-action modal-close waves-effect btn-flat grey-text text-lighten-3">取消</a>
+            <a class="update-site waves-effect btn-flat grey-text text-lighten-3">确定</a>
         </div>
     </div>
 </form>
@@ -914,13 +837,13 @@ $row = $result->fetch_assoc();
                 if($checked){
                     echo "<div class=\"col s2 radios-div\"  data-id=\"" . $row['id'] . "\">"
                         . "<input checked class=\"with-gap\" name=\"group1\" type=\"radio\" id=\"radio" . $row['id'] . "\" value=\"" . $row['url'] . "\"/>"
-                        . "<label class=\"grey-text text-darken-3\" for=\"radio" . $row['id'] . "\">" . $row['name'] . "</label>"
+                        . "<label class=\"grey-text text-lighten-3\" for=\"radio" . $row['id'] . "\">" . $row['name'] . "</label>"
                         . "</div>";
                     $checked = false;
                 }
                 else echo "<div class=\"col s2 radios-div\"  data-id=\"" . $row['id'] . "\">"
                             . "<input class=\"with-gap\" name=\"group1\" type=\"radio\" id=\"radio" . $row['id'] . "\" value=\"" . $row['url'] . "\"/>"
-                            . "<label class=\"grey-text text-darken-3\" for=\"radio" . $row['id'] . "\">" . $row['name'] . "</label>"
+                            . "<label class=\"grey-text text-lighten-3\" for=\"radio" . $row['id'] . "\">" . $row['name'] . "</label>"
                             . "</div>";
            }?>
         </div>
@@ -937,10 +860,10 @@ $row = $result->fetch_assoc();
             while ($row = $result->fetch_assoc()) {
                 array_push($site_type_ids, $row['id']);
                 ?>
-                <li data-id="<?php echo $row['id'];?>" class="tab"><a href="#<?php echo $row['id']; ?>"  class="teal-text" style="text-transform: none !important"><?php echo $row['name']; ?></a></li>
+                <li data-id="<?php echo $row['id'];?>" class="tab"><a href="#<?php echo $row['id']; ?>"  class="grey-text text-lighten-3" style="text-transform: none !important"><?php echo $row['name']; ?></a></li>
             <?php } ?>
         </div>
-        <li class="indicator teal" style="right: 186px; left: 68px;"></li>
+        <li class="indicator" style="right: 186px; left: 68px;"></li>
     </ul>
     <?php
     for ($i = 0; $i < count($site_type_ids); $i++){ ?>
@@ -955,7 +878,7 @@ $row = $result->fetch_assoc();
                     <a href="<?php echo $row['url'] ?>" target="_blank">
                         <div class="website hoverable z-depth-2" style="position:relative;">
                             <img src="http://favicon.byi.pw/?url=<?php echo $row['url'] ?>" width="16px" style="position: absolute;top: 50%;transform: translateY(-50%);">
-                            <p class="teal-text center"><?php if (utf8_length($row['name']) <= 12) echo $row['name']; else echo utf8_substring($row['name'], 11) . "..." ?></p>
+                            <p class="grey-text text-lighten-3 center"><?php if (utf8_length($row['name']) <= 12) echo $row['name']; else echo utf8_substring($row['name'], 11) . "..." ?></p>
                         </div>
                     </a>
                 </div>
