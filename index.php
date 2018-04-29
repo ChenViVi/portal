@@ -895,7 +895,7 @@ $row = $result->fetch_assoc();
         </div>
     </div>
 </form>
-<div id="search-bar">
+<div id="search-bar" class="z-depth-1">
     <div class="row">
         <div class="row col s12" style="position:relative;">
             <div class="input-field col s11" >
@@ -925,7 +925,7 @@ $row = $result->fetch_assoc();
         </div>
     </div>
 </div>
-<div id="tab-nav">
+<div id="tab-nav" class="z-depth-1">
     <ul class="tabs transparent">
         <div id="site-types">
             <?php
@@ -952,7 +952,7 @@ $row = $result->fetch_assoc();
             while ($row = $result->fetch_assoc()) {?>
                 <div class="website-div tooltipped col s3" style="margin-top: 20px; display: block;" data-id="<?php echo $row['id']; ?>" data-position="right" data-tooltip="<?php echo $row['name']; ?>">
                     <a href="<?php echo $row['url'] ?>" target="_blank">
-                        <div class="website hoverable" style="position:relative;">
+                        <div class="website hoverable z-depth-2" style="position:relative;">
                             <img src="http://favicon.byi.pw/?url=<?php echo $row['url'] ?>" width="16px" style="position: absolute;top: 50%;transform: translateY(-50%);">
                             <p class="teal-text center"><?php if (utf8_length($row['name']) <= 12) echo $row['name']; else echo utf8_substring($row['name'], 11) . "..." ?></p>
                         </div>
