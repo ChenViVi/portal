@@ -368,6 +368,7 @@ $mysqli->set_charset("utf8");?>
                         Materialize.toast(response.msg, 3000);
                         if (response.status == 0){
                             $("li.tab[data-id='"+ response.data.id +"']").children().text(response.data.name);
+                            $("#modal-add-site-type").modal('close');
                         }
                     },
                     error:function (jqXHR, textStatus, errorThrown) {
@@ -756,7 +757,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 ?>
-<body data-id="<?php if ($row['id'] != null) echo $row['id']; else echo "-1";?>" style="background-repeat:no-repeat;background-attachment:fixed;background-position:center;background-image: url(<?php if ($row['url'] != null) echo "bg/" . $row['url']; else echo "https://api.ikmoe.com/moeu-api.php";?>);">
+<body data-id="<?php if ($row['id'] != null) echo $row['id']; else echo "-1";?>" style="background-size:cover;background-repeat:no-repeat;background-attachment:fixed;background-position:center;background-image: url(<?php if ($row['url'] != null) echo "bg/" . $row['url']; else echo "https://api.ikmoe.com/moeu-api.php";?>);">
 <form class="add-search">
     <div id="modal-add-search" class="modal">
         <div class="modal-content">

@@ -2,7 +2,17 @@
 
 一个优雅的网站导航
 
+##白色主题
+
 ![](bg/portal.png)
+
+[点击下载](https://github.com/ChenViVi/portal/releases/download/single-0.0.3/portal-single-0.0.3.zip) | [预览](http://valorachen.club/portal/index.php)
+
+## 黑色主题（不支持自定义背景，换了背景会很吃藕的好伐）
+
+![](bg/portal-dark.png)
+
+[点击下载](https://github.com/ChenViVi/portal/releases/download/dark-0.0.1/portal-dark-0.0.1.zip) | [预览](http://valorachen.club/portal/index-dark.php)
 
 ## 优点
 
@@ -15,7 +25,7 @@
 
 ## 食用方法
 
-整个项目copy到Web服务器目录下，然后创建个数据库并导入`portal.sql`，别忘了存放背景图的`bg`目录要加写入权限，最后在`config.php`编辑你自己的设置，就搞定了。例如下面：
+整个项目copy到Web服务器目录下，然后创建个数据库并导入`portal.sql`。如果你需要自定义背景图的话，别忘了存放背景图的`bg`目录要加写入权限。最后在`config.php`编辑你自己的设置，就搞定了。例如下面：
 
 ```
 git clone https://github.com/ChenViVi/portal.git
