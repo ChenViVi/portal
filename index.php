@@ -401,6 +401,7 @@ $mysqli->set_charset("utf8");?>
                         Materialize.toast(response.msg, 3000);
                         if (response.status == 0){
                             $("li.tab[data-id='"+ response.data.id +"']").children().text(response.data.name);
+                            $("#modal-add-site-type").modal('close');
                         }
                     },
                     error:function (jqXHR, textStatus, errorThrown) {
