@@ -32,6 +32,7 @@ $mysqli->set_charset("utf8");?>
             position: relative;
             top: 20px;
             border-radius:3px;
+            padding-bottom: 10px;
         }
         .website{
             background-color: rgba(255,255,255,0.3);
@@ -756,7 +757,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 ?>
-<body data-id="<?php if ($row['id'] != null) echo $row['id']; else echo "-1";?>" style="background-size:cover;background-image: url(<?php if ($row['url'] != null) echo "bg/" . $row['url']; else echo "https://api.ikmoe.com/moeu-api.php";?>);">
+<body data-id="<?php if ($row['id'] != null) echo $row['id']; else echo "-1";?>" style="background-repeat:no-repeat;background-attachment:fixed;background-position:center;background-image: url(<?php if ($row['url'] != null) echo "bg/" . $row['url']; else echo "https://api.ikmoe.com/moeu-api.php";?>);">
 <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
     <a class="btn-floating btn-large red">
         <i class="fas fa-crosshairs"></i>
