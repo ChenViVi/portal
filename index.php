@@ -74,6 +74,18 @@ $mysqli->set_charset("utf8");?>
         h4,a {
             color: #eeeeee;
         }
+        .select-wrapper ul li>span {
+            color: #eeeeee;
+        }
+        .select-wrapper ul li{
+            background-color: #22252A;
+        }
+        .select-wrapper ul li>span:hover {
+            color: black;
+        }
+        .select-wrapper ul li.selected>span{
+            color: black;
+        }
     </style>
     <script type="text/javascript">
         $(document).ready(function() {
