@@ -609,8 +609,8 @@ $mysqli->set_charset("utf8");?>
                         Materialize.toast(response.msg, 3000);
                         if (response.status == 0){
                             var item = $(".website-div[data-id='" + response.data.id + "']");
-                            var type_id = $(this).parent().attr("id");
-                            if (response.data.name != type_id) {
+                            var type_id = item.parent().attr("id");
+                            if (response.data.type_id != type_id) {
                                 item.remove();
                                 if (utf8_length(response.data.name) <= 12){
                                     $(".website-row[id='" + response.data.type_id + "']").append(
