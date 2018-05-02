@@ -1,21 +1,23 @@
-# portal
+# portal-黑色主题版
 
-一个优雅的网站导航
+一个优雅的网站导航。黑色主题不支持自定义背景，换了背景会很吃藕的好伐
 
-![](bg/portal.png)
+![](bg/portal-dark.png)
+
+[点击下载](https://github.com/ChenViVi/portal/releases/download/dark-0.0.1/portal-dark-0.0.1.zip) | [预览](http://valorachen.club/portal/index-dark.php)
 
 ## 优点
 
 - 能显示绝大部分网站的icon
 - 抛弃各大导航网站所使用的表格布局，而选择用Tab来将网站分类。避免因内容太密集而无法快速找到想要的网站
 - 可以自由的定制搜索引擎，不仅可以使用谷歌或百度这种常用搜索引擎，还可以搜知乎，搜B站，搜有土鳖，甚至搜种子。只要你知道站点的搜索链接，啥都能搜
-- 抛弃复杂的后台，所有增删改操作都在一个页面完成
+- 使用右键菜单即可完成所有增删改操作，使用鼠标拖拽来重新排序。所有你需要的功能，仅需一个页面即可轻松搞定
 - 使用ip白名单来限制访问，无需繁杂的注册登录找回密码操作
 - UI美观，且背景默认使用 [漫月API](http://api.ikmoe.com/)，每次打开随机加载一张背景图片。也可自定义背景墙
 
 ## 食用方法
 
-整个项目copy到Web服务器目录下，然后创建个数据库并导入`portal.sql`，别忘了存放背景图的`bg`目录要加写入权限，最后在`config.php`编辑你自己的设置，就搞定了。例如下面：
+整个项目copy到Web服务器目录下，然后创建个数据库并导入`portal.sql`。如果你需要自定义背景图的话，别忘了存放背景图的`bg`目录要加写入权限。最后在`config.php`编辑你自己的设置，就搞定了。例如下面：
 
 ```
 git clone https://github.com/ChenViVi/portal.git
