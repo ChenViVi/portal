@@ -1,18 +1,18 @@
 # portal
 
-一个优雅的网站导航
+一个优雅的网站导航（此项目只做bug维护，不再更新功能。不是不写了，只是那个部分不打算开源）
 
 ## 白色主题
 
 ![](bg/portal.png)
 
-[点击下载](https://github.com/ChenViVi/portal/releases/download/single-0.0.3/portal-single-0.0.3.zip) | [预览](http://valorachen.club/portal/index.php)
+[点击下载](https://github.com/ChenViVi/portal/releases/download/white-0.0.1/portal.zip) | [预览](http://valorachen.club/portal/index.php)
 
 ## 黑色主题（不支持自定义背景，换了背景会很吃藕的好伐）
 
 ![](bg/portal-dark.png)
 
-[点击下载](https://github.com/ChenViVi/portal/releases/download/dark-0.0.1/portal-dark-0.0.1.zip) | [预览](http://valorachen.club/portal/index-dark.php)
+[点击下载](https://github.com/ChenViVi/portal/releases/download/dark-0.0.1/portal-dark.zip) | [预览](http://valorachen.club/portal/index-dark.php)
 
 ## 优点
 
@@ -57,12 +57,8 @@ vim config.php
 
 [Materialize](http://www.materializecss.cn/)：基于Material Design的主流前端响应式框架
 
-## TODO
+## 项目后续
 
-- [x] 把以上吹的牛逼实现了先
-- [ ] 支持多用户
-- [ ] 主题色随背景颜色而变化
-- [ ] 搜索引擎支持自动补全，支持搜索历史
-- [ ] 显示天气与节日
-- [ ] 背景墙支持上传图片URL
-- [ ] 背景墙支持动态壁纸
+本项目可能会做成多用户版本正式上线，也可能会做成谷歌插件以支持一键将网站导入到本导航中，到时候也会有更多主题与颜色，也可能会有动态壁纸特效，显示天气与节日，能根据搜索引擎历史做自动补全，个人使用数据分析等功能
+
+部分功能可能会收费，所以当然就不会开源了。但是我同时希望普通用户用起来也能有不错的体验，大概就以这个开源的项目为标准了。所以如果觉得哪里出了bug，或操作体验不好，或者UI太丑不喜欢，或者希望有什么新增功能，欢迎砸issue
