@@ -1,6 +1,6 @@
 <?php
 require_once("config.php");
-/*check_ip($IP_WHITE_LIST);*/
+check_ip($IP_WHITE_LIST);
 
 function check_ip($ip_list){
     $ip = $_SERVER['REMOTE_ADDR'];
