@@ -1,6 +1,6 @@
 <?php
 require_once("config.php");
-check_ip($IP_WHITE_LIST);
+/*check_ip($IP_WHITE_LIST);*/
 
 function check_ip($ip_list){
     $ip = $_SERVER['REMOTE_ADDR'];
@@ -48,4 +48,8 @@ function utf8_substring($str,$length){
         }
     }
     return $result;
+}
+
+function is_url($url) {
+    return !is_empty(parse_url($url,PHP_URL_SCHEME));
 }
