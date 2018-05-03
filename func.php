@@ -49,3 +49,7 @@ function utf8_substring($str,$length){
     }
     return $result;
 }
+
+function is_url($url) {
+    return !is_empty(parse_url($url,PHP_URL_SCHEME));
+}

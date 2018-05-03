@@ -17,6 +17,9 @@ else if (is_empty($type_id) || is_empty($url) || is_empty($name)){
 else if (utf8_length($name) > 20) {
     $msg = "插入这么长的东西的话，数据库酱会痛得受不了的哟~";
 }
+else if (!is_url($url)) {
+    $msg = "这个链接好像不是很对呢，是不是开头没有加 'http://' 或者 'https://' 呢？";
+}
 else{
     $stmt=$mysqli->prepare("SELECT * FROM site_type WHERE id = ?");
     $stmt->bind_param('i', $type_id);
