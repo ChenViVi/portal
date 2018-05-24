@@ -52,26 +52,6 @@ $mysqli->set_charset("utf8");?>
             var site_types = $("#site-types");
             var website_row = $(".website-row");
             var search_param = $("input[name='search-param']");
-            function utf8_length(str) {
-                var str_array = str.split("");
-                var count = 0;
-                for (var i = 0; i < str_array.length; i++){
-                    if (/^[\u4E00-\u9FA5]+$/.test(str_array[i])) count = count + 1;
-                    else count = count + 0.5;
-                }
-                return count;
-            }
-            function utf8_substring(str, length) {
-                var str_array = str.split("");
-                var count = 0;
-                var result = "";
-                for (var i = 0; i < str_array.length && count < length; i++){
-                    if (/^[\u4E00-\u9FA5]+$/.test(str_array[i])) count = count + 1;
-                    else count = count + 0.5;
-                    result = result + str_array[i];
-                }
-                return result;
-            }
             $('#search-bar').on('keydown',function(event){
                 if(event.keyCode == 13){
                     window.open ($('input[name=group1]:checked').val() + search_param.val());
@@ -181,7 +161,7 @@ $mysqli->set_charset("utf8");?>
                         Materialize.toast(response.msg, 3000);
                         if (response.status == 0){
                             search_radios.append(
-                                "<div class='col s2 radios-div' data-id='" + response.data.id + "'>" +
+                                "<div class='col s12 m6 l3 radios-div' data-id='" + response.data.id + "'>" +
                                 "<input class='with-gap' name='group1' type='radio' id='radio" + response.data.id + "' value='" + response.data.url + "'>" +
                                 "<label class='grey-text text-darken-3' for='radio" + response.data.id + "'>" + response.data.name + "</label>" +
                                 "</div>"
@@ -554,30 +534,16 @@ $mysqli->set_charset("utf8");?>
                     success: function (response) {
                         Materialize.toast(response.msg, 3000);
                         if (response.status == 0){
-                            if (response.data.name.length <= 12){
-                                $(".website-row[id='" + response.data.type_id + "']").append(
-                                    "<div class='website-div tooltipped col s3' style='margin-top: 20px; display: block;' data-id='" + response.data.id + "' data-position='right' data-tooltip='" + response.data.name + "'>" +
-                                    "<a href='" + response.data.url + "' target='_blank'>" +
-                                    "<div class='website hoverable z-depth-2' style='position:relative;'>" +
-                                    "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
-                                    "<p class='teal-text center'>" + response.data.name + "</p>" +
-                                    "</div>" +
-                                    "</a>" +
-                                    "</div>"
-                                );
-                            }
-                            else {
-                                $(".website-row[id='" + response.data.type_id + "']").append(
-                                    "<div class='website-div tooltipped col s3' style='margin-top: 20px; display: block;' data-id='" + response.data.id + "' data-position='right' data-tooltip='" + response.data.name + "'>" +
-                                    "<a href='" + response.data.url + "' target='_blank'>" +
-                                    "<div class='website hoverable z-depth-2' style='position:relative;'>" +
-                                    "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
-                                    "<p class='teal-text center'>" + response.data.name.substring(0,11) + "...</p>" +
-                                    "</div>" +
-                                    "</a>" +
-                                    "</div>"
-                                );
-                            }
+                            $(".website-row[id='" + response.data.type_id + "']").append(
+                                "<div class='website-div tooltipped col s6 m4 l3' style='margin-top: 20px; display: block;' data-id='" + response.data.id + "' data-position='right' data-tooltip='" + response.data.name + "'>" +
+                                "<a href='" + response.data.url + "' target='_blank'>" +
+                                "<div class='website hoverable z-depth-2' style='position:relative;'>" +
+                                "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
+                                "<p class='teal-text center truncate' style='margin-left: 16px'>" + response.data.name + "...</p>" +
+                                "</div>" +
+                                "</a>" +
+                                "</div>"
+                            );
                             $('.tooltipped').tooltip();
                             var modal = $('#modal-add-site');
                             modal.modal('close');
@@ -612,37 +578,22 @@ $mysqli->set_charset("utf8");?>
                             var type_id = item.parent().attr("id");
                             if (response.data.type_id != type_id) {
                                 item.remove();
-                                if (utf8_length(response.data.name) <= 12){
-                                    $(".website-row[id='" + response.data.type_id + "']").append(
-                                        "<div class='website-div tooltipped col s3' style='margin-top: 20px; display: block;' data-id='" + response.data.id + "' data-position='right' data-tooltip='" + response.data.name + "'>" +
-                                        "<a href='" + response.data.url + "' target='_blank'>" +
-                                        "<div class='website hoverable z-depth-2' style='position:relative;'>" +
-                                        "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
-                                        "<p class='teal-text center'>" + response.data.name + "</p>" +
-                                        "</div>" +
-                                        "</a>" +
-                                        "</div>"
-                                    );
-                                }
-                                else {
-                                    $(".website-row[id='" + response.data.type_id + "']").append(
-                                        "<div class='website-div tooltipped col s3' style='margin-top: 20px; display: block;' data-id='" + response.data.id + "' data-position='right' data-tooltip='" + response.data.name + "'>" +
-                                        "<a href='" + response.data.url + "' target='_blank'>" +
-                                        "<div class='website hoverable z-depth-2' style='position:relative;'>" +
-                                        "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
-                                        "<p class='teal-text center'>" + utf8_substring(response.data.name,11) + "...</p>" +
-                                        "</div>" +
-                                        "</a>" +
-                                        "</div>"
-                                    );
-                                }
+                                $(".website-row[id='" + response.data.type_id + "']").append(
+                                    "<div class='website-div tooltipped col s6 m4 l3' style='margin-top: 20px; display: block;' data-id='" + response.data.id + "' data-position='right' data-tooltip='" + response.data.name + "'>" +
+                                    "<a href='" + response.data.url + "' target='_blank'>" +
+                                    "<div class='website hoverable z-depth-2' style='position:relative;'>" +
+                                    "<img src='http://favicon.byi.pw/?url=" + response.data.url + "' width='16px' style='position: absolute;top: 50%;transform: translateY(-50%);'>" +
+                                    "<p class='teal-text center truncate' style='margin-left: 16px'>" + response.data.name + "...</p>" +
+                                    "</div>" +
+                                    "</a>" +
+                                    "</div>"
+                                );
                                 $('.tooltipped').tooltip();
                             }
                             else {
                                 var item_a = item.children();
                                 var item_p = item_a.children().children('p');
-                                if (utf8_length(response.data.name) <= 12) item_p.text(response.data.name);
-                                else item_p.text(utf8_substring(response.data.name,11));
+                                item_p.text(response.data.name);
                                 item.attr("data-tooltip", response.data.name);
                                 item_a.attr("href", response.data.url);
                             }
@@ -913,13 +864,13 @@ $row = $result->fetch_assoc();
             $checked = true;
             while ($row = $result->fetch_assoc()) {
                 if($checked){
-                    echo "<div class=\"col s2 radios-div\"  data-id=\"" . $row['id'] . "\">"
+                    echo "<div class=\"col s12 m6 l3 radios-div\"  data-id=\"" . $row['id'] . "\">"
                         . "<input checked class=\"with-gap\" name=\"group1\" type=\"radio\" id=\"radio" . $row['id'] . "\" value=\"" . $row['url'] . "\"/>"
                         . "<label class=\"grey-text text-darken-3\" for=\"radio" . $row['id'] . "\">" . $row['name'] . "</label>"
                         . "</div>";
                     $checked = false;
                 }
-                else echo "<div class=\"col s2 radios-div\"  data-id=\"" . $row['id'] . "\">"
+                else echo "<div class=\"col s12 m6 l3 radios-div\"  data-id=\"" . $row['id'] . "\">"
                             . "<input class=\"with-gap\" name=\"group1\" type=\"radio\" id=\"radio" . $row['id'] . "\" value=\"" . $row['url'] . "\"/>"
                             . "<label class=\"grey-text text-darken-3\" for=\"radio" . $row['id'] . "\">" . $row['name'] . "</label>"
                             . "</div>";
@@ -952,11 +903,11 @@ $row = $result->fetch_assoc();
             $stmt->execute();
             $result = $stmt->get_result();
             while ($row = $result->fetch_assoc()) {?>
-                <div class="website-div tooltipped col s3" style="margin-top: 20px; display: block;" data-id="<?php echo $row['id']; ?>" data-position="right" data-tooltip="<?php echo $row['name']; ?>">
+                <div class="website-div tooltipped col s6 m4 l3" style="margin-top: 20px; display: block;" data-id="<?php echo $row['id']; ?>" data-position="right" data-tooltip="<?php echo $row['name']; ?>">
                     <a href="<?php echo $row['url'] ?>" target="_blank">
                         <div class="website hoverable z-depth-2" style="position:relative;">
                             <img src="http://favicon.byi.pw/?url=<?php echo $row['url'] ?>" width="16px" style="position: absolute;top: 50%;transform: translateY(-50%);">
-                            <p class="teal-text center"><?php if (utf8_length($row['name']) <= 12) echo $row['name']; else echo utf8_substring($row['name'], 11) . "..." ?></p>
+                            <p class="teal-text center truncate" style="margin-left: 16px"><?php echo $row['name']?></p>
                         </div>
                     </a>
                 </div>
